@@ -24,6 +24,8 @@ pip install -r requirements.txt
 python main.py
 ```
 
+y se lanzará el programa
+
 ![Calculadora de IVA](vx_images/01-Calculadora-de-IVA.png)
 
 ## Configuracion
