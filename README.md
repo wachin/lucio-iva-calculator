@@ -21,3 +21,11 @@ source .venv/bin/activate      # Linux/macOS
 pip install -r requirements.txt
 python main.py
 ```
+
+## Configuracion
+
+La app guarda sus preferencias en un archivo INI dentro de la carpeta de configuracion del usuario:
+
+- Windows: `%AppData%\Lucio\IVA Calculator.ini`
+- Linux: `~/.config/Lucio/IVA Calculator.ini`
+- macOS: `~/Library/Application Support/Lucio/IVA Calculator.ini`

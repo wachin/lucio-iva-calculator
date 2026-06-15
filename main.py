@@ -1,8 +1,11 @@
 from __future__ import annotations
 
+import os
 import sys
+from configparser import ConfigParser
 from dataclasses import dataclass
 from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
+from pathlib import Path
 
 from PyQt6.QtCore import Qt, QSettings, QSize
 from PyQt6.QtGui import QAction, QFont
@@ -32,6 +35,7 @@ from PyQt6.QtWidgets import (
 
 APP_ORG = "Lucio"
 APP_NAME = "IVA Calculator"
+CONFIG_FILE_NAME = "IVA Calculator.ini"
 DEFAULT_UI_SIZE = "Mediano"
 UI_SIZE_PRESETS = {
     "Muy pequeno": {"scale": 0.82, "width": 330, "height": 570, "min_width": 290, "min_height": 500},
@@ -44,6 +48,78 @@ UI_SIZE_PRESETS = {
 
 def scaled(value: int | float, factor: float) -> int:
     return max(1, round(value * factor))
+
+
+def user_config_dir() -> Path:
+    if sys.platform.startswith("win"):
+        base_dir = Path(os.environ.get("APPDATA", Path.home() / "AppData" / "Roaming"))
+    elif sys.platform == "darwin":
+        base_dir = Path.home() / "Library" / "Application Support"
+    else:
+        base_dir = Path(os.environ.get("XDG_CONFIG_HOME", Path.home() / ".config"))
+    return base_dir / APP_ORG
+
+
+def settings_file_path() -> Path:
+    config_dir = user_config_dir()
+    config_dir.mkdir(parents=True, exist_ok=True)
+    return config_dir / CONFIG_FILE_NAME
+
+
+class AppSettings:
+    section_name = "settings"
+
+    def __init__(self, path: Path):
+        self.path = path
+        self.values: dict[str, str] = {}
+        self.load()
+
+    def load(self):
+        if not self.path.exists():
+            return
+        parser = ConfigParser()
+        parser.read(self.path, encoding="utf-8")
+        if parser.has_section(self.section_name):
+            self.values.update(dict(parser.items(self.section_name)))
+
+    def value(self, key: str, default=None):
+        return self.values.get(key, default)
+
+    def setValue(self, key: str, value):  # noqa: N802
+        self.values[key] = str(value)
+
+    def allKeys(self):  # noqa: N802
+        return list(self.values.keys())
+
+    def sync(self):
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+        parser = ConfigParser()
+        parser[self.section_name] = self.values
+        with self.path.open("w", encoding="utf-8") as file:
+            parser.write(file)
+
+
+def app_settings() -> AppSettings:
+    settings = AppSettings(settings_file_path())
+    migrate_legacy_settings(settings)
+    return settings
+
+
+def migrate_legacy_settings(settings: AppSettings):
+    if settings.allKeys():
+        return
+    legacy_settings = QSettings(APP_ORG, APP_NAME)
+    for key in legacy_settings.allKeys():
+        settings.setValue(key, legacy_settings.value(key))
+    settings.sync()
+
+
+def settings_bool(value, default: bool = False) -> bool:
+    if value is None:
+        return default
+    if isinstance(value, bool):
+        return value
+    return str(value).strip().lower() in {"1", "true", "yes", "on"}
 
 
 @dataclass(frozen=True)
@@ -385,13 +461,13 @@ class SettingsDialog(QDialog):
 class CalculatorWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.settings = QSettings(APP_ORG, APP_NAME)
+        self.settings = app_settings()
         self.formatter = NumberFormatter(
             decimals=int(self.settings.value("decimals", 2)),
             decimal_separator=self.settings.value("decimal_separator", ","),
             thousands_separator=self.settings.value("thousands_separator", "."),
             grouping=int(self.settings.value("grouping", 3)),
-            show_decimals=self.settings.value("show_decimals", "true") == "true",
+            show_decimals=settings_bool(self.settings.value("show_decimals", "true"), True),
         )
         self.theme_name = self.settings.value("theme", "Rojo")
         stored_ui_size = self.settings.value("ui_size", DEFAULT_UI_SIZE)
@@ -402,7 +478,7 @@ class CalculatorWindow(QMainWindow):
             self.settings.value("rate_name", "Ecuador"),
             dec(self.settings.value("rate_value", "15")),
             self.settings.value("rate_flag", "EC"),
-            self.settings.value("rate_custom", "false") == "true",
+            settings_bool(self.settings.value("rate_custom", "false")),
         )
         self.active_key = "net"
         self.input_buffer = ""
@@ -684,12 +760,14 @@ class CalculatorWindow(QMainWindow):
 
     def save_custom_rates(self):
         self.settings.setValue("custom_rates", ",".join(str(rate) for rate in self.custom_rates))
+        self.settings.sync()
 
     def save_current_rate(self):
         self.settings.setValue("rate_name", self.current_rate.name)
         self.settings.setValue("rate_value", str(self.current_rate.rate))
         self.settings.setValue("rate_flag", self.current_rate.flag)
         self.settings.setValue("rate_custom", "true" if self.current_rate.custom else "false")
+        self.settings.sync()
 
     def save_settings(self):
         self.settings.setValue("decimals", self.formatter.decimals)
@@ -699,6 +777,7 @@ class CalculatorWindow(QMainWindow):
         self.settings.setValue("show_decimals", "true" if self.formatter.show_decimals else "false")
         self.settings.setValue("theme", self.theme_name)
         self.settings.setValue("ui_size", self.ui_size_name)
+        self.settings.sync()
 
     def apply_theme(self):
         color = THEMES[self.theme_name]
