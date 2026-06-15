@@ -11,6 +11,7 @@ Calculadora de IVA hecha con PyQt6 e inspirada en VAT Calculator.
 - Configuracion de formato numerico: separadores, decimales y agrupacion.
 - Temas de color.
 - Tamano de interfaz seleccionable: muy pequeno, pequeno, mediano, grande y muy grande.
+- Internacionalizacion con Qt Linguist: espanol e ingles.
 
 ## Ejecutar
 
@@ -29,3 +30,19 @@ La app guarda sus preferencias en un archivo INI dentro de la carpeta de configu
 - Windows: `%AppData%\Lucio\IVA Calculator.ini`
 - Linux: `~/.config/Lucio/IVA Calculator.ini`
 - macOS: `~/Library/Application Support/Lucio/IVA Calculator.ini`
+
+## Traducciones
+
+Los archivos editables de Qt Linguist estan en:
+
+```text
+translations/*.ts
+```
+
+Para compilar los `.ts` a `.qm` en Windows:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\compile_translations.ps1
+```
+
+El script busca `lrelease.exe` en `PATH`, PyQt6, `qt5_applications`, `QTDIR`, `C:\Qt` y `%USERPROFILE%\Qt`.

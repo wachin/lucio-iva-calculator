@@ -25,6 +25,7 @@ from PyQt6.QtWidgets import (
     QListWidgetItem,
     QMainWindow,
     QMenu,
+    QMessageBox,
     QPushButton,
     QSizePolicy,
     QToolButton,
@@ -452,11 +453,11 @@ class SettingsDialog(QDialog):
         self.grouping.setCurrentText(str(formatter.grouping))
         self.theme = QComboBox()
         for theme in THEMES:
-            self.theme.addItem(self.tr(theme), theme)
+            self.theme.addItem(self.theme_label(theme), theme)
         combo_set_data(self.theme, theme_name)
         self.ui_size = QComboBox()
         for ui_size in UI_SIZE_PRESETS:
-            self.ui_size.addItem(self.tr(ui_size), ui_size)
+            self.ui_size.addItem(self.ui_size_label(ui_size), ui_size)
         combo_set_data(self.ui_size, ui_size_name if ui_size_name in UI_SIZE_PRESETS else DEFAULT_UI_SIZE)
         self.language = QComboBox()
         for code, label in LANGUAGES.items():
@@ -487,6 +488,32 @@ class SettingsDialog(QDialog):
         layout.addStretch()
         layout.addWidget(buttons)
         self.update_preview()
+
+    def theme_label(self, theme_name: str) -> str:
+        labels = {
+            "Rojo": self.tr("Rojo"),
+            "Azul": self.tr("Azul"),
+            "Indigo": self.tr("Indigo"),
+            "Cian": self.tr("Cian"),
+            "Verde azulado": self.tr("Verde azulado"),
+            "Verde": self.tr("Verde"),
+            "Lima": self.tr("Lima"),
+            "Ambar": self.tr("Ambar"),
+            "Purpura": self.tr("Purpura"),
+            "Rosa": self.tr("Rosa"),
+            "Oscuro": self.tr("Oscuro"),
+        }
+        return labels.get(theme_name, theme_name)
+
+    def ui_size_label(self, ui_size_name: str) -> str:
+        labels = {
+            "Muy pequeno": self.tr("Muy pequeno"),
+            "Pequeno": self.tr("Pequeno"),
+            "Mediano": self.tr("Mediano"),
+            "Grande": self.tr("Grande"),
+            "Muy grande": self.tr("Muy grande"),
+        }
+        return labels.get(ui_size_name, ui_size_name)
 
     def formatter(self) -> NumberFormatter:
         return NumberFormatter(
@@ -791,6 +818,7 @@ class CalculatorWindow(QMainWindow):
     def open_settings(self):
         dialog = SettingsDialog(self.formatter, self.theme_name, self.ui_size_name, self.language_code, self)
         if dialog.exec() == QDialog.DialogCode.Accepted:
+            previous_language = self.language_code
             self.formatter = dialog.formatter()
             self.theme_name = combo_data(dialog.theme, "Rojo")
             self.ui_size_name = combo_data(dialog.ui_size, DEFAULT_UI_SIZE)
@@ -799,6 +827,12 @@ class CalculatorWindow(QMainWindow):
             self.apply_ui_size()
             self.apply_theme()
             self.refresh_displays()
+            if self.language_code != previous_language:
+                QMessageBox.information(
+                    self,
+                    self.tr("Idioma"),
+                    self.tr("El idioma se aplicara al reiniciar la aplicacion."),
+                )
 
     def update_header(self):
         self.country_button.setText(self.current_rate.name)
@@ -935,7 +969,10 @@ def main() -> int:
     QApplication.setApplicationName(APP_NAME)
     app = QApplication(sys.argv)
     app.setFont(QFont("Segoe UI", 10))
+    settings = app_settings()
+    translator = load_translation(app, settings.value("language", DEFAULT_LANGUAGE))
     window = CalculatorWindow()
+    window.translator = translator
     window.show()
     return app.exec()
 
