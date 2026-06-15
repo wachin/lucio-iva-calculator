@@ -835,10 +835,15 @@ class CalculatorWindow(QMainWindow):
                 )
 
     def update_header(self):
-        self.country_button.setText(self.current_rate.name)
+        self.country_button.setText(self.rate_display_name(self.current_rate))
         self.rate_button.setText(f"{self.current_rate.rate.normalize()} %")
         for button in self.findChildren(QPushButton, "rateKey"):
             button.setText(self.current_rate.flag or "%")
+
+    def rate_display_name(self, rate: TaxRate) -> str:
+        if rate.custom or rate.name in {"Personalizado", "Custom"}:
+            return self.tr("Personalizado")
+        return rate.name
 
     def load_custom_rates(self) -> list[Decimal]:
         raw = self.settings.value("custom_rates", "7.5,9.25,14.28,32.1")
