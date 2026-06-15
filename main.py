@@ -7,7 +7,7 @@ from dataclasses import dataclass
 from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 from pathlib import Path
 
-from PyQt6.QtCore import Qt, QSettings, QSize
+from PyQt6.QtCore import Qt, QSettings, QSize, QTranslator
 from PyQt6.QtGui import QAction, QFont
 from PyQt6.QtWidgets import (
     QApplication,
@@ -36,6 +36,11 @@ from PyQt6.QtWidgets import (
 APP_ORG = "Lucio"
 APP_NAME = "IVA Calculator"
 CONFIG_FILE_NAME = "IVA Calculator.ini"
+DEFAULT_LANGUAGE = "es"
+LANGUAGES = {
+    "es": "Español",
+    "en": "English",
+}
 DEFAULT_UI_SIZE = "Mediano"
 UI_SIZE_PRESETS = {
     "Muy pequeno": {"scale": 0.82, "width": 330, "height": 570, "min_width": 290, "min_height": 500},
@@ -120,6 +125,32 @@ def settings_bool(value, default: bool = False) -> bool:
     if isinstance(value, bool):
         return value
     return str(value).strip().lower() in {"1", "true", "yes", "on"}
+
+
+def translations_dir() -> Path:
+    return Path(__file__).resolve().parent / "translations"
+
+
+def load_translation(app: QApplication, language_code: str) -> QTranslator | None:
+    if language_code == DEFAULT_LANGUAGE:
+        return None
+    translator = QTranslator(app)
+    translation_file = translations_dir() / f"iva_calculator_{language_code}.qm"
+    if translator.load(str(translation_file)):
+        app.installTranslator(translator)
+        return translator
+    return None
+
+
+def combo_set_data(combo: QComboBox, data):
+    index = combo.findData(data)
+    if index >= 0:
+        combo.setCurrentIndex(index)
+
+
+def combo_data(combo: QComboBox, default):
+    data = combo.currentData()
+    return data if data is not None else default
 
 
 @dataclass(frozen=True)
@@ -304,10 +335,10 @@ class DisplayPanel(QFrame):
 class CountryDialog(QDialog):
     def __init__(self, rates: list[TaxRate], parent=None):
         super().__init__(parent)
-        self.setWindowTitle("Paises")
+        self.setWindowTitle(self.tr("Paises"))
         self.setMinimumSize(430, 560)
         layout = QVBoxLayout(self)
-        title = QLabel("Paises")
+        title = QLabel(self.tr("Paises"))
         title.setObjectName("dialogTitle")
         self.list_widget = QListWidget()
         for rate in rates:
@@ -331,11 +362,11 @@ class CustomRatesDialog(QDialog):
     def __init__(self, rates: list[Decimal], parent=None):
         super().__init__(parent)
         self.rates = rates
-        self.setWindowTitle("Tasas personalizadas")
+        self.setWindowTitle(self.tr("Tasas personalizadas"))
         self.setMinimumSize(360, 470)
         layout = QVBoxLayout(self)
         header = QHBoxLayout()
-        title = QLabel("Tasas personalizadas")
+        title = QLabel(self.tr("Tasas personalizadas"))
         title.setObjectName("dialogTitle")
         add = QPushButton("+")
         add.setObjectName("roundButton")
@@ -345,7 +376,7 @@ class CustomRatesDialog(QDialog):
         header.addWidget(add)
         self.list_widget = QListWidget()
         self.list_widget.itemDoubleClicked.connect(self.accept)
-        remove = QPushButton("Eliminar seleccionada")
+        remove = QPushButton(self.tr("Eliminar seleccionada"))
         remove.clicked.connect(self.remove_rate)
         buttons = QDialogButtonBox(QDialogButtonBox.StandardButton.Close | QDialogButtonBox.StandardButton.Ok)
         buttons.accepted.connect(self.accept)
@@ -366,8 +397,8 @@ class CustomRatesDialog(QDialog):
     def add_rate(self):
         value, ok = QInputDialog.getDouble(
             self,
-            "Nueva tasa",
-            "Porcentaje",
+            self.tr("Nueva tasa"),
+            self.tr("Porcentaje"),
             12.0,
             0.0,
             999.0,
@@ -392,9 +423,16 @@ class CustomRatesDialog(QDialog):
 
 
 class SettingsDialog(QDialog):
-    def __init__(self, formatter: NumberFormatter, theme_name: str, ui_size_name: str, parent=None):
+    def __init__(
+        self,
+        formatter: NumberFormatter,
+        theme_name: str,
+        ui_size_name: str,
+        language_code: str,
+        parent=None,
+    ):
         super().__init__(parent)
-        self.setWindowTitle("Configuracion")
+        self.setWindowTitle(self.tr("Configuracion"))
         self.setMinimumSize(430, 520)
         layout = QVBoxLayout(self)
         form = QFormLayout()
@@ -407,24 +445,31 @@ class SettingsDialog(QDialog):
         self.decimals = QComboBox()
         self.decimals.addItems(["0", "1", "2", "3", "4"])
         self.decimals.setCurrentText(str(formatter.decimals))
-        self.show_decimals = QCheckBox("Mostrar")
+        self.show_decimals = QCheckBox(self.tr("Mostrar"))
         self.show_decimals.setChecked(formatter.show_decimals)
         self.grouping = QComboBox()
         self.grouping.addItems(["3", "4"])
         self.grouping.setCurrentText(str(formatter.grouping))
         self.theme = QComboBox()
-        self.theme.addItems(THEMES.keys())
-        self.theme.setCurrentText(theme_name)
+        for theme in THEMES:
+            self.theme.addItem(self.tr(theme), theme)
+        combo_set_data(self.theme, theme_name)
         self.ui_size = QComboBox()
-        self.ui_size.addItems(UI_SIZE_PRESETS.keys())
-        self.ui_size.setCurrentText(ui_size_name if ui_size_name in UI_SIZE_PRESETS else DEFAULT_UI_SIZE)
-        form.addRow("Separador de miles", self.thousands)
-        form.addRow("Separador decimal", self.decimal)
-        form.addRow("Lugares decimales", self.decimals)
+        for ui_size in UI_SIZE_PRESETS:
+            self.ui_size.addItem(self.tr(ui_size), ui_size)
+        combo_set_data(self.ui_size, ui_size_name if ui_size_name in UI_SIZE_PRESETS else DEFAULT_UI_SIZE)
+        self.language = QComboBox()
+        for code, label in LANGUAGES.items():
+            self.language.addItem(label, code)
+        combo_set_data(self.language, language_code if language_code in LANGUAGES else DEFAULT_LANGUAGE)
+        form.addRow(self.tr("Separador de miles"), self.thousands)
+        form.addRow(self.tr("Separador decimal"), self.decimal)
+        form.addRow(self.tr("Lugares decimales"), self.decimals)
         form.addRow("", self.show_decimals)
-        form.addRow("Agrupacion de cifras", self.grouping)
-        form.addRow("Tema", self.theme)
-        form.addRow("Tamano de interfaz", self.ui_size)
+        form.addRow(self.tr("Agrupacion de cifras"), self.grouping)
+        form.addRow(self.tr("Tema"), self.theme)
+        form.addRow(self.tr("Tamano de interfaz"), self.ui_size)
+        form.addRow(self.tr("Idioma"), self.language)
         self.preview = QLabel()
         self.preview.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.preview.setMinimumHeight(86)
@@ -437,7 +482,7 @@ class SettingsDialog(QDialog):
         buttons.accepted.connect(self.accept)
         buttons.rejected.connect(self.reject)
         layout.addLayout(form)
-        layout.addWidget(QLabel("Vista previa"))
+        layout.addWidget(QLabel(self.tr("Vista previa")))
         layout.addWidget(self.preview)
         layout.addStretch()
         layout.addWidget(buttons)
@@ -455,7 +500,7 @@ class SettingsDialog(QDialog):
     def update_preview(self):
         formatter = self.formatter()
         self.preview.setText(formatter.format(Decimal("1234567890.12")))
-        self.preview.setStyleSheet(f"background:{THEMES[self.theme.currentText()]};")
+        self.preview.setStyleSheet(f"background:{THEMES[combo_data(self.theme, 'Rojo')]};")
 
 
 class CalculatorWindow(QMainWindow):
@@ -470,6 +515,8 @@ class CalculatorWindow(QMainWindow):
             show_decimals=settings_bool(self.settings.value("show_decimals", "true"), True),
         )
         self.theme_name = self.settings.value("theme", "Rojo")
+        stored_language = self.settings.value("language", DEFAULT_LANGUAGE)
+        self.language_code = stored_language if stored_language in LANGUAGES else DEFAULT_LANGUAGE
         stored_ui_size = self.settings.value("ui_size", DEFAULT_UI_SIZE)
         self.ui_size_name = stored_ui_size if stored_ui_size in UI_SIZE_PRESETS else DEFAULT_UI_SIZE
         self.key_buttons: list[QPushButton] = []
@@ -486,7 +533,7 @@ class CalculatorWindow(QMainWindow):
         self.pending_value: Decimal | None = None
         self.values = {"net": Decimal("0"), "tax": Decimal("0"), "gross": Decimal("0")}
         self.panels: dict[str, DisplayPanel] = {}
-        self.setWindowTitle("Calculadora de IVA")
+        self.setWindowTitle(self.tr("Calculadora de IVA"))
         self.build_ui()
         self.apply_ui_size(resize_window=False)
         self.apply_theme()
@@ -572,9 +619,9 @@ class CalculatorWindow(QMainWindow):
         menu_button.setText("☰")
         menu_button.setPopupMode(QToolButton.ToolButtonPopupMode.InstantPopup)
         menu = QMenu(menu_button)
-        menu.addAction(QAction("Seleccionar pais", self, triggered=self.select_country))
-        menu.addAction(QAction("Tasas personalizadas", self, triggered=self.manage_custom_rates))
-        menu.addAction(QAction("Configuracion", self, triggered=self.open_settings))
+        menu.addAction(QAction(self.tr("Seleccionar pais"), self, triggered=self.select_country))
+        menu.addAction(QAction(self.tr("Tasas personalizadas"), self, triggered=self.manage_custom_rates))
+        menu.addAction(QAction(self.tr("Configuracion"), self, triggered=self.open_settings))
         menu_button.setMenu(menu)
         self.country_button = QPushButton()
         self.country_button.setObjectName("countryButton")
@@ -593,7 +640,11 @@ class CalculatorWindow(QMainWindow):
         displays_layout = self.displays_layout
         displays_layout.setContentsMargins(10, 10, 10, 10)
         displays_layout.setSpacing(7)
-        for key, title in [("net", "IVA EXCLUIDO"), ("tax", "IVA"), ("gross", "IVA INCLUIDO")]:
+        for key, title in [
+            ("net", self.tr("IVA EXCLUIDO")),
+            ("tax", self.tr("IVA")),
+            ("gross", self.tr("IVA INCLUIDO")),
+        ]:
             panel = DisplayPanel(key, title)
             self.panels[key] = panel
             displays_layout.addWidget(panel)
@@ -715,7 +766,7 @@ class CalculatorWindow(QMainWindow):
             panel.value.setText(self.formatter.format(self.values[key]))
 
     def select_country(self):
-        rates = COUNTRY_RATES + [TaxRate("Personalizado", rate, "*", True) for rate in self.custom_rates]
+        rates = COUNTRY_RATES + [TaxRate(self.tr("Personalizado"), rate, "*", True) for rate in self.custom_rates]
         dialog = CountryDialog(rates, self)
         if dialog.exec() == QDialog.DialogCode.Accepted:
             selected = dialog.selected_rate()
@@ -738,11 +789,12 @@ class CalculatorWindow(QMainWindow):
             self.sync_from_active()
 
     def open_settings(self):
-        dialog = SettingsDialog(self.formatter, self.theme_name, self.ui_size_name, self)
+        dialog = SettingsDialog(self.formatter, self.theme_name, self.ui_size_name, self.language_code, self)
         if dialog.exec() == QDialog.DialogCode.Accepted:
             self.formatter = dialog.formatter()
-            self.theme_name = dialog.theme.currentText()
-            self.ui_size_name = dialog.ui_size.currentText()
+            self.theme_name = combo_data(dialog.theme, "Rojo")
+            self.ui_size_name = combo_data(dialog.ui_size, DEFAULT_UI_SIZE)
+            self.language_code = combo_data(dialog.language, DEFAULT_LANGUAGE)
             self.save_settings()
             self.apply_ui_size()
             self.apply_theme()
@@ -777,6 +829,7 @@ class CalculatorWindow(QMainWindow):
         self.settings.setValue("show_decimals", "true" if self.formatter.show_decimals else "false")
         self.settings.setValue("theme", self.theme_name)
         self.settings.setValue("ui_size", self.ui_size_name)
+        self.settings.setValue("language", self.language_code)
         self.settings.sync()
 
     def apply_theme(self):
