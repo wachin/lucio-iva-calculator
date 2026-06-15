@@ -12,6 +12,7 @@ New-Item -ItemType Directory -Force -Path $distDir, $tmpDir, $outputDir | Out-Nu
 
 & pyinstaller -w -D -y `
   --name LucioIVACalculator `
+  --icon "$workspaceRoot\assets\app-icon.ico" `
   --hidden-import=PyQt6.QtCore `
   --hidden-import=PyQt6.QtGui `
   --hidden-import=PyQt6.QtWidgets `
@@ -24,6 +25,9 @@ New-Item -ItemType Directory -Force -Path $distDir, $tmpDir, $outputDir | Out-Nu
   "$workspaceRoot\main.py"
 
 Copy-Item "$workspaceRoot\LICENSE" "$distDir\" -Force
+Copy-Item "$workspaceRoot\assets\app-icon.ico" "$distDir\" -Force
+Copy-Item "$workspaceRoot\assets\nsis-welcome.bmp" "$distDir\" -Force
+Copy-Item "$workspaceRoot\assets\nsis-header.bmp" "$distDir\" -Force
 $version = Get-Content "$workspaceRoot\VERSION" -Raw
 $version = $version.Trim()
 $nsiContent = Get-Content "$workspaceRoot\build\LucioIVACalculator.nsi" -Raw

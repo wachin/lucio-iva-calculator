@@ -7,8 +7,8 @@ from dataclasses import dataclass
 from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 from pathlib import Path
 
-from PyQt6.QtCore import Qt, QLocale, QSettings, QSize, QTranslator
-from PyQt6.QtGui import QAction, QFont, QIcon, QPixmap
+from PyQt6.QtCore import QEvent, Qt, QLocale, QSettings, QSize, QTranslator
+from PyQt6.QtGui import QAction, QFont, QIcon, QKeySequence, QPixmap
 from PyQt6.QtWidgets import (
     QApplication,
     QCheckBox,
@@ -754,6 +754,7 @@ class CalculatorWindow(QMainWindow):
         self.setWindowTitle(self.tr("Calculadora de IVA"))
         self.setWindowIcon(QIcon(str(app_icon_path())))
         self.build_ui()
+        QApplication.instance().installEventFilter(self)
         self.apply_ui_size(resize_window=False)
         self.apply_theme()
         self.resize_to_available_screen()
@@ -840,11 +841,20 @@ class CalculatorWindow(QMainWindow):
         menu_button.setText("☰")
         menu_button.setPopupMode(QToolButton.ToolButtonPopupMode.InstantPopup)
         menu = QMenu(menu_button)
-        menu.addAction(QAction(self.tr("Seleccionar pais"), self, triggered=self.select_country))
-        menu.addAction(QAction(self.tr("Tasas personalizadas"), self, triggered=self.manage_custom_rates))
-        menu.addAction(QAction(self.tr("Configuracion"), self, triggered=self.open_settings))
+        select_country_action = QAction(self.tr("Seleccionar pais"), self, triggered=self.select_country)
+        select_country_action.setShortcut(QKeySequence("Ctrl+P"))
+        custom_rates_action = QAction(self.tr("Tasas personalizadas"), self, triggered=self.manage_custom_rates)
+        custom_rates_action.setShortcut(QKeySequence("Ctrl+R"))
+        settings_action = QAction(self.tr("Configuracion"), self, triggered=self.open_settings)
+        settings_action.setShortcut(QKeySequence("Ctrl+,"))
+        menu.addAction(select_country_action)
+        menu.addAction(custom_rates_action)
+        menu.addAction(settings_action)
         menu.addSeparator()
-        menu.addAction(QAction(self.tr("Acerca de..."), self, triggered=self.open_about))
+        about_action = QAction(self.tr("Acerca de..."), self, triggered=self.open_about)
+        about_action.setShortcut(QKeySequence("F1"))
+        menu.addAction(about_action)
+        self.addActions([select_country_action, custom_rates_action, settings_action, about_action])
         menu_button.setMenu(menu)
         self.country_button = QPushButton()
         self.country_button.setObjectName("countryButton")
@@ -905,6 +915,76 @@ class CalculatorWindow(QMainWindow):
         root.addWidget(keypad)
         self.update_header()
         self.set_active_panel(self.active_key)
+
+    def eventFilter(self, watched, event):  # noqa: N802
+        if event.type() == QEvent.Type.KeyPress and QApplication.activeWindow() is self:
+            if self.handle_keyboard_event(event):
+                return True
+        return super().eventFilter(watched, event)
+
+    def handle_keyboard_event(self, event) -> bool:
+        modifiers = event.modifiers() & ~Qt.KeyboardModifier.KeypadModifier
+        key = event.key()
+
+        if modifiers == Qt.KeyboardModifier.ControlModifier:
+            if key == Qt.Key.Key_1:
+                self.set_active_panel("net")
+                return True
+            if key == Qt.Key.Key_2:
+                self.set_active_panel("tax")
+                return True
+            if key == Qt.Key.Key_3:
+                self.set_active_panel("gross")
+                return True
+            if key == Qt.Key.Key_Tab:
+                self.cycle_active_panel(1)
+                return True
+
+        if modifiers == (
+            Qt.KeyboardModifier.ControlModifier | Qt.KeyboardModifier.ShiftModifier
+        ) and key == Qt.Key.Key_Tab:
+            self.cycle_active_panel(-1)
+            return True
+
+        if modifiers not in {
+            Qt.KeyboardModifier.NoModifier,
+            Qt.KeyboardModifier.ShiftModifier,
+        }:
+            return False
+
+        text = event.text()
+        if text and text in "0123456789":
+            self.handle_key(text)
+            return True
+
+        key_map = {
+            Qt.Key.Key_Comma: ".",
+            Qt.Key.Key_Period: ".",
+            Qt.Key.Key_Backspace: "DEL",
+            Qt.Key.Key_Delete: "DEL",
+            Qt.Key.Key_Escape: "CA",
+            Qt.Key.Key_Return: "=",
+            Qt.Key.Key_Enter: "=",
+            Qt.Key.Key_Plus: "+",
+            Qt.Key.Key_Minus: "-",
+            Qt.Key.Key_Asterisk: "×",
+            Qt.Key.Key_Slash: "÷",
+        }
+        if key in key_map:
+            self.handle_key(key_map[key])
+            return True
+
+        text_map = {"*": "×", "/": "÷", "x": "×", "X": "×", "=": "="}
+        if text in text_map:
+            self.handle_key(text_map[text])
+            return True
+
+        return False
+
+    def cycle_active_panel(self, direction: int = 1):
+        panel_order = ["net", "tax", "gross"]
+        current_index = panel_order.index(self.active_key)
+        self.set_active_panel(panel_order[(current_index + direction) % len(panel_order)])
 
     def set_active_panel(self, key: str):
         self.active_key = key
