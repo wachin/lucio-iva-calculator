@@ -71,6 +71,10 @@
       <source>El idioma se aplicara al reiniciar la aplicacion.</source>
       <translation>De taal wordt toegepast na het herstarten van de toepassing.</translation>
     </message>
+    <message>
+      <source>Ayuda</source>
+      <translation>Help</translation>
+    </message>
   </context>
   <context>
     <name>CountryDialog</name>
@@ -241,6 +245,89 @@
       <location filename="..\main.py" line="692" />
       <source>Sistema</source>
       <translation>Systeem</translation>
+    </message>
+    <message>
+      <source>General</source>
+      <translation>Algemeen</translation>
+    </message>
+    <message>
+      <source>Atajos de teclado</source>
+      <translation>Sneltoetsen</translation>
+    </message>
+    <message>
+      <source>Atajo</source>
+      <translation>Sneltoets</translation>
+    </message>
+    <message>
+      <source>Accion</source>
+      <translation>Actie</translation>
+    </message>
+    <message>
+      <source>Escribir numeros</source>
+      <translation>Cijfers invoeren</translation>
+    </message>
+    <message>
+      <source>Escribir separador decimal</source>
+      <translation>Decimaalteken invoeren</translation>
+    </message>
+    <message>
+      <source>Operaciones basicas</source>
+      <translation>Basisbewerkingen</translation>
+    </message>
+    <message>
+      <source>Calcular operacion pendiente</source>
+      <translation>Openstaande berekening uitvoeren</translation>
+    </message>
+    <message>
+      <source>Borrar el ultimo digito</source>
+      <translation>Laatste cijfer wissen</translation>
+    </message>
+    <message>
+      <source>Limpiar todo</source>
+      <translation>Alles wissen</translation>
+    </message>
+    <message>
+      <source>Editar IVA excluido</source>
+      <translation>Btw exclusief bewerken</translation>
+    </message>
+    <message>
+      <source>Editar IVA</source>
+      <translation>Btw bewerken</translation>
+    </message>
+    <message>
+      <source>Editar IVA incluido</source>
+      <translation>Btw inclusief bewerken</translation>
+    </message>
+    <message>
+      <source>Cambiar al siguiente valor</source>
+      <translation>Naar volgende waarde gaan</translation>
+    </message>
+    <message>
+      <source>Cambiar al valor anterior</source>
+      <translation>Naar vorige waarde gaan</translation>
+    </message>
+    <message>
+      <source>Abrir tasas personalizadas</source>
+      <translation>Aangepaste tarieven openen</translation>
+    </message>
+    <message>
+      <source>Abrir configuracion</source>
+      <translation>Instellingen openen</translation>
+    </message>
+    <message>
+      <source>Abrir ayuda</source>
+      <translation>Help openen</translation>
+    </message>
+    <message>
+      <source>Seleccionar pais</source>
+      <translation>Land selecteren</translation>
+    </message>
+  </context>
+  <context>
+    <name>HelpDialog</name>
+    <message>
+      <source>Ayuda</source>
+      <translation>Help</translation>
     </message>
   </context>
 </TS>

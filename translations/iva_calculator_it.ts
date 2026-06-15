@@ -71,6 +71,10 @@
       <source>El idioma se aplicara al reiniciar la aplicacion.</source>
       <translation>La lingua sarà applicata dopo il riavvio dell’applicazione.</translation>
     </message>
+    <message>
+      <source>Ayuda</source>
+      <translation>Aiuto</translation>
+    </message>
   </context>
   <context>
     <name>CountryDialog</name>
@@ -241,6 +245,89 @@
       <location filename="..\main.py" line="692" />
       <source>Sistema</source>
       <translation>Sistema</translation>
+    </message>
+    <message>
+      <source>General</source>
+      <translation>Generale</translation>
+    </message>
+    <message>
+      <source>Atajos de teclado</source>
+      <translation>Scorciatoie da tastiera</translation>
+    </message>
+    <message>
+      <source>Atajo</source>
+      <translation>Scorciatoia</translation>
+    </message>
+    <message>
+      <source>Accion</source>
+      <translation>Azione</translation>
+    </message>
+    <message>
+      <source>Escribir numeros</source>
+      <translation>Inserire numeri</translation>
+    </message>
+    <message>
+      <source>Escribir separador decimal</source>
+      <translation>Inserire separatore decimale</translation>
+    </message>
+    <message>
+      <source>Operaciones basicas</source>
+      <translation>Operazioni di base</translation>
+    </message>
+    <message>
+      <source>Calcular operacion pendiente</source>
+      <translation>Calcolare operazione in sospeso</translation>
+    </message>
+    <message>
+      <source>Borrar el ultimo digito</source>
+      <translation>Eliminare l ultima cifra</translation>
+    </message>
+    <message>
+      <source>Limpiar todo</source>
+      <translation>Cancella tutto</translation>
+    </message>
+    <message>
+      <source>Editar IVA excluido</source>
+      <translation>Modifica IVA esclusa</translation>
+    </message>
+    <message>
+      <source>Editar IVA</source>
+      <translation>Modifica IVA</translation>
+    </message>
+    <message>
+      <source>Editar IVA incluido</source>
+      <translation>Modifica IVA inclusa</translation>
+    </message>
+    <message>
+      <source>Cambiar al siguiente valor</source>
+      <translation>Passa al valore successivo</translation>
+    </message>
+    <message>
+      <source>Cambiar al valor anterior</source>
+      <translation>Passa al valore precedente</translation>
+    </message>
+    <message>
+      <source>Abrir tasas personalizadas</source>
+      <translation>Apri aliquote personalizzate</translation>
+    </message>
+    <message>
+      <source>Abrir configuracion</source>
+      <translation>Apri impostazioni</translation>
+    </message>
+    <message>
+      <source>Abrir ayuda</source>
+      <translation>Apri aiuto</translation>
+    </message>
+    <message>
+      <source>Seleccionar pais</source>
+      <translation>Seleziona paese</translation>
+    </message>
+  </context>
+  <context>
+    <name>HelpDialog</name>
+    <message>
+      <source>Ayuda</source>
+      <translation>Aiuto</translation>
     </message>
   </context>
 </TS>

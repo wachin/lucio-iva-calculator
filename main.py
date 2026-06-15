@@ -1271,6 +1271,14 @@ class CalculatorWindow(QMainWindow):
 
     def apply_theme(self):
         color = THEMES[self.theme_name]
+        dark_theme = self.theme_name == "Oscuro"
+        header_text = "#ffffff" if dark_theme else "#111111"
+        display_title_color = "rgba(255,255,255,0.78)" if dark_theme else "rgba(0,0,0,0.62)"
+        display_value_color = "rgba(255,255,255,0.94)" if dark_theme else "rgba(0,0,0,0.78)"
+        panel_background = "rgba(255,255,255,0.12)" if dark_theme else "rgba(255,255,255,0.16)"
+        active_panel_background = "rgba(255,255,255,0.20)" if dark_theme else "rgba(255,255,255,0.31)"
+        panel_border = "rgba(255,255,255,0.24)" if dark_theme else "rgba(255,255,255,0.28)"
+        active_panel_border = "rgba(255,255,255,0.78)" if dark_theme else "rgba(255,255,255,0.72)"
         factor = self.ui_scale
         display_title_font = scaled(12, factor)
         display_value_font = scaled(36, factor)
@@ -1294,21 +1302,21 @@ class CalculatorWindow(QMainWindow):
                 background: {color};
             }}
             #displayPanel {{
-                background: rgba(255,255,255,0.16);
-                border: 1px solid rgba(255,255,255,0.28);
+                background: {panel_background};
+                border: 1px solid {panel_border};
                 border-radius: 6px;
             }}
             #displayPanel[active="true"] {{
-                background: rgba(255,255,255,0.31);
-                border: 2px solid rgba(255,255,255,0.72);
+                background: {active_panel_background};
+                border: 2px solid {active_panel_border};
             }}
             #displayTitle {{
-                color: rgba(0,0,0,0.62);
+                color: {display_title_color};
                 font: 700 {display_title_font}px "Consolas";
                 letter-spacing: 0;
             }}
             #displayValue {{
-                color: rgba(0,0,0,0.78);
+                color: {display_value_color};
                 font: 300 {display_value_font}px "Segoe UI";
             }}
             #keypad {{
@@ -1335,13 +1343,14 @@ class CalculatorWindow(QMainWindow):
             #countryButton, #rateButton {{
                 background: transparent;
                 border: none;
-                color: #111111;
+                color: {header_text};
                 font-size: {header_font}px;
                 font-weight: 700;
             }}
             QToolButton {{
                 background: transparent;
                 border: none;
+                color: {header_text};
                 font-size: {menu_font}px;
                 padding: {scaled(2, factor)}px {scaled(8, factor)}px;
             }}

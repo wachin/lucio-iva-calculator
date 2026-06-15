@@ -71,6 +71,10 @@
       <source>El idioma se aplicara al reiniciar la aplicacion.</source>
       <translation>O idioma será aplicado após reiniciar o aplicativo.</translation>
     </message>
+    <message>
+      <source>Ayuda</source>
+      <translation>Ajuda</translation>
+    </message>
   </context>
   <context>
     <name>CountryDialog</name>
@@ -241,6 +245,89 @@
       <location filename="..\main.py" line="692" />
       <source>Sistema</source>
       <translation>Sistema</translation>
+    </message>
+    <message>
+      <source>General</source>
+      <translation>Geral</translation>
+    </message>
+    <message>
+      <source>Atajos de teclado</source>
+      <translation>Atalhos de teclado</translation>
+    </message>
+    <message>
+      <source>Atajo</source>
+      <translation>Atalho</translation>
+    </message>
+    <message>
+      <source>Accion</source>
+      <translation>Acao</translation>
+    </message>
+    <message>
+      <source>Escribir numeros</source>
+      <translation>Digitar numeros</translation>
+    </message>
+    <message>
+      <source>Escribir separador decimal</source>
+      <translation>Digitar separador decimal</translation>
+    </message>
+    <message>
+      <source>Operaciones basicas</source>
+      <translation>Operacoes basicas</translation>
+    </message>
+    <message>
+      <source>Calcular operacion pendiente</source>
+      <translation>Calcular operacao pendente</translation>
+    </message>
+    <message>
+      <source>Borrar el ultimo digito</source>
+      <translation>Apagar o ultimo digito</translation>
+    </message>
+    <message>
+      <source>Limpiar todo</source>
+      <translation>Limpar tudo</translation>
+    </message>
+    <message>
+      <source>Editar IVA excluido</source>
+      <translation>Editar IVA excluido</translation>
+    </message>
+    <message>
+      <source>Editar IVA</source>
+      <translation>Editar IVA</translation>
+    </message>
+    <message>
+      <source>Editar IVA incluido</source>
+      <translation>Editar IVA incluido</translation>
+    </message>
+    <message>
+      <source>Cambiar al siguiente valor</source>
+      <translation>Ir para o proximo valor</translation>
+    </message>
+    <message>
+      <source>Cambiar al valor anterior</source>
+      <translation>Ir para o valor anterior</translation>
+    </message>
+    <message>
+      <source>Abrir tasas personalizadas</source>
+      <translation>Abrir taxas personalizadas</translation>
+    </message>
+    <message>
+      <source>Abrir configuracion</source>
+      <translation>Abrir configuracoes</translation>
+    </message>
+    <message>
+      <source>Abrir ayuda</source>
+      <translation>Abrir ajuda</translation>
+    </message>
+    <message>
+      <source>Seleccionar pais</source>
+      <translation>Selecionar pais</translation>
+    </message>
+  </context>
+  <context>
+    <name>HelpDialog</name>
+    <message>
+      <source>Ayuda</source>
+      <translation>Ajuda</translation>
     </message>
   </context>
 </TS>

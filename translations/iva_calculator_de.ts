@@ -71,6 +71,10 @@
       <source>El idioma se aplicara al reiniciar la aplicacion.</source>
       <translation>Die Sprache wird nach dem Neustart der Anwendung angewendet.</translation>
     </message>
+    <message>
+      <source>Ayuda</source>
+      <translation>Hilfe</translation>
+    </message>
   </context>
   <context>
     <name>CountryDialog</name>
@@ -241,6 +245,89 @@
       <location filename="..\main.py" line="692" />
       <source>Sistema</source>
       <translation>System</translation>
+    </message>
+    <message>
+      <source>General</source>
+      <translation>Allgemein</translation>
+    </message>
+    <message>
+      <source>Atajos de teclado</source>
+      <translation>Tastenkombinationen</translation>
+    </message>
+    <message>
+      <source>Atajo</source>
+      <translation>Tastenkombination</translation>
+    </message>
+    <message>
+      <source>Accion</source>
+      <translation>Aktion</translation>
+    </message>
+    <message>
+      <source>Escribir numeros</source>
+      <translation>Zahlen eingeben</translation>
+    </message>
+    <message>
+      <source>Escribir separador decimal</source>
+      <translation>Dezimaltrennzeichen eingeben</translation>
+    </message>
+    <message>
+      <source>Operaciones basicas</source>
+      <translation>Grundrechenarten</translation>
+    </message>
+    <message>
+      <source>Calcular operacion pendiente</source>
+      <translation>Ausstehende Berechnung ausfuehren</translation>
+    </message>
+    <message>
+      <source>Borrar el ultimo digito</source>
+      <translation>Letzte Ziffer loeschen</translation>
+    </message>
+    <message>
+      <source>Limpiar todo</source>
+      <translation>Alles loeschen</translation>
+    </message>
+    <message>
+      <source>Editar IVA excluido</source>
+      <translation>MwSt. ausgeschlossen bearbeiten</translation>
+    </message>
+    <message>
+      <source>Editar IVA</source>
+      <translation>MwSt. bearbeiten</translation>
+    </message>
+    <message>
+      <source>Editar IVA incluido</source>
+      <translation>MwSt. eingeschlossen bearbeiten</translation>
+    </message>
+    <message>
+      <source>Cambiar al siguiente valor</source>
+      <translation>Zum naechsten Wert wechseln</translation>
+    </message>
+    <message>
+      <source>Cambiar al valor anterior</source>
+      <translation>Zum vorherigen Wert wechseln</translation>
+    </message>
+    <message>
+      <source>Abrir tasas personalizadas</source>
+      <translation>Benutzerdefinierte Saetze oeffnen</translation>
+    </message>
+    <message>
+      <source>Abrir configuracion</source>
+      <translation>Einstellungen oeffnen</translation>
+    </message>
+    <message>
+      <source>Abrir ayuda</source>
+      <translation>Hilfe oeffnen</translation>
+    </message>
+    <message>
+      <source>Seleccionar pais</source>
+      <translation>Land auswaehlen</translation>
+    </message>
+  </context>
+  <context>
+    <name>HelpDialog</name>
+    <message>
+      <source>Ayuda</source>
+      <translation>Hilfe</translation>
     </message>
   </context>
 </TS>
