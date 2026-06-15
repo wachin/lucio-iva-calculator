@@ -53,3 +53,28 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\compile_translatio
 ```
 
 El script busca `lrelease.exe` en `PATH`, PyQt6, `qt5_applications`, `QTDIR`, `C:\Qt` y `%USERPROFILE%\Qt`.
+
+## Builds multiplataforma
+
+El proyecto incluye GitHub Actions para compilar artefactos en Windows, Linux y macOS:
+
+```text
+.github/workflows/build.yml
+```
+
+Los scripts de build estan en:
+
+```text
+build/build_windows.ps1
+build/build_linux.sh
+build/build_macos.sh
+```
+
+Para publicar una version, actualiza `VERSION`, crea un tag con formato `v0.1.0` y subelo a GitHub:
+
+```bash
+git tag v0.1.0
+git push origin v0.1.0
+```
+
+El workflow crea una release con los artefactos de Windows, Linux y macOS.

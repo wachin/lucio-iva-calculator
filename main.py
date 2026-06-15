@@ -37,6 +37,7 @@ from PyQt6.QtWidgets import (
 APP_ORG = "Lucio"
 APP_NAME = "IVA Calculator"
 CONFIG_FILE_NAME = "IVA Calculator.ini"
+APP_EXECUTABLE_NAME = "LucioIVACalculator"
 DEFAULT_LANGUAGE = "es"
 DEFAULT_LANGUAGE_SETTING = "system"
 LANGUAGES = {
@@ -217,11 +218,17 @@ def settings_bool(value, default: bool = False) -> bool:
 
 
 def translations_dir() -> Path:
-    return Path(__file__).resolve().parent / "translations"
+    return application_root() / "translations"
 
 
 def app_icon_path() -> Path:
-    return Path(__file__).resolve().parent / "assets" / "app-icon.svg"
+    return application_root() / "assets" / "app-icon.svg"
+
+
+def application_root() -> Path:
+    if getattr(sys, "frozen", False) and hasattr(sys, "_MEIPASS"):
+        return Path(sys._MEIPASS)
+    return Path(__file__).resolve().parent
 
 
 def load_translation(app: QApplication, language_code: str) -> QTranslator | None:
@@ -1184,6 +1191,8 @@ class CalculatorWindow(QMainWindow):
 
 
 def main() -> int:
+    if "--pyinstaller-test" in sys.argv:
+        return 0
     QApplication.setOrganizationName(APP_ORG)
     QApplication.setApplicationName(APP_NAME)
     app = QApplication(sys.argv)
