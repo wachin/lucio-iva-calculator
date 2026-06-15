@@ -322,6 +322,10 @@
       <source>Seleccionar pais</source>
       <translation>Select country</translation>
     </message>
+    <message>
+      <source>Fuente</source>
+      <translation>Teckensnitt</translation>
+    </message>
   </context>
   <context>
     <name>HelpDialog</name>

@@ -15,7 +15,7 @@ except ImportError:
     winreg = None
 
 from PyQt6.QtCore import QEvent, QTimer, Qt, QLocale, QSettings, QSize, QTranslator, QUrl
-from PyQt6.QtGui import QAction, QFont, QIcon, QKeySequence, QPixmap
+from PyQt6.QtGui import QAction, QFont, QFontDatabase, QIcon, QKeySequence, QPixmap
 from PyQt6.QtWidgets import (
     QApplication,
     QCheckBox,
@@ -49,6 +49,7 @@ CONFIG_FILE_NAME = "IVA Calculator.ini"
 APP_EXECUTABLE_NAME = "LucioIVACalculator"
 DEFAULT_LANGUAGE = "es"
 DEFAULT_LANGUAGE_SETTING = "system"
+SYSTEM_FONT_SETTING = "system"
 LANGUAGES = {
     "system": "Sistema",
     "es": "Español",
@@ -166,6 +167,23 @@ KEYBOARD_SHORTCUTS = [
 
 def scaled(value: int | float, factor: float) -> int:
     return max(1, round(value * factor))
+
+
+def system_font_family() -> str:
+    app = QApplication.instance()
+    if app is not None:
+        return app.font().family()
+    return QFont().defaultFamily()
+
+
+def effective_font_family(font_family: str | None) -> str:
+    if not font_family or font_family == SYSTEM_FONT_SETTING:
+        return system_font_family()
+    return font_family
+
+
+def css_font_family(font_family: str) -> str:
+    return font_family.replace("\\", "\\\\").replace('"', '\\"')
 
 
 def user_config_dir() -> Path:
@@ -706,6 +724,7 @@ class SettingsDialog(QDialog):
         formatter: NumberFormatter,
         theme_name: str,
         ui_size_name: str,
+        font_family: str,
         language_code: str,
         parent=None,
     ):
@@ -739,6 +758,12 @@ class SettingsDialog(QDialog):
         for ui_size in UI_SIZE_PRESETS:
             self.ui_size.addItem(self.ui_size_label(ui_size), ui_size)
         combo_set_data(self.ui_size, ui_size_name if ui_size_name in UI_SIZE_PRESETS else DEFAULT_UI_SIZE)
+        self.font_family = QComboBox()
+        self.font_family.addItem(self.tr("Sistema"), SYSTEM_FONT_SETTING)
+        font_families = QFontDatabase.families() or [system_font_family()]
+        for family in font_families:
+            self.font_family.addItem(family, family)
+        combo_set_data(self.font_family, font_family if font_family else SYSTEM_FONT_SETTING)
         self.language = QComboBox()
         for code, label in LANGUAGES.items():
             self.language.addItem(self.language_label(code, label), code)
@@ -750,6 +775,7 @@ class SettingsDialog(QDialog):
         form.addRow(self.tr("Agrupacion de cifras"), self.grouping)
         form.addRow(self.tr("Tema"), self.theme)
         form.addRow(self.tr("Tamano de interfaz"), self.ui_size)
+        form.addRow(self.tr("Fuente"), self.font_family)
         form.addRow(self.tr("Idioma"), self.language)
         self.preview = QLabel()
         self.preview.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -880,6 +906,7 @@ class CalculatorWindow(QMainWindow):
         should_apply_language_rate = "rate_name" not in self.settings.allKeys()
         stored_ui_size = self.settings.value("ui_size", DEFAULT_UI_SIZE)
         self.ui_size_name = stored_ui_size if stored_ui_size in UI_SIZE_PRESETS else DEFAULT_UI_SIZE
+        self.font_family = self.settings.value("font_family", SYSTEM_FONT_SETTING)
         self.key_buttons: list[QPushButton] = []
         self.custom_rates = self.load_custom_rates()
         self.current_rate = TaxRate(
@@ -900,6 +927,7 @@ class CalculatorWindow(QMainWindow):
         self.setWindowIcon(QIcon(str(app_icon_path())))
         self.build_ui()
         QApplication.instance().installEventFilter(self)
+        self.apply_app_font()
         self.apply_ui_size(resize_window=False)
         self.apply_theme()
         self.resize_to_available_screen()
@@ -926,6 +954,16 @@ class CalculatorWindow(QMainWindow):
         width = min(int(preset["width"]), max(280, available.width() - 48))
         height = min(int(preset["height"]), max(460, available.height() - 48))
         self.resize(width, height)
+
+    def apply_app_font(self):
+        app = QApplication.instance()
+        if app is None:
+            return
+        font = QFont(app.font())
+        selected_family = effective_font_family(self.font_family)
+        if selected_family:
+            font.setFamily(selected_family)
+        app.setFont(font)
 
     def apply_ui_size(self, resize_window: bool = True):
         factor = self.ui_scale
@@ -1262,15 +1300,24 @@ class CalculatorWindow(QMainWindow):
             self.sync_from_active()
 
     def open_settings(self):
-        dialog = SettingsDialog(self.formatter, self.theme_name, self.ui_size_name, self.language_code, self)
+        dialog = SettingsDialog(
+            self.formatter,
+            self.theme_name,
+            self.ui_size_name,
+            self.font_family,
+            self.language_code,
+            self,
+        )
         self.apply_dialog_window_theme(dialog)
         if dialog.exec() == QDialog.DialogCode.Accepted:
             previous_language = self.language_code
             self.formatter = dialog.formatter()
             self.theme_name = combo_data(dialog.theme, "Rojo")
             self.ui_size_name = combo_data(dialog.ui_size, DEFAULT_UI_SIZE)
+            self.font_family = combo_data(dialog.font_family, SYSTEM_FONT_SETTING)
             self.language_code = combo_data(dialog.language, DEFAULT_LANGUAGE_SETTING)
             self.save_settings()
+            self.apply_app_font()
             self.apply_ui_size()
             self.apply_theme()
             self.refresh_displays()
@@ -1335,6 +1382,7 @@ class CalculatorWindow(QMainWindow):
         self.settings.setValue("show_decimals", "true" if self.formatter.show_decimals else "false")
         self.settings.setValue("theme", self.theme_name)
         self.settings.setValue("ui_size", self.ui_size_name)
+        self.settings.setValue("font_family", self.font_family)
         self.settings.setValue("language", self.language_code)
         self.settings.sync()
 
@@ -1370,13 +1418,19 @@ class CalculatorWindow(QMainWindow):
         operation_key_text = "#ffffff" if dark_theme else "#111111"
         key_hover_background = "#454545" if dark_theme else "#f5f5f5"
         operation_hover_background = "#4a4a4a" if dark_theme else "#d8d8d8"
+        ui_font_family = css_font_family(effective_font_family(self.font_family))
         factor = self.ui_scale
-        display_title_font = scaled(12, factor)
+        display_title_font = scaled(14, factor)
         display_value_font = scaled(36, factor)
         key_font = scaled(27, factor)
         danger_font = scaled(24, factor)
         header_font = scaled(18, factor)
         menu_font = scaled(25, factor)
+        menu_item_font = scaled(15, factor)
+        dialog_font = scaled(14, factor)
+        list_font = scaled(15, factor)
+        tab_font = scaled(14, factor)
+        dialog_button_font = scaled(14, factor)
         dialog_title_font = scaled(24, factor)
         round_button_font = scaled(24, factor)
         round_button_size = scaled(36, factor)
@@ -1386,6 +1440,8 @@ class CalculatorWindow(QMainWindow):
             QApplication, QDialog, QMessageBox {{
                 background: {dialog_background};
                 color: {dialog_text};
+                font-family: "{ui_font_family}";
+                font-size: {dialog_font}px;
             }}
             QMainWindow {{
                 background: {app_background};
@@ -1393,6 +1449,7 @@ class CalculatorWindow(QMainWindow):
             }}
             QLabel, QCheckBox, QRadioButton, QGroupBox {{
                 color: {dialog_text};
+                font-size: {dialog_font}px;
             }}
             QTabWidget::pane {{
                 border: 1px solid {field_border};
@@ -1402,7 +1459,8 @@ class CalculatorWindow(QMainWindow):
                 background: {tab_background};
                 color: {dialog_text};
                 border: 1px solid {field_border};
-                padding: 6px 10px;
+                font-size: {tab_font}px;
+                padding: {scaled(8, factor)}px {scaled(12, factor)}px;
             }}
             QTabBar::tab:selected {{
                 background: {tab_selected};
@@ -1412,8 +1470,15 @@ class CalculatorWindow(QMainWindow):
                 background: {field_background};
                 color: {dialog_text};
                 border: 1px solid {field_border};
+                font-size: {dialog_font}px;
                 selection-background-color: {menu_selection};
                 selection-color: {dialog_text};
+            }}
+            QListWidget {{
+                font-size: {list_font}px;
+            }}
+            QComboBox {{
+                padding: {scaled(3, factor)}px {scaled(6, factor)}px;
             }}
             QComboBox::drop-down {{
                 border-left: 1px solid {field_border};
@@ -1422,7 +1487,8 @@ class CalculatorWindow(QMainWindow):
                 background: {button_background};
                 color: {dialog_text};
                 border: 1px solid {field_border};
-                padding: 5px 12px;
+                font-size: {dialog_button_font}px;
+                padding: {scaled(6, factor)}px {scaled(14, factor)}px;
             }}
             QPushButton:hover {{
                 background: {button_hover};
@@ -1431,6 +1497,10 @@ class CalculatorWindow(QMainWindow):
                 background: {menu_background};
                 color: {dialog_text};
                 border: 1px solid {field_border};
+                font-size: {menu_item_font}px;
+            }}
+            QMenu::item {{
+                padding: {scaled(8, factor)}px {scaled(28, factor)}px {scaled(8, factor)}px {scaled(18, factor)}px;
             }}
             QMenu::item:selected {{
                 background: {menu_selection};
@@ -1547,7 +1617,6 @@ def main() -> int:
     QApplication.setOrganizationName(APP_ORG)
     QApplication.setApplicationName(APP_NAME)
     app = QApplication(sys.argv)
-    app.setFont(QFont("Segoe UI", 10))
     app.setWindowIcon(QIcon(str(app_icon_path())))
     settings = app_settings()
     translator = load_translation(app, settings.value("language", DEFAULT_LANGUAGE_SETTING))
