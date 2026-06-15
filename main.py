@@ -700,7 +700,7 @@ class AboutDialog(QDialog):
 
 
 class HelpDialog(QDialog):
-    def __init__(self, language_code: str, parent=None):
+    def __init__(self, language_code: str, dark_theme: bool = False, parent=None):
         super().__init__(parent)
         self.setWindowTitle(self.tr("Ayuda"))
         self.setWindowIcon(QIcon(str(app_icon_path())))
@@ -709,13 +709,35 @@ class HelpDialog(QDialog):
         layout = QVBoxLayout(self)
         browser = QTextBrowser()
         browser.setOpenExternalLinks(True)
-        browser.setSource(QUrl.fromLocalFile(str(help_file_path(language_code))))
+        browser.setHtml(self.help_html(language_code, dark_theme))
 
         buttons = QDialogButtonBox(QDialogButtonBox.StandardButton.Close)
         buttons.rejected.connect(self.reject)
 
         layout.addWidget(browser, 1)
         layout.addWidget(buttons)
+
+    def help_html(self, language_code: str, dark_theme: bool) -> str:
+        html = help_file_path(language_code).read_text(encoding="utf-8")
+        if dark_theme:
+            help_css = """
+              body { background: #242424; color: #f2f2f2; font-size: 15px; line-height: 1.55; }
+              h1 { color: #ff6b6b; font-size: 28px; }
+              h2 { color: #ffffff; font-size: 21px; }
+              table { font-size: 15px; }
+              th, td { border-bottom: 1px solid #555555; padding: 9px 8px; }
+              th { background: #343434; color: #ffffff; }
+              kbd { background: #3d3d3d; border: 1px solid #777777; color: #ffffff; }
+            """
+        else:
+            help_css = """
+              body { font-size: 15px; line-height: 1.55; }
+              h1 { font-size: 28px; }
+              h2 { font-size: 21px; }
+              table { font-size: 15px; }
+              th, td { padding: 9px 8px; }
+            """
+        return html.replace("</style>", f"{help_css}</style>")
 
 
 class SettingsDialog(QDialog):
@@ -1335,7 +1357,7 @@ class CalculatorWindow(QMainWindow):
         dialog.exec()
 
     def open_help(self):
-        dialog = HelpDialog(self.language_code, self)
+        dialog = HelpDialog(self.language_code, self.theme_name == "Oscuro", self)
         self.apply_dialog_window_theme(dialog)
         dialog.exec()
 
@@ -1403,7 +1425,10 @@ class CalculatorWindow(QMainWindow):
         field_background = "#3a3a3a" if dark_theme else "#ffffff"
         field_border = "#5a5a5a" if dark_theme else "#b8b8b8"
         tab_background = "#242424" if dark_theme else "#eeeeee"
-        tab_selected = "#3a3a3a" if dark_theme else "#ffffff"
+        tab_selected = "#464646" if dark_theme else "#ffffff"
+        tab_text = "#bdbdbd" if dark_theme else dialog_text
+        tab_selected_text = "#ffffff" if dark_theme else dialog_text
+        tab_selected_border = "#e53935" if dark_theme else field_border
         button_background = "#3a3a3a" if dark_theme else "#f3f3f3"
         button_hover = "#4a4a4a" if dark_theme else "#e6e6e6"
         menu_background = "#2b2b2b" if dark_theme else "#ffffff"
@@ -1454,17 +1479,29 @@ class CalculatorWindow(QMainWindow):
             QTabWidget::pane {{
                 border: 1px solid {field_border};
                 background: {dialog_background};
+                top: -1px;
             }}
             QTabBar::tab {{
                 background: {tab_background};
-                color: {dialog_text};
+                color: {tab_text};
                 border: 1px solid {field_border};
+                border-bottom-color: {field_border};
                 font-size: {tab_font}px;
                 padding: {scaled(8, factor)}px {scaled(12, factor)}px;
             }}
             QTabBar::tab:selected {{
                 background: {tab_selected};
+                color: {tab_selected_text};
+                border-top: 3px solid {tab_selected_border};
                 border-bottom-color: {tab_selected};
+                font-weight: 700;
+            }}
+            QTabBar::tab:!selected {{
+                margin-top: {scaled(3, factor)}px;
+            }}
+            QTabBar::tab:hover {{
+                background: {button_hover};
+                color: {tab_selected_text};
             }}
             QComboBox, QSpinBox, QLineEdit, QTextEdit, QTextBrowser, QListWidget {{
                 background: {field_background};
