@@ -24,6 +24,11 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
+      - name: Install system Qt deps
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y libegl1 libxcb-cursor0
+
       - name: Install pip modules
         run: pip install -r build/requirements-linux.txt
 
@@ -71,6 +76,11 @@ jobs:
     name: Linux Smoke Test
     runs-on: ubuntu-latest
     steps:
+      - name: Install runtime Qt deps
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y libegl1 libxcb-cursor0
+
       - name: Get Linux binary
         uses: actions/download-artifact@v7
         with:
