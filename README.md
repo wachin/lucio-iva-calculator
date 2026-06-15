@@ -24,6 +24,8 @@ pip install -r requirements.txt
 python main.py
 ```
 
+![Calculadora de IVA](vx_images/01-Calculadora-de-IVA.png)
+
 ## Configuracion
 
 La app guarda sus preferencias en un archivo INI dentro de la carpeta de configuracion del usuario:
