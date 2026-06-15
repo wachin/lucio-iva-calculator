@@ -67,6 +67,26 @@ La app guarda sus preferencias en un archivo INI dentro de la carpeta de configu
 - Linux: `~/.config/Lucio/IVA Calculator.ini`
 - macOS: `~/Library/Application Support/Lucio/IVA Calculator.ini`
 
+## Personalizar colores
+
+Los colores visuales principales estan en `main.py`.
+
+Para cambiar el color base de cada tema, edita el diccionario `THEMES`. Por ejemplo, el tema oscuro usa:
+
+```python
+"Oscuro": "#3d3d3d"
+```
+
+Para cambiar especificamente el fondo de las secciones `IVA EXCLUIDO`, `IVA` e `IVA INCLUIDO` en modo oscuro, busca dentro de `apply_theme()` estas variables:
+
+```python
+panel_background = "#2f2f2f" if dark_theme else "rgba(255,255,255,0.16)"
+active_panel_background = "#383838" if dark_theme else "rgba(255,255,255,0.31)"
+panel_border = "#666666" if dark_theme else "rgba(255,255,255,0.28)"
+```
+
+`panel_background` controla los paneles normales, `active_panel_background` controla el panel seleccionado y `panel_border` controla el borde.
+
 ## Traducciones
 
 Los archivos editables de Qt Linguist estan en:

@@ -670,23 +670,26 @@ class AboutDialog(QDialog):
         text.setTextFormat(Qt.TextFormat.RichText)
         text.setOpenExternalLinks(True)
         text.setWordWrap(True)
-        text.setText(
-            self.tr(
-                "<h2>Calculadora de IVA</h2>"
-                "<p><b>Desarrolladores</b></p>"
-                "<p>© 2026 Washington Indacochea Delgado<br>"
-                '<a href="mailto:linuxfrontier@proton.me">linuxfrontier@proton.me</a></p>'
-                "<p>© 2026 Joseph Lucio Guerrero<br>"
-                '<a href="mailto:josephsteveng@gmail.com">josephsteveng@gmail.com</a></p>'
-                "<p><b>Licencia</b><br>GNU GPL v3</p>"
-                "<p><b>Tecnologías usadas</b><br>Python, PyQt6, Qt Linguist, QtSvg</p>"
-                "<p>Calculadora de IVA de escritorio con tasas por país, tasas personalizadas, "
-                "formatos numéricos, temas, tamaños de interfaz e internacionalización.</p>"
-                '<p><b>Sitio web</b><br><a href="https://wachin.github.io/lucio-iva-calculator/">'
-                "https://wachin.github.io/lucio-iva-calculator/</a></p>"
-                "<p>Jipijapa, Manabí, Ecuador</p>"
-            )
+        about_html = self.tr(
+            "<h2>Calculadora de IVA</h2>"
+            "<p><b>Desarrolladores</b></p>"
+            "<p>© 2026 Washington Indacochea Delgado<br>"
+            '<a href="mailto:linuxfrontier@proton.me">linuxfrontier@proton.me</a><br>'
+            '<a href="https://www.facebook.com/wachin.id">facebook.com/wachin.id</a></p>'
+            "<p>© 2026 Joseph Lucio Guerrero<br>"
+            '<a href="mailto:josephsteveng@gmail.com">josephsteveng@gmail.com</a><br>'
+            '<a href="https://www.facebook.com/jose.guerrero.718689">'
+            "facebook.com/jose.guerrero.718689</a></p>"
+            "<p><b>Licencia</b><br>GNU GPL v3</p>"
+            "<p><b>Tecnologías usadas</b><br>Python, PyQt6, Qt Linguist, QtSvg</p>"
+            "<p>Calculadora de IVA de escritorio con tasas por país, tasas personalizadas, "
+            "formatos numéricos, temas, tamaños de interfaz e internacionalización.</p>"
+            '<p><b>Sitio web</b><br><a href="https://wachin.github.io/lucio-iva-calculator/">'
+            "https://wachin.github.io/lucio-iva-calculator/</a></p>"
+            "<p>Jipijapa, Manabí, Ecuador</p>"
         )
+        link_style = 'style="color:#8ec5ff; text-decoration: underline; font-weight: 600;"'
+        text.setText(about_html.replace("<a href=", f"<a {link_style} href="))
 
         buttons = QDialogButtonBox(QDialogButtonBox.StandardButton.Close)
         buttons.rejected.connect(self.reject)
@@ -1415,13 +1418,14 @@ class CalculatorWindow(QMainWindow):
         header_text = "#ffffff" if dark_theme else "#111111"
         display_title_color = "rgba(255,255,255,0.78)" if dark_theme else "rgba(0,0,0,0.62)"
         display_value_color = "rgba(255,255,255,0.94)" if dark_theme else "rgba(0,0,0,0.78)"
-        panel_background = "rgba(255,255,255,0.12)" if dark_theme else "rgba(255,255,255,0.16)"
-        active_panel_background = "rgba(255,255,255,0.20)" if dark_theme else "rgba(255,255,255,0.31)"
-        panel_border = "rgba(255,255,255,0.24)" if dark_theme else "rgba(255,255,255,0.28)"
+        panel_background = "#2f2f2f" if dark_theme else "rgba(255,255,255,0.16)"
+        active_panel_background = "#383838" if dark_theme else "rgba(255,255,255,0.31)"
+        panel_border = "#666666" if dark_theme else "rgba(255,255,255,0.28)"
         active_panel_border = "rgba(255,255,255,0.78)" if dark_theme else "rgba(255,255,255,0.72)"
         app_background = "#202124" if dark_theme else "#eeeeee"
         dialog_background = "#2b2b2b" if dark_theme else "#f7f7f7"
         dialog_text = "#f2f2f2" if dark_theme else "#202020"
+        link_color = "#8ec5ff" if dark_theme else "#0b57d0"
         field_background = "#3a3a3a" if dark_theme else "#ffffff"
         field_border = "#5a5a5a" if dark_theme else "#b8b8b8"
         tab_background = "#242424" if dark_theme else "#eeeeee"
@@ -1636,6 +1640,9 @@ class CalculatorWindow(QMainWindow):
                 color: {dialog_text};
                 font-size: 13px;
                 line-height: 1.35;
+            }}
+            #aboutText a {{
+                color: {link_color};
             }}
             """
         )
