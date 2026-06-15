@@ -26,6 +26,7 @@ pyinstaller -w -F -y \
   --hidden-import=PyQt6.QtSvg \
   --add-data "$workspace_root/assets:assets" \
   --add-data "$workspace_root/translations:translations" \
+  --add-data "$workspace_root/docs:docs" \
   --distpath "$dist_dir" \
   --specpath "$tmp_dir" \
   --workpath "$tmp_dir" \

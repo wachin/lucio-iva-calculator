@@ -13,6 +13,37 @@ Calculadora de IVA hecha con PyQt6 e inspirada en VAT Calculator.
 - Tamano de interfaz seleccionable: muy pequeno, pequeno, mediano, grande y muy grande.
 - Internacionalizacion con Qt Linguist: opcion Sistema y multiples idiomas.
 - Al cambiar el idioma, la app propone automaticamente la tasa del pais asociado; el usuario puede cambiarla luego.
+- Ayuda local bilingue en espanol e ingles.
+- Atajos de teclado y soporte para teclado numerico fisico.
+
+## Uso basico
+
+1. Selecciona una tasa desde el nombre del pais, el porcentaje o el menu.
+2. Haz clic en `IVA excluido`, `IVA` o `IVA incluido` para decidir que valor quieres escribir.
+3. Introduce el importe con el teclado en pantalla o con el teclado fisico.
+4. Las otras dos pantallas se actualizan automaticamente con la tasa activa.
+
+Puedes crear tasas personalizadas para descuentos, cargos, comisiones u otros impuestos. En `Configuracion` puedes cambiar idioma, formato numerico, tema visual y tamano de interfaz.
+
+## Atajos de teclado
+
+| Atajo | Accion |
+| --- | --- |
+| `0-9` | Escribir numeros |
+| `. / ,` | Escribir separador decimal |
+| `+ - * /` | Operaciones basicas |
+| `Enter` | Calcular operacion pendiente |
+| `Backspace / Delete` | Borrar el ultimo digito |
+| `Esc` | Limpiar todo |
+| `Ctrl+1` | Editar IVA excluido |
+| `Ctrl+2` | Editar IVA |
+| `Ctrl+3` | Editar IVA incluido |
+| `Ctrl+Tab` | Cambiar al siguiente valor |
+| `Ctrl+Shift+Tab` | Cambiar al valor anterior |
+| `Ctrl+P` | Seleccionar pais |
+| `Ctrl+R` | Abrir tasas personalizadas |
+| `Ctrl+,` | Abrir configuracion |
+| `F1` | Abrir ayuda |
 
 ## Ejecutar
 

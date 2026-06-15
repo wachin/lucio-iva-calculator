@@ -7,7 +7,7 @@ from dataclasses import dataclass
 from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 from pathlib import Path
 
-from PyQt6.QtCore import QEvent, Qt, QLocale, QSettings, QSize, QTranslator
+from PyQt6.QtCore import QEvent, Qt, QLocale, QSettings, QSize, QTranslator, QUrl
 from PyQt6.QtGui import QAction, QFont, QIcon, QKeySequence, QPixmap
 from PyQt6.QtWidgets import (
     QApplication,
@@ -29,6 +29,8 @@ from PyQt6.QtWidgets import (
     QPushButton,
     QSizePolicy,
     QToolButton,
+    QTabWidget,
+    QTextBrowser,
     QVBoxLayout,
     QWidget,
 )
@@ -136,6 +138,23 @@ UI_SIZE_PRESETS = {
     "Grande": {"scale": 1.16, "width": 455, "height": 790, "min_width": 380, "min_height": 640},
     "Muy grande": {"scale": 1.32, "width": 520, "height": 900, "min_width": 430, "min_height": 720},
 }
+KEYBOARD_SHORTCUTS = [
+    ("0-9", "Escribir numeros"),
+    (". / ,", "Escribir separador decimal"),
+    ("+  -  *  /", "Operaciones basicas"),
+    ("Enter", "Calcular operacion pendiente"),
+    ("Backspace / Delete", "Borrar el ultimo digito"),
+    ("Esc", "Limpiar todo"),
+    ("Ctrl+1", "Editar IVA excluido"),
+    ("Ctrl+2", "Editar IVA"),
+    ("Ctrl+3", "Editar IVA incluido"),
+    ("Ctrl+Tab", "Cambiar al siguiente valor"),
+    ("Ctrl+Shift+Tab", "Cambiar al valor anterior"),
+    ("Ctrl+P", "Seleccionar pais"),
+    ("Ctrl+R", "Abrir tasas personalizadas"),
+    ("Ctrl+,", "Abrir configuracion"),
+    ("F1", "Abrir ayuda"),
+]
 
 
 def scaled(value: int | float, factor: float) -> int:
@@ -223,6 +242,20 @@ def translations_dir() -> Path:
 
 def app_icon_path() -> Path:
     return application_root() / "assets" / "app-icon.svg"
+
+
+def docs_dir() -> Path:
+    return application_root() / "docs"
+
+
+def help_file_path(language_code: str) -> Path:
+    code = effective_language_code(language_code)
+    if code != "en":
+        code = DEFAULT_LANGUAGE
+    help_path = docs_dir() / f"help_{code}.html"
+    if help_path.exists():
+        return help_path
+    return docs_dir() / "help_es.html"
 
 
 def application_root() -> Path:
@@ -608,6 +641,25 @@ class AboutDialog(QDialog):
         layout.addLayout(right, 1)
 
 
+class HelpDialog(QDialog):
+    def __init__(self, language_code: str, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle(self.tr("Ayuda"))
+        self.setWindowIcon(QIcon(str(app_icon_path())))
+        self.setMinimumSize(680, 560)
+
+        layout = QVBoxLayout(self)
+        browser = QTextBrowser()
+        browser.setOpenExternalLinks(True)
+        browser.setSource(QUrl.fromLocalFile(str(help_file_path(language_code))))
+
+        buttons = QDialogButtonBox(QDialogButtonBox.StandardButton.Close)
+        buttons.rejected.connect(self.reject)
+
+        layout.addWidget(browser, 1)
+        layout.addWidget(buttons)
+
+
 class SettingsDialog(QDialog):
     def __init__(
         self,
@@ -619,8 +671,11 @@ class SettingsDialog(QDialog):
     ):
         super().__init__(parent)
         self.setWindowTitle(self.tr("Configuracion"))
-        self.setMinimumSize(430, 520)
+        self.setMinimumSize(500, 560)
         layout = QVBoxLayout(self)
+        tabs = QTabWidget()
+        general_tab = QWidget()
+        general_layout = QVBoxLayout(general_tab)
         form = QFormLayout()
         self.thousands = QComboBox()
         self.thousands.addItems([".", ",", " ", ""])
@@ -667,12 +722,58 @@ class SettingsDialog(QDialog):
         buttons = QDialogButtonBox(QDialogButtonBox.StandardButton.Cancel | QDialogButtonBox.StandardButton.Ok)
         buttons.accepted.connect(self.accept)
         buttons.rejected.connect(self.reject)
-        layout.addLayout(form)
-        layout.addWidget(QLabel(self.tr("Vista previa")))
-        layout.addWidget(self.preview)
-        layout.addStretch()
+        general_layout.addLayout(form)
+        general_layout.addWidget(QLabel(self.tr("Vista previa")))
+        general_layout.addWidget(self.preview)
+        general_layout.addStretch()
+        tabs.addTab(general_tab, self.tr("General"))
+        tabs.addTab(self.build_shortcuts_tab(), self.tr("Atajos de teclado"))
+        layout.addWidget(tabs, 1)
         layout.addWidget(buttons)
         self.update_preview()
+
+    def build_shortcuts_tab(self) -> QWidget:
+        tab = QWidget()
+        layout = QGridLayout(tab)
+        layout.setContentsMargins(12, 12, 12, 12)
+        layout.setHorizontalSpacing(18)
+        layout.setVerticalSpacing(8)
+        shortcut_header = QLabel(self.tr("Atajo"))
+        action_header = QLabel(self.tr("Accion"))
+        shortcut_header.setStyleSheet("font-weight: 700;")
+        action_header.setStyleSheet("font-weight: 700;")
+        layout.addWidget(shortcut_header, 0, 0)
+        layout.addWidget(action_header, 0, 1)
+        for row, (shortcut, description) in enumerate(KEYBOARD_SHORTCUTS, start=1):
+            shortcut_label = QLabel(shortcut)
+            shortcut_label.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
+            description_label = QLabel(self.shortcut_description(description))
+            description_label.setWordWrap(True)
+            layout.addWidget(shortcut_label, row, 0)
+            layout.addWidget(description_label, row, 1)
+        layout.setColumnStretch(1, 1)
+        layout.setRowStretch(len(KEYBOARD_SHORTCUTS) + 1, 1)
+        return tab
+
+    def shortcut_description(self, description: str) -> str:
+        labels = {
+            "Escribir numeros": self.tr("Escribir numeros"),
+            "Escribir separador decimal": self.tr("Escribir separador decimal"),
+            "Operaciones basicas": self.tr("Operaciones basicas"),
+            "Calcular operacion pendiente": self.tr("Calcular operacion pendiente"),
+            "Borrar el ultimo digito": self.tr("Borrar el ultimo digito"),
+            "Limpiar todo": self.tr("Limpiar todo"),
+            "Editar IVA excluido": self.tr("Editar IVA excluido"),
+            "Editar IVA": self.tr("Editar IVA"),
+            "Editar IVA incluido": self.tr("Editar IVA incluido"),
+            "Cambiar al siguiente valor": self.tr("Cambiar al siguiente valor"),
+            "Cambiar al valor anterior": self.tr("Cambiar al valor anterior"),
+            "Seleccionar pais": self.tr("Seleccionar pais"),
+            "Abrir tasas personalizadas": self.tr("Abrir tasas personalizadas"),
+            "Abrir configuracion": self.tr("Abrir configuracion"),
+            "Abrir ayuda": self.tr("Abrir ayuda"),
+        }
+        return labels.get(description, description)
 
     def theme_label(self, theme_name: str) -> str:
         labels = {
@@ -847,14 +948,17 @@ class CalculatorWindow(QMainWindow):
         custom_rates_action.setShortcut(QKeySequence("Ctrl+R"))
         settings_action = QAction(self.tr("Configuracion"), self, triggered=self.open_settings)
         settings_action.setShortcut(QKeySequence("Ctrl+,"))
+        help_action = QAction(self.tr("Ayuda"), self, triggered=self.open_help)
+        help_action.setShortcut(QKeySequence("F1"))
         menu.addAction(select_country_action)
         menu.addAction(custom_rates_action)
         menu.addAction(settings_action)
         menu.addSeparator()
+        menu.addSection(self.tr("Ayuda"))
+        menu.addAction(help_action)
         about_action = QAction(self.tr("Acerca de..."), self, triggered=self.open_about)
-        about_action.setShortcut(QKeySequence("F1"))
         menu.addAction(about_action)
-        self.addActions([select_country_action, custom_rates_action, settings_action, about_action])
+        self.addActions([select_country_action, custom_rates_action, settings_action, help_action, about_action])
         menu_button.setMenu(menu)
         self.country_button = QPushButton()
         self.country_button.setObjectName("countryButton")
@@ -1113,6 +1217,10 @@ class CalculatorWindow(QMainWindow):
 
     def open_about(self):
         dialog = AboutDialog(self)
+        dialog.exec()
+
+    def open_help(self):
+        dialog = HelpDialog(self.language_code, self)
         dialog.exec()
 
     def apply_default_rate_for_language(self):

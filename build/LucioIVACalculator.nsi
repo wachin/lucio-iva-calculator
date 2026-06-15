@@ -44,6 +44,25 @@ UninstallIcon "app-icon.ico"
 !insertmacro MUI_UNPAGE_INSTFILES
 !insertmacro MUI_UNPAGE_FINISH
 !insertmacro MUI_LANGUAGE "Spanish"
+!insertmacro MUI_LANGUAGE "English"
+
+Function .onInit
+  System::Call "kernel32::GetUserDefaultUILanguage() i .r0"
+  IntOp $1 $0 & 0x3ff
+  IntCmp $1 9 0 +2 +2
+    StrCpy $LANGUAGE ${LANG_ENGLISH}
+  IntCmp $1 10 0 +2 +2
+    StrCpy $LANGUAGE ${LANG_SPANISH}
+FunctionEnd
+
+Function un.onInit
+  System::Call "kernel32::GetUserDefaultUILanguage() i .r0"
+  IntOp $1 $0 & 0x3ff
+  IntCmp $1 9 0 +2 +2
+    StrCpy $LANGUAGE ${LANG_ENGLISH}
+  IntCmp $1 10 0 +2 +2
+    StrCpy $LANGUAGE ${LANG_SPANISH}
+FunctionEnd
 
 Section -MainProgram
 SetOverwrite ifnewer

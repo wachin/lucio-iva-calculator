@@ -19,6 +19,7 @@ New-Item -ItemType Directory -Force -Path $distDir, $tmpDir, $outputDir | Out-Nu
   --hidden-import=PyQt6.QtSvg `
   "--add-data=$workspaceRoot\assets;assets" `
   "--add-data=$workspaceRoot\translations;translations" `
+  "--add-data=$workspaceRoot\docs;docs" `
   --distpath "$distDir" `
   --specpath "$tmpDir" `
   --workpath "$tmpDir" `
