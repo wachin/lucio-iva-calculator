@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bodyGradient" x1="104" y1="56" x2="408" y2="456" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ff6b6b"/>
+      <stop offset="1" stop-color="#d92525"/>
+    </linearGradient>
+    <linearGradient id="screenGradient" x1="142" y1="104" x2="370" y2="266" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#f2f7fb"/>
+    </linearGradient>
+    <linearGradient id="keyGradient" x1="145" y1="298" x2="370" y2="420" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#eef1f4"/>
+    </linearGradient>
+    <linearGradient id="accentGradient" x1="286" y1="300" x2="369" y2="421" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#2f3a46"/>
+      <stop offset="1" stop-color="#111820"/>
+    </linearGradient>
+    <radialGradient id="shineGradient" cx="180" cy="96" r="250" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.30"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <g>
+    <rect x="88" y="40" width="336" height="432" rx="62" ry="62" fill="url(#bodyGradient)"/>
+    <rect x="88" y="40" width="336" height="432" rx="62" ry="62" fill="url(#shineGradient)"/>
+    <path d="M150 40H362C396 40 424 68 424 102V410C424 444 396 472 362 472H150C116 472 88 444 88 410V102C88 68 116 40 150 40ZM151 58C127 58 107 78 107 102V410C107 434 127 454 151 454H361C385 454 405 434 405 410V102C405 78 385 58 361 58H151Z" fill="#b51f1f"/>
+  </g>
+  <g>
+    <rect x="128" y="92" width="256" height="158" rx="24" ry="24" fill="url(#screenGradient)"/>
+    <path d="M152 92H360C373 92 384 103 384 116V128H128V116C128 103 139 92 152 92Z" fill="#e8eff5"/>
+    <path d="M152 250H360C373 250 384 239 384 226V214H128V226C128 239 139 250 152 250Z" fill="#dce7ef"/>
+  </g>
+  <g fill="#26313d">
+    <path d="M168 132H208V146H168Z"/>
+    <path d="M168 164H230V178H168Z"/>
+    <path d="M168 196H246V210H168Z"/>
+  </g>
+  <g fill="#26313d">
+    <circle cx="310" cy="150" r="24"/>
+    <path d="M326 116L292 194H276L310 116Z"/>
+    <circle cx="276" cy="194" r="11"/>
+    <circle cx="342" cy="116" r="11"/>
+  </g>
+  <g>
+    <rect x="128" y="282" width="68" height="58" rx="14" ry="14" fill="url(#keyGradient)"/>
+    <rect x="222" y="282" width="68" height="58" rx="14" ry="14" fill="url(#keyGradient)"/>
+    <rect x="316" y="282" width="68" height="58" rx="14" ry="14" fill="url(#accentGradient)"/>
+    <rect x="128" y="362" width="68" height="58" rx="14" ry="14" fill="url(#keyGradient)"/>
+    <rect x="222" y="362" width="68" height="58" rx="14" ry="14" fill="url(#keyGradient)"/>
+    <rect x="316" y="362" width="68" height="58" rx="14" ry="14" fill="url(#accentGradient)"/>
+  </g>
+  <g fill="#26313d">
+    <path d="M156 302H168V320H186V332H168V350H156V332H138V320H156Z"/>
+    <path d="M238 321H274V333H238Z"/>
+    <path d="M145 382H179V394H145Z"/>
+    <path d="M145 406H179V418H145Z"/>
+    <path d="M241 382L256 397L271 382L280 391L265 406L280 421L271 430L256 415L241 430L232 421L247 406L232 391Z"/>
+  </g>
+  <g fill="#ffffff">
+    <path d="M336 302H348V320H366V332H348V350H336V332H318V320H336Z"/>
+    <path d="M321 384H379V396H321Z"/>
+    <path d="M321 410H379V422H321Z"/>
+  </g>
+  <g>
+    <path d="M116 258H396V272H116Z" fill="#b51f1f" opacity="0.45"/>
+    <path d="M252 78H260C267 78 272 83 272 90H240C240 83 245 78 252 78Z" fill="#9f1b1b"/>
+  </g>
+  <g fill="#ffffff" opacity="0.28">
+    <path d="M147 60H225C179 86 136 136 111 205V101C111 78 124 60 147 60Z"/>
+  </g>
+</svg>
