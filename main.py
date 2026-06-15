@@ -8,7 +8,7 @@ from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 from pathlib import Path
 
 from PyQt6.QtCore import Qt, QSettings, QSize, QTranslator
-from PyQt6.QtGui import QAction, QFont
+from PyQt6.QtGui import QAction, QFont, QIcon
 from PyQt6.QtWidgets import (
     QApplication,
     QCheckBox,
@@ -130,6 +130,10 @@ def settings_bool(value, default: bool = False) -> bool:
 
 def translations_dir() -> Path:
     return Path(__file__).resolve().parent / "translations"
+
+
+def app_icon_path() -> Path:
+    return Path(__file__).resolve().parent / "assets" / "app-icon.svg"
 
 
 def load_translation(app: QApplication, language_code: str) -> QTranslator | None:
@@ -561,6 +565,7 @@ class CalculatorWindow(QMainWindow):
         self.values = {"net": Decimal("0"), "tax": Decimal("0"), "gross": Decimal("0")}
         self.panels: dict[str, DisplayPanel] = {}
         self.setWindowTitle(self.tr("Calculadora de IVA"))
+        self.setWindowIcon(QIcon(str(app_icon_path())))
         self.build_ui()
         self.apply_ui_size(resize_window=False)
         self.apply_theme()
@@ -974,6 +979,7 @@ def main() -> int:
     QApplication.setApplicationName(APP_NAME)
     app = QApplication(sys.argv)
     app.setFont(QFont("Segoe UI", 10))
+    app.setWindowIcon(QIcon(str(app_icon_path())))
     settings = app_settings()
     translator = load_translation(app, settings.value("language", DEFAULT_LANGUAGE))
     window = CalculatorWindow()
