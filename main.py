@@ -2,12 +2,19 @@ from __future__ import annotations
 
 import os
 import sys
+import ctypes
 from configparser import ConfigParser
 from dataclasses import dataclass
 from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 from pathlib import Path
+from ctypes import wintypes
 
-from PyQt6.QtCore import QEvent, Qt, QLocale, QSettings, QSize, QTranslator, QUrl
+try:
+    import winreg
+except ImportError:
+    winreg = None
+
+from PyQt6.QtCore import QEvent, QTimer, Qt, QLocale, QSettings, QSize, QTranslator, QUrl
 from PyQt6.QtGui import QAction, QFont, QIcon, QKeySequence, QPixmap
 from PyQt6.QtWidgets import (
     QApplication,
@@ -234,6 +241,39 @@ def settings_bool(value, default: bool = False) -> bool:
     if isinstance(value, bool):
         return value
     return str(value).strip().lower() in {"1", "true", "yes", "on"}
+
+
+def windows_apps_dark_theme() -> bool:
+    if not sys.platform.startswith("win") or winreg is None:
+        return False
+    try:
+        with winreg.OpenKey(
+            winreg.HKEY_CURRENT_USER,
+            r"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize",
+        ) as key:
+            value, _ = winreg.QueryValueEx(key, "AppsUseLightTheme")
+            return int(value) == 0
+    except OSError:
+        return False
+
+
+def set_windows_title_bar_dark(window, enabled: bool):
+    if not sys.platform.startswith("win"):
+        return
+    try:
+        hwnd = int(window.winId())
+        value = wintypes.BOOL(1 if enabled else 0)
+        for attribute in (20, 19):
+            result = ctypes.windll.dwmapi.DwmSetWindowAttribute(
+                wintypes.HWND(hwnd),
+                wintypes.DWORD(attribute),
+                ctypes.byref(value),
+                ctypes.sizeof(value),
+            )
+            if result == 0:
+                break
+    except (AttributeError, OSError, ValueError):
+        return
 
 
 def translations_dir() -> Path:
@@ -817,8 +857,10 @@ class SettingsDialog(QDialog):
 
     def update_preview(self):
         formatter = self.formatter()
+        theme_name = combo_data(self.theme, "Rojo")
+        preview_text = "#f7f7f7" if theme_name == "Oscuro" else "rgba(0,0,0,0.75)"
         self.preview.setText(formatter.format(Decimal("1234567890.12")))
-        self.preview.setStyleSheet(f"background:{THEMES[combo_data(self.theme, 'Rojo')]};")
+        self.preview.setStyleSheet(f"background:{THEMES[theme_name]}; color:{preview_text};")
 
 
 class CalculatorWindow(QMainWindow):
@@ -852,6 +894,8 @@ class CalculatorWindow(QMainWindow):
         self.pending_value: Decimal | None = None
         self.values = {"net": Decimal("0"), "tax": Decimal("0"), "gross": Decimal("0")}
         self.panels: dict[str, DisplayPanel] = {}
+        self.last_system_dark_theme = windows_apps_dark_theme()
+        self.system_theme_timer: QTimer | None = None
         self.setWindowTitle(self.tr("Calculadora de IVA"))
         self.setWindowIcon(QIcon(str(app_icon_path())))
         self.build_ui()
@@ -862,6 +906,7 @@ class CalculatorWindow(QMainWindow):
         if should_apply_language_rate:
             self.apply_default_rate_for_language()
         self.sync_from_active()
+        self.start_system_theme_monitor()
 
     @property
     def ui_preset(self) -> dict[str, float | int]:
@@ -925,6 +970,25 @@ class CalculatorWindow(QMainWindow):
         self.apply_theme()
         if resize_window:
             self.resize_to_available_screen()
+
+    def start_system_theme_monitor(self):
+        if not sys.platform.startswith("win"):
+            return
+        self.system_theme_timer = QTimer(self)
+        self.system_theme_timer.setInterval(1500)
+        self.system_theme_timer.timeout.connect(self.handle_system_theme_change)
+        self.system_theme_timer.start()
+
+    def handle_system_theme_change(self):
+        system_dark = windows_apps_dark_theme()
+        if system_dark == self.last_system_dark_theme:
+            return
+        was_light = not self.last_system_dark_theme
+        self.last_system_dark_theme = system_dark
+        if was_light and system_dark and self.theme_name != "Oscuro":
+            self.theme_name = "Oscuro"
+            self.save_settings()
+            self.apply_theme()
 
     def build_ui(self):
         central = QWidget()
@@ -1175,6 +1239,7 @@ class CalculatorWindow(QMainWindow):
     def select_country(self):
         rates = COUNTRY_RATES + [TaxRate(self.tr("Personalizado"), rate, "*", True) for rate in self.custom_rates]
         dialog = CountryDialog(rates, self)
+        self.apply_dialog_window_theme(dialog)
         if dialog.exec() == QDialog.DialogCode.Accepted:
             selected = dialog.selected_rate()
             if selected:
@@ -1185,6 +1250,7 @@ class CalculatorWindow(QMainWindow):
 
     def manage_custom_rates(self):
         dialog = CustomRatesDialog(self.custom_rates.copy(), self)
+        self.apply_dialog_window_theme(dialog)
         if dialog.exec() == QDialog.DialogCode.Accepted:
             self.custom_rates = dialog.rates
             selected = dialog.selected_rate()
@@ -1197,6 +1263,7 @@ class CalculatorWindow(QMainWindow):
 
     def open_settings(self):
         dialog = SettingsDialog(self.formatter, self.theme_name, self.ui_size_name, self.language_code, self)
+        self.apply_dialog_window_theme(dialog)
         if dialog.exec() == QDialog.DialogCode.Accepted:
             previous_language = self.language_code
             self.formatter = dialog.formatter()
@@ -1217,10 +1284,12 @@ class CalculatorWindow(QMainWindow):
 
     def open_about(self):
         dialog = AboutDialog(self)
+        self.apply_dialog_window_theme(dialog)
         dialog.exec()
 
     def open_help(self):
         dialog = HelpDialog(self.language_code, self)
+        self.apply_dialog_window_theme(dialog)
         dialog.exec()
 
     def apply_default_rate_for_language(self):
@@ -1272,6 +1341,7 @@ class CalculatorWindow(QMainWindow):
     def apply_theme(self):
         color = THEMES[self.theme_name]
         dark_theme = self.theme_name == "Oscuro"
+        set_windows_title_bar_dark(self, dark_theme)
         header_text = "#ffffff" if dark_theme else "#111111"
         display_title_color = "rgba(255,255,255,0.78)" if dark_theme else "rgba(0,0,0,0.62)"
         display_value_color = "rgba(255,255,255,0.94)" if dark_theme else "rgba(0,0,0,0.78)"
@@ -1279,6 +1349,27 @@ class CalculatorWindow(QMainWindow):
         active_panel_background = "rgba(255,255,255,0.20)" if dark_theme else "rgba(255,255,255,0.31)"
         panel_border = "rgba(255,255,255,0.24)" if dark_theme else "rgba(255,255,255,0.28)"
         active_panel_border = "rgba(255,255,255,0.78)" if dark_theme else "rgba(255,255,255,0.72)"
+        app_background = "#202124" if dark_theme else "#eeeeee"
+        dialog_background = "#2b2b2b" if dark_theme else "#f7f7f7"
+        dialog_text = "#f2f2f2" if dark_theme else "#202020"
+        field_background = "#3a3a3a" if dark_theme else "#ffffff"
+        field_border = "#5a5a5a" if dark_theme else "#b8b8b8"
+        tab_background = "#242424" if dark_theme else "#eeeeee"
+        tab_selected = "#3a3a3a" if dark_theme else "#ffffff"
+        button_background = "#3a3a3a" if dark_theme else "#f3f3f3"
+        button_hover = "#4a4a4a" if dark_theme else "#e6e6e6"
+        menu_background = "#2b2b2b" if dark_theme else "#ffffff"
+        menu_selection = "#444444" if dark_theme else "#e8f0fe"
+        preview_text = "#f7f7f7" if dark_theme else "rgba(0,0,0,0.75)"
+        about_icon_background = "#333333" if dark_theme else "#f7f7f7"
+        about_icon_border = "#555555" if dark_theme else "#dddddd"
+        keypad_background = "#191919" if dark_theme else "#f7f7f7"
+        number_key_background = "#323232" if dark_theme else "#ffffff"
+        number_key_text = "#ffffff" if dark_theme else "#111111"
+        operation_key_background = "#3d3d3d" if dark_theme else "#cfcfcf"
+        operation_key_text = "#ffffff" if dark_theme else "#111111"
+        key_hover_background = "#454545" if dark_theme else "#f5f5f5"
+        operation_hover_background = "#4a4a4a" if dark_theme else "#d8d8d8"
         factor = self.ui_scale
         display_title_font = scaled(12, factor)
         display_value_font = scaled(36, factor)
@@ -1290,10 +1381,59 @@ class CalculatorWindow(QMainWindow):
         round_button_font = scaled(24, factor)
         round_button_size = scaled(36, factor)
         preview_font = scaled(34, factor)
-        self.setStyleSheet(
+        style = (
             f"""
+            QApplication, QDialog, QMessageBox {{
+                background: {dialog_background};
+                color: {dialog_text};
+            }}
             QMainWindow {{
-                background: #eeeeee;
+                background: {app_background};
+                color: {dialog_text};
+            }}
+            QLabel, QCheckBox, QRadioButton, QGroupBox {{
+                color: {dialog_text};
+            }}
+            QTabWidget::pane {{
+                border: 1px solid {field_border};
+                background: {dialog_background};
+            }}
+            QTabBar::tab {{
+                background: {tab_background};
+                color: {dialog_text};
+                border: 1px solid {field_border};
+                padding: 6px 10px;
+            }}
+            QTabBar::tab:selected {{
+                background: {tab_selected};
+                border-bottom-color: {tab_selected};
+            }}
+            QComboBox, QSpinBox, QLineEdit, QTextEdit, QTextBrowser, QListWidget {{
+                background: {field_background};
+                color: {dialog_text};
+                border: 1px solid {field_border};
+                selection-background-color: {menu_selection};
+                selection-color: {dialog_text};
+            }}
+            QComboBox::drop-down {{
+                border-left: 1px solid {field_border};
+            }}
+            QPushButton {{
+                background: {button_background};
+                color: {dialog_text};
+                border: 1px solid {field_border};
+                padding: 5px 12px;
+            }}
+            QPushButton:hover {{
+                background: {button_hover};
+            }}
+            QMenu {{
+                background: {menu_background};
+                color: {dialog_text};
+                border: 1px solid {field_border};
+            }}
+            QMenu::item:selected {{
+                background: {menu_selection};
             }}
             #toolbar {{
                 background: {color};
@@ -1317,20 +1457,27 @@ class CalculatorWindow(QMainWindow):
             }}
             #displayValue {{
                 color: {display_value_color};
-                font: 300 {display_value_font}px "Segoe UI";
+                font: 600 {display_value_font}px "Segoe UI";
             }}
             #keypad {{
-                background: #f7f7f7;
+                background: {keypad_background};
             }}
             #keyButton, #operationButton, #rateKey {{
-                background: #ffffff;
+                background: {number_key_background};
                 border: none;
                 border-radius: 3px;
-                color: #111111;
+                color: {number_key_text};
                 font-size: {key_font}px;
             }}
+            #keyButton:hover {{
+                background: {key_hover_background};
+            }}
             #operationButton, #rateKey {{
-                background: #cfcfcf;
+                background: {operation_key_background};
+                color: {operation_key_text};
+            }}
+            #operationButton:hover, #rateKey:hover {{
+                background: {operation_hover_background};
             }}
             #dangerButton {{
                 background: #e53935;
@@ -1369,22 +1516,29 @@ class CalculatorWindow(QMainWindow):
             }}
             #preview {{
                 font-size: {preview_font}px;
-                color: rgba(0,0,0,0.75);
+                color: {preview_text};
                 border-radius: 2px;
             }}
             #aboutIcon {{
-                background: #f7f7f7;
-                border: 1px solid #dddddd;
+                background: {about_icon_background};
+                border: 1px solid {about_icon_border};
                 border-radius: 8px;
                 padding: 16px;
             }}
             #aboutText {{
-                color: #202020;
+                color: {dialog_text};
                 font-size: 13px;
                 line-height: 1.35;
             }}
             """
         )
+        app = QApplication.instance()
+        if app is not None:
+            app.setStyleSheet(style)
+        self.setStyleSheet(style)
+
+    def apply_dialog_window_theme(self, dialog: QDialog):
+        set_windows_title_bar_dark(dialog, self.theme_name == "Oscuro")
 
 
 def main() -> int:
