@@ -584,6 +584,8 @@ class AboutDialog(QDialog):
                 "<p><b>Tecnologías usadas</b><br>Python, PyQt6, Qt Linguist, QtSvg</p>"
                 "<p>Calculadora de IVA de escritorio con tasas por país, tasas personalizadas, "
                 "formatos numéricos, temas, tamaños de interfaz e internacionalización.</p>"
+                '<p><b>Sitio web</b><br><a href="https://wachin.github.io/lucio-iva-calculator/">'
+                "https://wachin.github.io/lucio-iva-calculator/</a></p>"
                 "<p>Jipijapa, Manabí, Ecuador</p>"
             )
         )
