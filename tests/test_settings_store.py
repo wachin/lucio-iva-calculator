@@ -1,7 +1,7 @@
 import unittest
 from pathlib import Path
 
-from main import AppSettings, settings_bool
+from main import AppSettings, default_country_for_language, rate_by_country_name, settings_bool
 
 
 class AppSettingsTest(unittest.TestCase):
@@ -24,6 +24,11 @@ class AppSettingsTest(unittest.TestCase):
         self.assertTrue(settings_bool("1"))
         self.assertFalse(settings_bool("false"))
         self.assertFalse(settings_bool(None))
+
+    def test_language_default_country_mapping(self):
+        self.assertEqual(default_country_for_language("de"), "Alemania")
+        self.assertEqual(default_country_for_language("pt"), "Portugal")
+        self.assertEqual(rate_by_country_name("Alemania").rate, 19)
 
 
 if __name__ == "__main__":

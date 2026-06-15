@@ -7,7 +7,7 @@ from dataclasses import dataclass
 from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 from pathlib import Path
 
-from PyQt6.QtCore import Qt, QSettings, QSize, QTranslator
+from PyQt6.QtCore import Qt, QLocale, QSettings, QSize, QTranslator
 from PyQt6.QtGui import QAction, QFont, QIcon, QPixmap
 from PyQt6.QtWidgets import (
     QApplication,
@@ -38,9 +38,94 @@ APP_ORG = "Lucio"
 APP_NAME = "IVA Calculator"
 CONFIG_FILE_NAME = "IVA Calculator.ini"
 DEFAULT_LANGUAGE = "es"
+DEFAULT_LANGUAGE_SETTING = "system"
 LANGUAGES = {
+    "system": "Sistema",
     "es": "Español",
     "en": "English",
+    "de": "Deutsch",
+    "fr": "Français",
+    "it": "Italiano",
+    "pt": "Português",
+    "nl": "Nederlands",
+    "pl": "Polski",
+    "ro": "Română",
+    "bg": "Български",
+    "hr": "Hrvatski",
+    "cs": "Čeština",
+    "sk": "Slovenčina",
+    "sl": "Slovenščina",
+    "et": "Eesti",
+    "fi": "Suomi",
+    "sv": "Svenska",
+    "da": "Dansk",
+    "el": "Ελληνικά",
+    "hu": "Magyar",
+    "lv": "Latviešu",
+    "lt": "Lietuvių",
+    "mt": "Malti",
+    "no": "Norsk",
+    "ja": "日本語",
+    "ko": "한국어",
+    "zh": "中文",
+    "hi": "हिन्दी",
+}
+LANGUAGE_DEFAULT_COUNTRIES = {
+    "es": "Ecuador",
+    "en": "Reino Unido",
+    "de": "Alemania",
+    "fr": "Francia",
+    "it": "Italia",
+    "pt": "Portugal",
+    "nl": "Paises Bajos",
+    "pl": "Polonia",
+    "ro": "Rumania",
+    "bg": "Bulgaria",
+    "hr": "Croacia",
+    "cs": "Republica Checa",
+    "sk": "Eslovaquia",
+    "sl": "Eslovenia",
+    "et": "Estonia",
+    "fi": "Finlandia",
+    "sv": "Suecia",
+    "da": "Dinamarca",
+    "el": "Grecia",
+    "hu": "Hungria",
+    "lv": "Letonia",
+    "lt": "Lituania",
+    "mt": "Malta",
+    "no": "Noruega",
+    "ja": "Japon",
+    "ko": "Corea del Sur",
+    "zh": "China",
+    "hi": "India GST",
+}
+LOCALE_DEFAULT_COUNTRIES = {
+    "es_EC": "Ecuador",
+    "es_ES": "Espana",
+    "es_MX": "Mexico",
+    "es_AR": "Argentina",
+    "es_CL": "Chile",
+    "es_CO": "Colombia",
+    "es_PE": "Peru",
+    "es_UY": "Uruguay",
+    "es_PY": "Paraguay",
+    "es_BO": "Bolivia",
+    "pt_BR": "Brasil",
+    "pt_PT": "Portugal",
+    "en_US": "Estados Unidos",
+    "en_GB": "Reino Unido",
+    "en_CA": "Canada GST",
+    "en_AU": "Australia",
+    "en_NZ": "Nueva Zelanda",
+    "fr_FR": "Francia",
+    "fr_CA": "Canada GST",
+    "de_DE": "Alemania",
+    "de_AT": "Austria",
+    "de_CH": "Suiza",
+    "it_IT": "Italia",
+    "it_CH": "Suiza",
+    "nl_NL": "Paises Bajos",
 }
 DEFAULT_UI_SIZE = "Mediano"
 UI_SIZE_PRESETS = {
@@ -101,8 +186,11 @@ class AppSettings:
         self.path.parent.mkdir(parents=True, exist_ok=True)
         parser = ConfigParser()
         parser[self.section_name] = self.values
-        with self.path.open("w", encoding="utf-8") as file:
-            parser.write(file)
+        try:
+            with self.path.open("w", encoding="utf-8") as file:
+                parser.write(file)
+        except OSError as error:
+            print(f"No se pudo guardar la configuracion en {self.path}: {error}", file=sys.stderr)
 
 
 def app_settings() -> AppSettings:
@@ -137,6 +225,7 @@ def app_icon_path() -> Path:
 
 
 def load_translation(app: QApplication, language_code: str) -> QTranslator | None:
+    language_code = effective_language_code(language_code)
     if language_code == DEFAULT_LANGUAGE:
         return None
     translator = QTranslator(app)
@@ -144,6 +233,35 @@ def load_translation(app: QApplication, language_code: str) -> QTranslator | Non
     if translator.load(str(translation_file)):
         app.installTranslator(translator)
         return translator
+    return None
+
+
+def system_locale_name() -> str:
+    return QLocale.system().name()
+
+
+def effective_language_code(language_code: str) -> str:
+    if language_code == "system":
+        code = system_locale_name().split("_", 1)[0].lower()
+        return code if code in LANGUAGES and code != "system" else DEFAULT_LANGUAGE
+    return language_code if language_code in LANGUAGES else DEFAULT_LANGUAGE
+
+
+def default_country_for_language(language_code: str) -> str | None:
+    if language_code == "system":
+        locale_name = system_locale_name()
+        if locale_name in LOCALE_DEFAULT_COUNTRIES:
+            return LOCALE_DEFAULT_COUNTRIES[locale_name]
+        language_code = effective_language_code(language_code)
+    return LANGUAGE_DEFAULT_COUNTRIES.get(language_code)
+
+
+def rate_by_country_name(country_name: str | None) -> TaxRate | None:
+    if not country_name:
+        return None
+    for rate in COUNTRY_RATES:
+        if rate.name == country_name:
+            return rate
     return None
 
 
@@ -519,8 +637,8 @@ class SettingsDialog(QDialog):
         combo_set_data(self.ui_size, ui_size_name if ui_size_name in UI_SIZE_PRESETS else DEFAULT_UI_SIZE)
         self.language = QComboBox()
         for code, label in LANGUAGES.items():
-            self.language.addItem(label, code)
-        combo_set_data(self.language, language_code if language_code in LANGUAGES else DEFAULT_LANGUAGE)
+            self.language.addItem(self.language_label(code, label), code)
+        combo_set_data(self.language, language_code if language_code in LANGUAGES else DEFAULT_LANGUAGE_SETTING)
         form.addRow(self.tr("Separador de miles"), self.thousands)
         form.addRow(self.tr("Separador decimal"), self.decimal)
         form.addRow(self.tr("Lugares decimales"), self.decimals)
@@ -573,6 +691,11 @@ class SettingsDialog(QDialog):
         }
         return labels.get(ui_size_name, ui_size_name)
 
+    def language_label(self, code: str, label: str) -> str:
+        if code == "system":
+            return self.tr("Sistema")
+        return label
+
     def formatter(self) -> NumberFormatter:
         return NumberFormatter(
             decimals=int(self.decimals.currentText()),
@@ -600,8 +723,9 @@ class CalculatorWindow(QMainWindow):
             show_decimals=settings_bool(self.settings.value("show_decimals", "true"), True),
         )
         self.theme_name = self.settings.value("theme", "Rojo")
-        stored_language = self.settings.value("language", DEFAULT_LANGUAGE)
-        self.language_code = stored_language if stored_language in LANGUAGES else DEFAULT_LANGUAGE
+        stored_language = self.settings.value("language", DEFAULT_LANGUAGE_SETTING)
+        self.language_code = stored_language if stored_language in LANGUAGES else DEFAULT_LANGUAGE_SETTING
+        should_apply_language_rate = "rate_name" not in self.settings.allKeys()
         stored_ui_size = self.settings.value("ui_size", DEFAULT_UI_SIZE)
         self.ui_size_name = stored_ui_size if stored_ui_size in UI_SIZE_PRESETS else DEFAULT_UI_SIZE
         self.key_buttons: list[QPushButton] = []
@@ -624,6 +748,8 @@ class CalculatorWindow(QMainWindow):
         self.apply_ui_size(resize_window=False)
         self.apply_theme()
         self.resize_to_available_screen()
+        if should_apply_language_rate:
+            self.apply_default_rate_for_language()
         self.sync_from_active()
 
     @property
@@ -883,12 +1009,13 @@ class CalculatorWindow(QMainWindow):
             self.formatter = dialog.formatter()
             self.theme_name = combo_data(dialog.theme, "Rojo")
             self.ui_size_name = combo_data(dialog.ui_size, DEFAULT_UI_SIZE)
-            self.language_code = combo_data(dialog.language, DEFAULT_LANGUAGE)
+            self.language_code = combo_data(dialog.language, DEFAULT_LANGUAGE_SETTING)
             self.save_settings()
             self.apply_ui_size()
             self.apply_theme()
             self.refresh_displays()
             if self.language_code != previous_language:
+                self.apply_default_rate_for_language()
                 QMessageBox.information(
                     self,
                     self.tr("Idioma"),
@@ -898,6 +1025,15 @@ class CalculatorWindow(QMainWindow):
     def open_about(self):
         dialog = AboutDialog(self)
         dialog.exec()
+
+    def apply_default_rate_for_language(self):
+        rate = rate_by_country_name(default_country_for_language(self.language_code))
+        if rate is None:
+            return
+        self.current_rate = rate
+        self.save_current_rate()
+        self.update_header()
+        self.sync_from_active()
 
     def update_header(self):
         self.country_button.setText(self.rate_display_name(self.current_rate))
@@ -1052,7 +1188,7 @@ def main() -> int:
     app.setFont(QFont("Segoe UI", 10))
     app.setWindowIcon(QIcon(str(app_icon_path())))
     settings = app_settings()
-    translator = load_translation(app, settings.value("language", DEFAULT_LANGUAGE))
+    translator = load_translation(app, settings.value("language", DEFAULT_LANGUAGE_SETTING))
     window = CalculatorWindow()
     window.translator = translator
     window.show()

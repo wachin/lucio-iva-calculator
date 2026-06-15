@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
-<TS version="2.1" language="en_US" sourcelanguage="es_EC">
+<TS version="2.1" language="ja" sourcelanguage="es_EC">
   <context>
     <name>AboutDialog</name>
     <message>
       <location filename="..\main.py" line="547" />
       <source>Acerca de...</source>
-      <translation>About...</translation>
+      <translation>このアプリについて...</translation>
     </message>
     <message>
       <location filename="..\main.py" line="572" />
@@ -18,32 +18,32 @@
     <message>
       <location filename="..\main.py" line="740" />
       <source>Calculadora de IVA</source>
-      <translation>VAT Calculator</translation>
+      <translation>VAT計算機</translation>
     </message>
     <message>
       <location filename="..\main.py" line="827" />
       <source>Seleccionar pais</source>
-      <translation>Select country</translation>
+      <translation>国を選択</translation>
     </message>
     <message>
       <location filename="..\main.py" line="828" />
       <source>Tasas personalizadas</source>
-      <translation>Custom rates</translation>
+      <translation>カスタム税率</translation>
     </message>
     <message>
       <location filename="..\main.py" line="829" />
       <source>Configuracion</source>
-      <translation>Settings</translation>
+      <translation>設定</translation>
     </message>
     <message>
       <location filename="..\main.py" line="831" />
       <source>Acerca de...</source>
-      <translation>About...</translation>
+      <translation>このアプリについて...</translation>
     </message>
     <message>
       <location filename="..\main.py" line="851" />
       <source>IVA EXCLUIDO</source>
-      <translation>VAT EXCLUDED</translation>
+      <translation>VAT抜き</translation>
     </message>
     <message>
       <location filename="..\main.py" line="852" />
@@ -53,18 +53,18 @@
     <message>
       <location filename="..\main.py" line="853" />
       <source>IVA INCLUIDO</source>
-      <translation>VAT INCLUDED</translation>
+      <translation>VAT込み</translation>
     </message>
     <message>
       <location filename="..\main.py" line="1039" />
       <location filename="..\main.py" line="976" />
       <source>Personalizado</source>
-      <translation>Custom</translation>
+      <translation>カスタム</translation>
     </message>
     <message>
       <location filename="..\main.py" line="1014" />
       <source>Idioma</source>
-      <translation>Language</translation>
+      <translation>言語</translation>
     </message>
     <message>
       <location filename="..\main.py" line="1015" />
@@ -78,7 +78,7 @@
       <location filename="..\main.py" line="460" />
       <location filename="..\main.py" line="457" />
       <source>Paises</source>
-      <translation>Countries</translation>
+      <translation>国</translation>
     </message>
   </context>
   <context>
@@ -87,7 +87,7 @@
       <location filename="..\main.py" line="488" />
       <location filename="..\main.py" line="484" />
       <source>Tasas personalizadas</source>
-      <translation>Custom rates</translation>
+      <translation>カスタム税率</translation>
     </message>
     <message>
       <location filename="..\main.py" line="498" />
@@ -110,7 +110,7 @@
     <message>
       <location filename="..\main.py" line="608" />
       <source>Configuracion</source>
-      <translation>Settings</translation>
+      <translation>設定</translation>
     </message>
     <message>
       <location filename="..\main.py" line="621" />
@@ -150,7 +150,7 @@
     <message>
       <location filename="..\main.py" line="645" />
       <source>Idioma</source>
-      <translation>Language</translation>
+      <translation>言語</translation>
     </message>
     <message>
       <location filename="..\main.py" line="658" />
@@ -240,7 +240,7 @@
     <message>
       <location filename="..\main.py" line="692" />
       <source>Sistema</source>
-      <translation>System</translation>
+      <translation>システム</translation>
     </message>
   </context>
 </TS>

@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
-<TS version="2.1" language="en_US" sourcelanguage="es_EC">
+<TS version="2.1" language="it" sourcelanguage="es_EC">
   <context>
     <name>AboutDialog</name>
     <message>
       <location filename="..\main.py" line="547" />
       <source>Acerca de...</source>
-      <translation>About...</translation>
+      <translation>Informazioni...</translation>
     </message>
     <message>
       <location filename="..\main.py" line="572" />
@@ -18,58 +18,58 @@
     <message>
       <location filename="..\main.py" line="740" />
       <source>Calculadora de IVA</source>
-      <translation>VAT Calculator</translation>
+      <translation>Calcolatore IVA</translation>
     </message>
     <message>
       <location filename="..\main.py" line="827" />
       <source>Seleccionar pais</source>
-      <translation>Select country</translation>
+      <translation>Seleziona paese</translation>
     </message>
     <message>
       <location filename="..\main.py" line="828" />
       <source>Tasas personalizadas</source>
-      <translation>Custom rates</translation>
+      <translation>Aliquote personalizzate</translation>
     </message>
     <message>
       <location filename="..\main.py" line="829" />
       <source>Configuracion</source>
-      <translation>Settings</translation>
+      <translation>Impostazioni</translation>
     </message>
     <message>
       <location filename="..\main.py" line="831" />
       <source>Acerca de...</source>
-      <translation>About...</translation>
+      <translation>Informazioni...</translation>
     </message>
     <message>
       <location filename="..\main.py" line="851" />
       <source>IVA EXCLUIDO</source>
-      <translation>VAT EXCLUDED</translation>
+      <translation>IVA ESCLUSA</translation>
     </message>
     <message>
       <location filename="..\main.py" line="852" />
       <source>IVA</source>
-      <translation>VAT</translation>
+      <translation>IVA</translation>
     </message>
     <message>
       <location filename="..\main.py" line="853" />
       <source>IVA INCLUIDO</source>
-      <translation>VAT INCLUDED</translation>
+      <translation>IVA INCLUSA</translation>
     </message>
     <message>
       <location filename="..\main.py" line="1039" />
       <location filename="..\main.py" line="976" />
       <source>Personalizado</source>
-      <translation>Custom</translation>
+      <translation>Personalizzato</translation>
     </message>
     <message>
       <location filename="..\main.py" line="1014" />
       <source>Idioma</source>
-      <translation>Language</translation>
+      <translation>Lingua</translation>
     </message>
     <message>
       <location filename="..\main.py" line="1015" />
       <source>El idioma se aplicara al reiniciar la aplicacion.</source>
-      <translation>The language will be applied after restarting the application.</translation>
+      <translation>La lingua sarà applicata dopo il riavvio dell’applicazione.</translation>
     </message>
   </context>
   <context>
@@ -78,7 +78,7 @@
       <location filename="..\main.py" line="460" />
       <location filename="..\main.py" line="457" />
       <source>Paises</source>
-      <translation>Countries</translation>
+      <translation>Paesi</translation>
     </message>
   </context>
   <context>
@@ -87,22 +87,22 @@
       <location filename="..\main.py" line="488" />
       <location filename="..\main.py" line="484" />
       <source>Tasas personalizadas</source>
-      <translation>Custom rates</translation>
+      <translation>Aliquote personalizzate</translation>
     </message>
     <message>
       <location filename="..\main.py" line="498" />
       <source>Eliminar seleccionada</source>
-      <translation>Delete selected</translation>
+      <translation>Elimina selezionata</translation>
     </message>
     <message>
       <location filename="..\main.py" line="519" />
       <source>Nueva tasa</source>
-      <translation>New rate</translation>
+      <translation>Nuova aliquota</translation>
     </message>
     <message>
       <location filename="..\main.py" line="520" />
       <source>Porcentaje</source>
-      <translation>Percentage</translation>
+      <translation>Percentuale</translation>
     </message>
   </context>
   <context>
@@ -110,82 +110,82 @@
     <message>
       <location filename="..\main.py" line="608" />
       <source>Configuracion</source>
-      <translation>Settings</translation>
+      <translation>Impostazioni</translation>
     </message>
     <message>
       <location filename="..\main.py" line="621" />
       <source>Mostrar</source>
-      <translation>Show</translation>
+      <translation>Mostra</translation>
     </message>
     <message>
       <location filename="..\main.py" line="638" />
       <source>Separador de miles</source>
-      <translation>Thousands separator</translation>
+      <translation>Separatore migliaia</translation>
     </message>
     <message>
       <location filename="..\main.py" line="639" />
       <source>Separador decimal</source>
-      <translation>Decimal separator</translation>
+      <translation>Separatore decimale</translation>
     </message>
     <message>
       <location filename="..\main.py" line="640" />
       <source>Lugares decimales</source>
-      <translation>Decimal places</translation>
+      <translation>Decimali</translation>
     </message>
     <message>
       <location filename="..\main.py" line="642" />
       <source>Agrupacion de cifras</source>
-      <translation>Digit grouping</translation>
+      <translation>Raggruppamento cifre</translation>
     </message>
     <message>
       <location filename="..\main.py" line="643" />
       <source>Tema</source>
-      <translation>Theme</translation>
+      <translation>Tema</translation>
     </message>
     <message>
       <location filename="..\main.py" line="644" />
       <source>Tamano de interfaz</source>
-      <translation>Interface size</translation>
+      <translation>Dimensione interfaccia</translation>
     </message>
     <message>
       <location filename="..\main.py" line="645" />
       <source>Idioma</source>
-      <translation>Language</translation>
+      <translation>Lingua</translation>
     </message>
     <message>
       <location filename="..\main.py" line="658" />
       <source>Vista previa</source>
-      <translation>Preview</translation>
+      <translation>Anteprima</translation>
     </message>
     <message>
       <location filename="..\main.py" line="666" />
       <source>Rojo</source>
-      <translation>Red</translation>
+      <translation>Rosso</translation>
     </message>
     <message>
       <location filename="..\main.py" line="667" />
       <source>Azul</source>
-      <translation>Blue</translation>
+      <translation>Blu</translation>
     </message>
     <message>
       <location filename="..\main.py" line="668" />
       <source>Indigo</source>
-      <translation>Indigo</translation>
+      <translation>Indaco</translation>
     </message>
     <message>
       <location filename="..\main.py" line="669" />
       <source>Cian</source>
-      <translation>Cyan</translation>
+      <translation>Ciano</translation>
     </message>
     <message>
       <location filename="..\main.py" line="670" />
       <source>Verde azulado</source>
-      <translation>Teal</translation>
+      <translation>Verde acqua</translation>
     </message>
     <message>
       <location filename="..\main.py" line="671" />
       <source>Verde</source>
-      <translation>Green</translation>
+      <translation>Verde</translation>
     </message>
     <message>
       <location filename="..\main.py" line="672" />
@@ -195,52 +195,52 @@
     <message>
       <location filename="..\main.py" line="673" />
       <source>Ambar</source>
-      <translation>Amber</translation>
+      <translation>Ambra</translation>
     </message>
     <message>
       <location filename="..\main.py" line="674" />
       <source>Purpura</source>
-      <translation>Purple</translation>
+      <translation>Viola</translation>
     </message>
     <message>
       <location filename="..\main.py" line="675" />
       <source>Rosa</source>
-      <translation>Pink</translation>
+      <translation>Rosa</translation>
     </message>
     <message>
       <location filename="..\main.py" line="676" />
       <source>Oscuro</source>
-      <translation>Dark</translation>
+      <translation>Scuro</translation>
     </message>
     <message>
       <location filename="..\main.py" line="682" />
       <source>Muy pequeno</source>
-      <translation>Very small</translation>
+      <translation>Molto piccolo</translation>
     </message>
     <message>
       <location filename="..\main.py" line="683" />
       <source>Pequeno</source>
-      <translation>Small</translation>
+      <translation>Piccolo</translation>
     </message>
     <message>
       <location filename="..\main.py" line="684" />
       <source>Mediano</source>
-      <translation>Medium</translation>
+      <translation>Medio</translation>
     </message>
     <message>
       <location filename="..\main.py" line="685" />
       <source>Grande</source>
-      <translation>Large</translation>
+      <translation>Grande</translation>
     </message>
     <message>
       <location filename="..\main.py" line="686" />
       <source>Muy grande</source>
-      <translation>Very large</translation>
+      <translation>Molto grande</translation>
     </message>
     <message>
       <location filename="..\main.py" line="692" />
       <source>Sistema</source>
-      <translation>System</translation>
+      <translation>Sistema</translation>
     </message>
   </context>
 </TS>

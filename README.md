@@ -11,7 +11,8 @@ Calculadora de IVA hecha con PyQt6 e inspirada en VAT Calculator.
 - Configuracion de formato numerico: separadores, decimales y agrupacion.
 - Temas de color.
 - Tamano de interfaz seleccionable: muy pequeno, pequeno, mediano, grande y muy grande.
-- Internacionalizacion con Qt Linguist: espanol e ingles.
+- Internacionalizacion con Qt Linguist: opcion Sistema y multiples idiomas.
+- Al cambiar el idioma, la app propone automaticamente la tasa del pais asociado; el usuario puede cambiarla luego.
 
 ## Ejecutar
 
@@ -38,6 +39,8 @@ Los archivos editables de Qt Linguist estan en:
 ```text
 translations/*.ts
 ```
+
+La opcion `Sistema` usa el idioma del sistema operativo. Si la configuracion regional incluye pais, tambien intenta escoger la tasa correspondiente, por ejemplo `es_EC` usa Ecuador y `pt_BR` usa Brasil.
 
 Para compilar los `.ts` a `.qm` en Windows:
 
