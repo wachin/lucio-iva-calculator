@@ -8,7 +8,7 @@ from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 from pathlib import Path
 
 from PyQt6.QtCore import Qt, QSettings, QSize, QTranslator
-from PyQt6.QtGui import QAction, QFont, QIcon
+from PyQt6.QtGui import QAction, QFont, QIcon, QPixmap
 from PyQt6.QtWidgets import (
     QApplication,
     QCheckBox,
@@ -427,6 +427,60 @@ class CustomRatesDialog(QDialog):
         return item.data(Qt.ItemDataRole.UserRole) if item else None
 
 
+class AboutDialog(QDialog):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle(self.tr("Acerca de..."))
+        self.setWindowIcon(QIcon(str(app_icon_path())))
+        self.setMinimumSize(620, 380)
+
+        layout = QHBoxLayout(self)
+        layout.setContentsMargins(24, 24, 24, 24)
+        layout.setSpacing(24)
+
+        icon_label = QLabel()
+        icon_label.setObjectName("aboutIcon")
+        icon_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        icon_label.setMinimumWidth(190)
+        icon_label.setPixmap(QPixmap(str(app_icon_path())).scaled(
+            180,
+            180,
+            Qt.AspectRatioMode.KeepAspectRatio,
+            Qt.TransformationMode.SmoothTransformation,
+        ))
+
+        text = QLabel()
+        text.setObjectName("aboutText")
+        text.setTextFormat(Qt.TextFormat.RichText)
+        text.setOpenExternalLinks(True)
+        text.setWordWrap(True)
+        text.setText(
+            self.tr(
+                "<h2>Calculadora de IVA</h2>"
+                "<p><b>Desarrolladores</b></p>"
+                "<p>© 2026 Washington Indacochea Delgado<br>"
+                '<a href="mailto:linuxfrontier@proton.me">linuxfrontier@proton.me</a></p>'
+                "<p>© 2026 Joseph Lucio Guerrero<br>"
+                '<a href="mailto:josephsteveng@gmail.com">josephsteveng@gmail.com</a></p>'
+                "<p><b>Licencia</b><br>GNU GPL v3</p>"
+                "<p><b>Tecnologías usadas</b><br>Python, PyQt6, Qt Linguist, QtSvg</p>"
+                "<p>Calculadora de IVA de escritorio con tasas por país, tasas personalizadas, "
+                "formatos numéricos, temas, tamaños de interfaz e internacionalización.</p>"
+                "<p>Jipijapa, Manabí, Ecuador</p>"
+            )
+        )
+
+        buttons = QDialogButtonBox(QDialogButtonBox.StandardButton.Close)
+        buttons.rejected.connect(self.reject)
+
+        right = QVBoxLayout()
+        right.addWidget(text, 1)
+        right.addWidget(buttons)
+
+        layout.addWidget(icon_label)
+        layout.addLayout(right, 1)
+
+
 class SettingsDialog(QDialog):
     def __init__(
         self,
@@ -654,6 +708,8 @@ class CalculatorWindow(QMainWindow):
         menu.addAction(QAction(self.tr("Seleccionar pais"), self, triggered=self.select_country))
         menu.addAction(QAction(self.tr("Tasas personalizadas"), self, triggered=self.manage_custom_rates))
         menu.addAction(QAction(self.tr("Configuracion"), self, triggered=self.open_settings))
+        menu.addSeparator()
+        menu.addAction(QAction(self.tr("Acerca de..."), self, triggered=self.open_about))
         menu_button.setMenu(menu)
         self.country_button = QPushButton()
         self.country_button.setObjectName("countryButton")
@@ -839,6 +895,10 @@ class CalculatorWindow(QMainWindow):
                     self.tr("El idioma se aplicara al reiniciar la aplicacion."),
                 )
 
+    def open_about(self):
+        dialog = AboutDialog(self)
+        dialog.exec()
+
     def update_header(self):
         self.country_button.setText(self.rate_display_name(self.current_rate))
         self.rate_button.setText(f"{self.current_rate.rate.normalize()} %")
@@ -969,6 +1029,17 @@ class CalculatorWindow(QMainWindow):
                 font-size: {preview_font}px;
                 color: rgba(0,0,0,0.75);
                 border-radius: 2px;
+            }}
+            #aboutIcon {{
+                background: #f7f7f7;
+                border: 1px solid #dddddd;
+                border-radius: 8px;
+                padding: 16px;
+            }}
+            #aboutText {{
+                color: #202020;
+                font-size: 13px;
+                line-height: 1.35;
             }}
             """
         )
