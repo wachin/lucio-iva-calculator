@@ -22,12 +22,12 @@ Spanish README: [README_ES.md](README_ES.md)
 - Selectable interface size: very small, small, medium, large, and very large.
 - Internationalization with Qt Linguist: System option and multiple languages.
 - When the language changes, the app automatically suggests the rate for the associated country; the user can change it later.
-- Local bilingual help in Spanish and English.
+- Local bilingual help in English and Spanish.
 - Keyboard shortcuts and physical numeric keypad support.
 
 ## Available Languages
 
-The application includes the `System` option, which uses the operating system language when it is supported. Spanish is the built-in base language, and the other languages are loaded from compiled Qt `.qm` files.
+The application includes the `System` option, which uses the operating system language when it is supported. English is the built-in base language, and the other languages, including Spanish, are loaded from compiled Qt `.qm` files.
 
 Available interface languages:
 
@@ -80,13 +80,13 @@ You can create custom rates for discounts, fees, commissions, or other taxes. In
 | `. / ,` | Enter decimal separator |
 | `+ - * /` | Basic operations |
 | `Enter` | Calculate pending operation |
-| `Backspace / Delete` | Delete the last digit |
+| `Backspace / Delete` | Delete last digit |
 | `Esc` | Clear all |
 | `Ctrl+1` | Edit VAT excluded |
 | `Ctrl+2` | Edit VAT |
 | `Ctrl+3` | Edit VAT included |
-| `Ctrl+Tab` | Switch to the next value |
-| `Ctrl+Shift+Tab` | Switch to the previous value |
+| `Ctrl+Tab` | Switch to next value |
+| `Ctrl+Shift+Tab` | Switch to previous value |
 | `Ctrl+P` | Select country |
 | `Ctrl+R` | Open custom rates |
 | `Ctrl+,` | Open settings |
