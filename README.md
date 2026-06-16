@@ -382,6 +382,12 @@ Reusable developer guide for Linux icons with PyInstaller:
 docs/tutorial_pyinstaller_linux_icons.md
 ```
 
+Mini checklist for creating a GitHub release:
+
+```text
+docs/github_release_checklist_en.md
+```
+
 To publish a version, update `VERSION`, create a tag with the format `v0.1.0`, and push it to GitHub:
 
 ```bash

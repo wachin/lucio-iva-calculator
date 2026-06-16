@@ -380,6 +380,12 @@ Guia tecnica reutilizable para desarrolladores sobre iconos Linux con PyInstalle
 docs/tutorial_pyinstaller_linux_iconos.md
 ```
 
+Mini checklist para crear un release en GitHub:
+
+```text
+docs/github_release_checklist.md
+```
+
 Para publicar una version, actualiza `VERSION`, crea un tag con formato `v0.1.0` y subelo a GitHub:
 
 ```bash

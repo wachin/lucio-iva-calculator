@@ -682,32 +682,34 @@ class AboutDialog(QDialog):
         super().__init__(parent)
         self.dark_theme = dark_theme
         self.settings = settings
+        self._center_on_show = False
+        self.setWindowModality(Qt.WindowModality.ApplicationModal)
         self.setWindowTitle(self.tr("Acerca de..."))
         self.setWindowIcon(load_app_icon())
         self.setMinimumSize(780, 520)
 
         layout = QHBoxLayout(self)
-        layout.setContentsMargins(24, 24, 24, 24)
-        layout.setSpacing(24)
+        layout.setContentsMargins(18, 16, 18, 18)
+        layout.setSpacing(18)
 
         left = QVBoxLayout()
-        left.setSpacing(14)
-        left.addStretch()
+        left.setSpacing(10)
+        left.addStretch(1)
         icon_label = QLabel()
         icon_label.setObjectName("aboutIcon")
         icon_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        icon_label.setMinimumWidth(190)
-        icon_pixmap = load_app_icon().pixmap(QSize(180, 180))
+        icon_label.setMinimumWidth(168)
+        icon_pixmap = load_app_icon().pixmap(QSize(152, 152))
         icon_label.setPixmap(icon_pixmap)
         title = QLabel(self.tr("Calculadora de IVA"))
         title.setObjectName("aboutAppTitle")
         title.setAlignment(Qt.AlignmentFlag.AlignCenter)
         left.addWidget(icon_label)
         left.addWidget(title)
-        left.addStretch()
+        left.addStretch(1)
 
         right = QVBoxLayout()
-        right.setSpacing(12)
+        right.setSpacing(8)
         developers_title = QLabel(self.tr("Desarrolladores"))
         developers_title.setObjectName("dialogTitle")
         right.addWidget(developers_title)
@@ -753,7 +755,7 @@ class AboutDialog(QDialog):
 
         right.addWidget(buttons)
 
-        layout.addLayout(left)
+        layout.addLayout(left, 0)
         layout.addLayout(right, 1)
         self.restore_or_center()
 
@@ -761,13 +763,13 @@ class AboutDialog(QDialog):
         card = QFrame()
         card.setObjectName("developerCard")
         layout = QHBoxLayout(card)
-        layout.setContentsMargins(12, 12, 12, 12)
-        layout.setSpacing(14)
+        layout.setContentsMargins(10, 10, 10, 10)
+        layout.setSpacing(10)
 
         photo = QLabel()
         photo.setObjectName("developerPhoto")
-        photo.setFixedSize(104, 104)
-        photo.setPixmap(self.rounded_photo(photo_path, 104, 12))
+        photo.setFixedSize(88, 88)
+        photo.setPixmap(self.rounded_photo(photo_path, 88, 10))
         photo.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         info = QLabel()
@@ -820,7 +822,7 @@ class AboutDialog(QDialog):
     def restore_or_center(self):
         if self.settings is not None and self.restore_saved_geometry():
             return
-        self.center_on_parent_or_screen()
+        self._center_on_show = True
 
     def restore_saved_geometry(self) -> bool:
         if self.settings is None:
@@ -852,17 +854,17 @@ class AboutDialog(QDialog):
         self.setGeometry(x, y, width, height)
         return True
 
-    def center_on_parent_or_screen(self):
+    def center_on_screen(self):
         self.adjustSize()
-        parent = self.parentWidget()
-        screen = parent.screen() if parent is not None else QApplication.primaryScreen()
-        if screen is None:
-            screen = QApplication.primaryScreen()
+        screen = self.screen() or QApplication.primaryScreen()
         if screen is None:
             return
+        available = screen.availableGeometry()
         frame = self.frameGeometry()
-        frame.moveCenter(screen.availableGeometry().center())
-        self.move(frame.topLeft())
+        frame.moveCenter(available.center())
+        x = min(max(frame.left(), available.left()), available.right() - frame.width() + 1)
+        y = min(max(frame.top(), available.top()), available.bottom() - frame.height() + 1)
+        self.move(x, y)
 
     def save_window_geometry(self):
         if self.settings is None or self.isMinimized():
@@ -873,6 +875,12 @@ class AboutDialog(QDialog):
         self.settings.setValue("about_window_width", geometry.width())
         self.settings.setValue("about_window_height", geometry.height())
         self.settings.sync()
+
+    def showEvent(self, event):  # noqa: N802
+        super().showEvent(event)
+        if self._center_on_show:
+            self.center_on_screen()
+            self._center_on_show = False
 
     def closeEvent(self, event):  # noqa: N802
         self.save_window_geometry()
@@ -1622,7 +1630,7 @@ class CalculatorWindow(QMainWindow):
                 )
 
     def open_about(self):
-        dialog = AboutDialog(self.theme_name == "Oscuro", self.settings, self)
+        dialog = AboutDialog(self.theme_name == "Oscuro", self.settings)
         self.apply_dialog_window_theme(dialog)
         dialog.exec()
 
@@ -1883,9 +1891,9 @@ class CalculatorWindow(QMainWindow):
                 padding: {scaled(2, factor)}px {scaled(8, factor)}px;
             }}
             #dialogTitle {{
-                font-size: {dialog_title_font}px;
+                font-size: {scaled(dialog_title_font, 1.08)}px;
                 font-weight: 700;
-                padding: 6px;
+                padding: 2px 0 4px 0;
             }}
             #roundButton {{
                 background: #2196f3;
@@ -1904,11 +1912,11 @@ class CalculatorWindow(QMainWindow):
                 background: {about_icon_background};
                 border: 1px solid {about_icon_border};
                 border-radius: 8px;
-                padding: 16px;
+                padding: 12px;
             }}
             #aboutAppTitle {{
                 color: {dialog_text};
-                font-size: {scaled(18, factor)}px;
+                font-size: {scaled(19, factor)}px;
                 font-weight: 700;
             }}
             #developerCard {{
@@ -1922,8 +1930,8 @@ class CalculatorWindow(QMainWindow):
             }}
             #aboutText {{
                 color: {dialog_text};
-                font-size: {scaled(14, factor)}px;
-                line-height: 1.35;
+                font-size: {scaled(16, factor)}px;
+                line-height: 1.28;
             }}
             #aboutText a {{
                 color: {link_color};
