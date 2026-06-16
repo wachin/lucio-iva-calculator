@@ -1,83 +1,195 @@
 # Lucio IVA Calculator
 
-Calculadora de IVA hecha con PyQt6 e inspirada en VAT Calculator.
+[![Build Lucio IVA Calculator](https://github.com/wachin/lucio-iva-calculator/actions/workflows/build.yml/badge.svg)](https://github.com/wachin/lucio-iva-calculator/actions/workflows/build.yml)
+[![GitHub Pages](https://img.shields.io/badge/web-GitHub%20Pages-2ea44f)](https://wachin.github.io/lucio-iva-calculator/)
+[![Python](https://img.shields.io/badge/Python-3.11%2B-3776ab?logo=python&logoColor=white)](https://www.python.org/)
+[![PyQt6](https://img.shields.io/badge/GUI-PyQt6-41cd52?logo=qt&logoColor=white)](https://www.riverbankcomputing.com/software/pyqt/)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
+[![Platforms](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey)](#run-from-source)
 
-## Funciones
+Desktop VAT calculator made with PyQt6 and inspired by VAT Calculator.
 
-- Tres pantallas sincronizadas: IVA excluido, IVA e IVA incluido.
-- Teclado numerico con operaciones basicas, borrar, limpiar y cambio de signo.
-- Seleccion de pais/tasa con tasas de Ecuador, Union Europea y otros paises.
-- Tasas personalizadas persistentes.
-- Configuracion de formato numerico: separadores, decimales y agrupacion.
-- Temas de color.
-- Tamano de interfaz seleccionable: muy pequeno, pequeno, mediano, grande y muy grande.
-- Internacionalizacion con Qt Linguist: opcion Sistema y multiples idiomas.
-- Al cambiar el idioma, la app propone automaticamente la tasa del pais asociado; el usuario puede cambiarla luego.
-- Ayuda local bilingue en espanol e ingles.
-- Atajos de teclado y soporte para teclado numerico fisico.
+Spanish README: [README_ES.md](README_ES.md)
 
-## Uso basico
+## Features
 
-1. Selecciona una tasa desde el nombre del pais, el porcentaje o el menu.
-2. Haz clic en `IVA excluido`, `IVA` o `IVA incluido` para decidir que valor quieres escribir.
-3. Introduce el importe con el teclado en pantalla o con el teclado fisico.
-4. Las otras dos pantallas se actualizan automaticamente con la tasa activa.
+- Three synchronized displays: VAT excluded, VAT, and VAT included.
+- Numeric keypad with basic operations, delete, clear, and sign toggle.
+- Country/rate selection with rates for Ecuador, the European Union, and other countries.
+- Persistent custom rates.
+- Numeric format settings: separators, decimals, and digit grouping.
+- Color themes.
+- Selectable interface size: very small, small, medium, large, and very large.
+- Internationalization with Qt Linguist: System option and multiple languages.
+- When the language changes, the app automatically suggests the rate for the associated country; the user can change it later.
+- Local bilingual help in Spanish and English.
+- Keyboard shortcuts and physical numeric keypad support.
 
-Puedes crear tasas personalizadas para descuentos, cargos, comisiones u otros impuestos. En `Configuracion` puedes cambiar idioma, formato numerico, tema visual y tamano de interfaz.
+## Available Languages
 
-## Atajos de teclado
+The application includes the `System` option, which uses the operating system language when it is supported. Spanish is the built-in base language, and the other languages are loaded from compiled Qt `.qm` files.
 
-| Atajo | Accion |
+Available interface languages:
+
+| Code | Language |
 | --- | --- |
-| `0-9` | Escribir numeros |
-| `. / ,` | Escribir separador decimal |
-| `+ - * /` | Operaciones basicas |
-| `Enter` | Calcular operacion pendiente |
-| `Backspace / Delete` | Borrar el ultimo digito |
-| `Esc` | Limpiar todo |
-| `Ctrl+1` | Editar IVA excluido |
-| `Ctrl+2` | Editar IVA |
-| `Ctrl+3` | Editar IVA incluido |
-| `Ctrl+Tab` | Cambiar al siguiente valor |
-| `Ctrl+Shift+Tab` | Cambiar al valor anterior |
-| `Ctrl+P` | Seleccionar pais |
-| `Ctrl+R` | Abrir tasas personalizadas |
-| `Ctrl+,` | Abrir configuracion |
-| `F1` | Abrir ayuda |
+| `system` | System language |
+| `es` | Spanish |
+| `en` | English |
+| `de` | German |
+| `fr` | French |
+| `it` | Italian |
+| `pt` | Portuguese |
+| `nl` | Dutch |
+| `pl` | Polish |
+| `ro` | Romanian |
+| `bg` | Bulgarian |
+| `hr` | Croatian |
+| `cs` | Czech |
+| `sk` | Slovak |
+| `sl` | Slovenian |
+| `et` | Estonian |
+| `fi` | Finnish |
+| `sv` | Swedish |
+| `da` | Danish |
+| `el` | Greek |
+| `hu` | Hungarian |
+| `lv` | Latvian |
+| `lt` | Lithuanian |
+| `mt` | Maltese |
+| `no` | Norwegian |
+| `ja` | Japanese |
+| `ko` | Korean |
+| `zh` | Chinese |
+| `hi` | Hindi |
 
-## Ejecutar
+## Basic Usage
 
-```bash
-python -m venv .venv
-source .venv/bin/activate      # Linux/macOS
-# .venv\Scripts\activate       # Windows PowerShell
+1. Select a rate from the country name, percentage, or menu.
+2. Click `VAT excluded`, `VAT`, or `VAT included` to choose which value you want to edit.
+3. Enter the amount with the on-screen keypad or a physical keyboard.
+4. The other two displays update automatically using the active rate.
+
+You can create custom rates for discounts, fees, commissions, or other taxes. In `Settings` you can change the language, numeric format, visual theme, and interface size.
+
+## Keyboard Shortcuts
+
+| Shortcut | Action |
+| --- | --- |
+| `0-9` | Enter numbers |
+| `. / ,` | Enter decimal separator |
+| `+ - * /` | Basic operations |
+| `Enter` | Calculate pending operation |
+| `Backspace / Delete` | Delete the last digit |
+| `Esc` | Clear all |
+| `Ctrl+1` | Edit VAT excluded |
+| `Ctrl+2` | Edit VAT |
+| `Ctrl+3` | Edit VAT included |
+| `Ctrl+Tab` | Switch to the next value |
+| `Ctrl+Shift+Tab` | Switch to the previous value |
+| `Ctrl+P` | Select country |
+| `Ctrl+R` | Open custom rates |
+| `Ctrl+,` | Open settings |
+| `F1` | Open help |
+
+## Run From Source
+
+Lucio IVA Calculator can run directly from this source code folder. You do not need to build it or create an installer to test it.
+
+### Windows 10/11 Without venv
+
+If Python is installed and available in `PATH`, install the dependencies and run:
+
+```powershell
 pip install -r requirements.txt
 python main.py
 ```
 
-y se lanzará el programa
+On many Windows installations this also works:
 
-![Calculadora de IVA](vx_images/01-Calculadora-de-IVA.png)
+```powershell
+py -m pip install -r requirements.txt
+py main.py
+```
 
-## Configuracion
+### Linux Without venv
 
-La app guarda sus preferencias en un archivo INI dentro de la carpeta de configuracion del usuario:
+On Debian, Ubuntu, MX Linux, and derivatives you can use the system packages:
+
+```bash
+sudo apt update
+sudo apt install python3-pyqt6
+python3 main.py
+```
+
+If your distribution does not provide `python3-pyqt6`, or if you prefer to use `pip`, install:
+
+```bash
+python3 -m pip install -r requirements.txt
+python3 main.py
+```
+
+### macOS From Source
+
+Do not rely on the old system Python. Install Python 3 with Homebrew or from python.org, then run:
+
+```bash
+python3 -m pip install -r requirements.txt
+python3 main.py
+```
+
+### Windows With venv for Development
+
+Using `venv` is not required, but it is recommended if you are developing, testing dependencies, or packaging:
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+python main.py
+```
+
+If PowerShell blocks environment activation, you can use:
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+.\.venv\Scripts\python.exe main.py
+```
+
+### Linux With venv for Development
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+python main.py
+```
+
+The program will launch.
+
+![VAT Calculator](vx_images/01-Calculadora-de-IVA.png)
+
+## Configuration
+
+The app stores its preferences in an INI file inside the user's configuration folder:
 
 - Windows: `%AppData%\Lucio\IVA Calculator.ini`
 - Linux: `~/.config/Lucio/IVA Calculator.ini`
 - macOS: `~/Library/Application Support/Lucio/IVA Calculator.ini`
 
-## Personalizar colores
+## Customizing Colors
 
-Los colores visuales principales estan en `main.py`.
+The main visual colors are in `main.py`.
 
-Para cambiar el color base de cada tema, edita el diccionario `THEMES`. Por ejemplo, el tema oscuro usa:
+To change the base color for each theme, edit the `THEMES` dictionary. For example, the dark theme uses:
 
 ```python
 "Oscuro": "#3d3d3d"
 ```
 
-Para cambiar especificamente el fondo de las secciones `IVA EXCLUIDO`, `IVA` e `IVA INCLUIDO` en modo oscuro, busca dentro de `apply_theme()` estas variables:
+To specifically change the background of the `VAT EXCLUDED`, `VAT`, and `VAT INCLUDED` sections in dark mode, search for these variables inside `apply_theme()`:
 
 ```python
 panel_background = "#2f2f2f" if dark_theme else "rgba(255,255,255,0.16)"
@@ -85,35 +197,68 @@ active_panel_background = "#383838" if dark_theme else "rgba(255,255,255,0.31)"
 panel_border = "#666666" if dark_theme else "rgba(255,255,255,0.28)"
 ```
 
-`panel_background` controla los paneles normales, `active_panel_background` controla el panel seleccionado y `panel_border` controla el borde.
+`panel_background` controls normal panels, `active_panel_background` controls the selected panel, and `panel_border` controls the border.
 
-## Traducciones
+## Translations
 
-Los archivos editables de Qt Linguist estan en:
+The editable Qt Linguist files are in:
 
 ```text
 translations/*.ts
 ```
 
-La opcion `Sistema` usa el idioma del sistema operativo. Si la configuracion regional incluye pais, tambien intenta escoger la tasa correspondiente, por ejemplo `es_EC` usa Ecuador y `pt_BR` usa Brasil.
+The `System` option uses the operating system language. If the locale includes a country, it also tries to select the matching rate, for example `es_EC` uses Ecuador and `pt_BR` uses Brazil.
 
-Para compilar los `.ts` a `.qm` en Windows:
+To compile `.ts` files to `.qm` on Windows:
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\compile_translations.ps1
 ```
 
-El script busca `lrelease.exe` en `PATH`, PyQt6, `qt5_applications`, `QTDIR`, `C:\Qt` y `%USERPROFILE%\Qt`.
+The script searches for `lrelease.exe` in `PATH`, PyQt6, `qt5_applications`, `QTDIR`, `C:\Qt`, and `%USERPROFILE%\Qt`.
 
-## Builds multiplataforma
+### Qt Creator and lrelease on Windows
 
-El proyecto incluye GitHub Actions para compilar artefactos en Windows, Linux y macOS:
+To edit or recompile translations on Windows, it is best to install Qt with the official online installer:
+
+- [Qt Online Installer (Open Source)](https://www.qt.io/development/download-qt-installer-oss)
+
+Installing Qt Creator alone is not always enough. To get `lrelease.exe`, install at least one full desktop kit from Qt Maintenance Tool, for example:
+
+```text
+Qt -> Qt 6.x.x -> MinGW 64-bit
+```
+
+or:
+
+```text
+Qt -> Qt 6.x.x -> MSVC 64-bit
+```
+
+Then `lrelease.exe` is usually located in paths like:
+
+```text
+C:\Qt\6.x.x\mingw_64\bin\lrelease.exe
+C:\Qt\6.x.x\msvc*_64\bin\lrelease.exe
+```
+
+You can check with:
+
+```powershell
+Get-ChildItem C:\Qt -Recurse -Filter lrelease.exe
+```
+
+If `lrelease.exe` exists but is not in `PATH`, that is okay: `scripts\compile_translations.ps1` also searches in `QTDIR`, `C:\Qt`, and `%USERPROFILE%\Qt`.
+
+## Cross-platform Builds
+
+The project includes GitHub Actions to build artifacts on Windows, Linux, and macOS:
 
 ```text
 .github/workflows/build.yml
 ```
 
-Los scripts de build estan en:
+The build scripts are in:
 
 ```text
 build/build_windows.ps1
@@ -121,11 +266,11 @@ build/build_linux.sh
 build/build_macos.sh
 ```
 
-Para publicar una version, actualiza `VERSION`, crea un tag con formato `v0.1.0` y subelo a GitHub:
+To publish a version, update `VERSION`, create a tag with the format `v0.1.0`, and push it to GitHub:
 
 ```bash
 git tag v0.1.0
 git push origin v0.1.0
 ```
 
-El workflow crea una release con los artefactos de Windows, Linux y macOS.
+The workflow creates a release with the Windows, Linux, and macOS artifacts.

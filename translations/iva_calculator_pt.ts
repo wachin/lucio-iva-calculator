@@ -10,7 +10,7 @@
     <message>
       <location filename="..\main.py" line="572" />
       <source>&lt;h2&gt;Calculadora de IVA&lt;/h2&gt;&lt;p&gt;&lt;b&gt;Desarrolladores&lt;/b&gt;&lt;/p&gt;&lt;p&gt;© 2026 Washington Indacochea Delgado&lt;br&gt;&lt;a href="mailto:linuxfrontier@proton.me"&gt;linuxfrontier@proton.me&lt;/a&gt;&lt;/p&gt;&lt;p&gt;© 2026 Joseph Lucio Guerrero&lt;br&gt;&lt;a href="mailto:josephsteveng@gmail.com"&gt;josephsteveng@gmail.com&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Licencia&lt;/b&gt;&lt;br&gt;GNU GPL v3&lt;/p&gt;&lt;p&gt;&lt;b&gt;Tecnologías usadas&lt;/b&gt;&lt;br&gt;Python, PyQt6, Qt Linguist, QtSvg&lt;/p&gt;&lt;p&gt;Calculadora de IVA de escritorio con tasas por país, tasas personalizadas, formatos numéricos, temas, tamaños de interfaz e internacionalización.&lt;/p&gt;&lt;p&gt;Jipijapa, Manabí, Ecuador&lt;/p&gt;</source>
-      <translation>&lt;h2&gt;VAT Calculator&lt;/h2&gt;&lt;p&gt;&lt;b&gt;Developers&lt;/b&gt;&lt;/p&gt;&lt;p&gt;© 2026 Washington Indacochea Delgado&lt;br&gt;&lt;a href="mailto:linuxfrontier@proton.me"&gt;linuxfrontier@proton.me&lt;/a&gt;&lt;/p&gt;&lt;p&gt;© 2026 Joseph Lucio Guerrero&lt;br&gt;&lt;a href="mailto:josephsteveng@gmail.com"&gt;josephsteveng@gmail.com&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;License&lt;/b&gt;&lt;br&gt;GNU GPL v3&lt;/p&gt;&lt;p&gt;&lt;b&gt;Technologies used&lt;/b&gt;&lt;br&gt;Python, PyQt6, Qt Linguist, QtSvg&lt;/p&gt;&lt;p&gt;Desktop VAT calculator with country rates, custom rates, numeric formats, themes, interface sizes, and internationalization.&lt;/p&gt;&lt;p&gt;Jipijapa, Manabí, Ecuador&lt;/p&gt;</translation>
+      <translation>&lt;h2&gt;Calculadora de IVA&lt;/h2&gt;&lt;p&gt;&lt;b&gt;Desenvolvedores&lt;/b&gt;&lt;/p&gt;&lt;p&gt;© 2026 Washington Indacochea Delgado&lt;br&gt;&lt;a href="mailto:linuxfrontier@proton.me"&gt;linuxfrontier@proton.me&lt;/a&gt;&lt;/p&gt;&lt;p&gt;© 2026 Joseph Lucio Guerrero&lt;br&gt;&lt;a href="mailto:josephsteveng@gmail.com"&gt;josephsteveng@gmail.com&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Licença&lt;/b&gt;&lt;br&gt;GNU GPL v3&lt;/p&gt;&lt;p&gt;&lt;b&gt;Tecnologias usadas&lt;/b&gt;&lt;br&gt;Python, PyQt6, Qt Linguist, QtSvg&lt;/p&gt;&lt;p&gt;Calculadora de IVA para desktop com taxas por país, taxas personalizadas, formatos numéricos, temas, tamanhos de interface e internacionalização.&lt;/p&gt;&lt;p&gt;Jipijapa, Manabí, Ecuador&lt;/p&gt;</translation>
     </message>
     <message>
       <source>Desarrolladores</source>
@@ -18,7 +18,7 @@
     </message>
     <message>
       <source>&lt;p&gt;&lt;b&gt;Licencia&lt;/b&gt;&lt;br&gt;GNU GPL v3&lt;/p&gt;&lt;p&gt;&lt;b&gt;Tecnologías usadas&lt;/b&gt;&lt;br&gt;Python, PyQt6, Qt Linguist, QtSvg&lt;/p&gt;&lt;p&gt;Calculadora de IVA de escritorio con tasas por país, tasas personalizadas, formatos numéricos, temas, tamaños de interfaz e internacionalización.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Sitio web&lt;/b&gt;&lt;br&gt;&lt;a href="https://wachin.github.io/lucio-iva-calculator/"&gt;https://wachin.github.io/lucio-iva-calculator/&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Jipijapa, Manabí, Ecuador&lt;/p&gt;</source>
-      <translation>&lt;p&gt;&lt;b&gt;Licencia&lt;/b&gt;&lt;br&gt;GNU GPL v3&lt;/p&gt;&lt;p&gt;&lt;b&gt;Tecnologías usadas&lt;/b&gt;&lt;br&gt;Python, PyQt6, Qt Linguist, QtSvg&lt;/p&gt;&lt;p&gt;Calculadora de IVA de escritorio con tasas por país, tasas personalizadas, formatos numéricos, temas, tamaños de interfaz e internacionalización.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Sitio web&lt;/b&gt;&lt;br&gt;&lt;a href="https://wachin.github.io/lucio-iva-calculator/"&gt;https://wachin.github.io/lucio-iva-calculator/&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Jipijapa, Manabí, Ecuador&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;&lt;b&gt;Licença&lt;/b&gt;&lt;br&gt;GNU GPL v3&lt;/p&gt;&lt;p&gt;&lt;b&gt;Tecnologias usadas&lt;/b&gt;&lt;br&gt;Python, PyQt6, Qt Linguist, QtSvg&lt;/p&gt;&lt;p&gt;Calculadora de IVA para desktop com taxas por país, taxas personalizadas, formatos numéricos, temas, tamanhos de interface e internacionalização.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Site&lt;/b&gt;&lt;br&gt;&lt;a href="https://wachin.github.io/lucio-iva-calculator/"&gt;https://wachin.github.io/lucio-iva-calculator/&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Jipijapa, Manabí, Ecuador&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -272,11 +272,11 @@
     </message>
     <message>
       <source>Accion</source>
-      <translation>Acao</translation>
+      <translation>Ação</translation>
     </message>
     <message>
       <source>Escribir numeros</source>
-      <translation>Digitar numeros</translation>
+      <translation>Digitar números</translation>
     </message>
     <message>
       <source>Escribir separador decimal</source>
@@ -284,15 +284,15 @@
     </message>
     <message>
       <source>Operaciones basicas</source>
-      <translation>Operacoes basicas</translation>
+      <translation>Operações básicas</translation>
     </message>
     <message>
       <source>Calcular operacion pendiente</source>
-      <translation>Calcular operacao pendente</translation>
+      <translation>Calcular operação pendente</translation>
     </message>
     <message>
       <source>Borrar el ultimo digito</source>
-      <translation>Apagar o ultimo digito</translation>
+      <translation>Apagar o último dígito</translation>
     </message>
     <message>
       <source>Limpiar todo</source>
@@ -300,7 +300,7 @@
     </message>
     <message>
       <source>Editar IVA excluido</source>
-      <translation>Editar IVA excluido</translation>
+      <translation>Editar IVA excluído</translation>
     </message>
     <message>
       <source>Editar IVA</source>
@@ -308,11 +308,11 @@
     </message>
     <message>
       <source>Editar IVA incluido</source>
-      <translation>Editar IVA incluido</translation>
+      <translation>Editar IVA incluído</translation>
     </message>
     <message>
       <source>Cambiar al siguiente valor</source>
-      <translation>Ir para o proximo valor</translation>
+      <translation>Ir para o próximo valor</translation>
     </message>
     <message>
       <source>Cambiar al valor anterior</source>
@@ -324,7 +324,7 @@
     </message>
     <message>
       <source>Abrir configuracion</source>
-      <translation>Abrir configuracoes</translation>
+      <translation>Abrir configurações</translation>
     </message>
     <message>
       <source>Abrir ayuda</source>
@@ -332,7 +332,7 @@
     </message>
     <message>
       <source>Seleccionar pais</source>
-      <translation>Selecionar pais</translation>
+      <translation>Selecionar país</translation>
     </message>
     <message>
       <source>Fuente</source>

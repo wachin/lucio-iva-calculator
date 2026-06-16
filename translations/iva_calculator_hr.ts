@@ -10,7 +10,7 @@
     <message>
       <location filename="..\main.py" line="572" />
       <source>&lt;h2&gt;Calculadora de IVA&lt;/h2&gt;&lt;p&gt;&lt;b&gt;Desarrolladores&lt;/b&gt;&lt;/p&gt;&lt;p&gt;© 2026 Washington Indacochea Delgado&lt;br&gt;&lt;a href="mailto:linuxfrontier@proton.me"&gt;linuxfrontier@proton.me&lt;/a&gt;&lt;/p&gt;&lt;p&gt;© 2026 Joseph Lucio Guerrero&lt;br&gt;&lt;a href="mailto:josephsteveng@gmail.com"&gt;josephsteveng@gmail.com&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Licencia&lt;/b&gt;&lt;br&gt;GNU GPL v3&lt;/p&gt;&lt;p&gt;&lt;b&gt;Tecnologías usadas&lt;/b&gt;&lt;br&gt;Python, PyQt6, Qt Linguist, QtSvg&lt;/p&gt;&lt;p&gt;Calculadora de IVA de escritorio con tasas por país, tasas personalizadas, formatos numéricos, temas, tamaños de interfaz e internacionalización.&lt;/p&gt;&lt;p&gt;Jipijapa, Manabí, Ecuador&lt;/p&gt;</source>
-      <translation>&lt;h2&gt;VAT Calculator&lt;/h2&gt;&lt;p&gt;&lt;b&gt;Developers&lt;/b&gt;&lt;/p&gt;&lt;p&gt;© 2026 Washington Indacochea Delgado&lt;br&gt;&lt;a href="mailto:linuxfrontier@proton.me"&gt;linuxfrontier@proton.me&lt;/a&gt;&lt;/p&gt;&lt;p&gt;© 2026 Joseph Lucio Guerrero&lt;br&gt;&lt;a href="mailto:josephsteveng@gmail.com"&gt;josephsteveng@gmail.com&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;License&lt;/b&gt;&lt;br&gt;GNU GPL v3&lt;/p&gt;&lt;p&gt;&lt;b&gt;Technologies used&lt;/b&gt;&lt;br&gt;Python, PyQt6, Qt Linguist, QtSvg&lt;/p&gt;&lt;p&gt;Desktop VAT calculator with country rates, custom rates, numeric formats, themes, interface sizes, and internationalization.&lt;/p&gt;&lt;p&gt;Jipijapa, Manabí, Ecuador&lt;/p&gt;</translation>
+      <translation>&lt;h2&gt;Kalkulator PDV-a&lt;/h2&gt;&lt;p&gt;&lt;b&gt;Razvojni programeri&lt;/b&gt;&lt;/p&gt;&lt;p&gt;© 2026 Washington Indacochea Delgado&lt;br&gt;&lt;a href="mailto:linuxfrontier@proton.me"&gt;linuxfrontier@proton.me&lt;/a&gt;&lt;/p&gt;&lt;p&gt;© 2026 Joseph Lucio Guerrero&lt;br&gt;&lt;a href="mailto:josephsteveng@gmail.com"&gt;josephsteveng@gmail.com&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Licenca&lt;/b&gt;&lt;br&gt;GNU GPL v3&lt;/p&gt;&lt;p&gt;&lt;b&gt;Korištene tehnologije&lt;/b&gt;&lt;br&gt;Python, PyQt6, Qt Linguist, QtSvg&lt;/p&gt;&lt;p&gt;Desktop kalkulator PDV-a sa stopama po državama, prilagođenim stopama, formatima brojeva, temama, veličinama sučelja i internacionalizacijom.&lt;/p&gt;&lt;p&gt;Jipijapa, Manabí, Ecuador&lt;/p&gt;</translation>
     </message>
     <message>
       <source>Desarrolladores</source>
@@ -18,7 +18,7 @@
     </message>
     <message>
       <source>&lt;p&gt;&lt;b&gt;Licencia&lt;/b&gt;&lt;br&gt;GNU GPL v3&lt;/p&gt;&lt;p&gt;&lt;b&gt;Tecnologías usadas&lt;/b&gt;&lt;br&gt;Python, PyQt6, Qt Linguist, QtSvg&lt;/p&gt;&lt;p&gt;Calculadora de IVA de escritorio con tasas por país, tasas personalizadas, formatos numéricos, temas, tamaños de interfaz e internacionalización.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Sitio web&lt;/b&gt;&lt;br&gt;&lt;a href="https://wachin.github.io/lucio-iva-calculator/"&gt;https://wachin.github.io/lucio-iva-calculator/&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Jipijapa, Manabí, Ecuador&lt;/p&gt;</source>
-      <translation>&lt;p&gt;&lt;b&gt;Licencia&lt;/b&gt;&lt;br&gt;GNU GPL v3&lt;/p&gt;&lt;p&gt;&lt;b&gt;Tecnologías usadas&lt;/b&gt;&lt;br&gt;Python, PyQt6, Qt Linguist, QtSvg&lt;/p&gt;&lt;p&gt;Calculadora de IVA de escritorio con tasas por país, tasas personalizadas, formatos numéricos, temas, tamaños de interfaz e internacionalización.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Sitio web&lt;/b&gt;&lt;br&gt;&lt;a href="https://wachin.github.io/lucio-iva-calculator/"&gt;https://wachin.github.io/lucio-iva-calculator/&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Jipijapa, Manabí, Ecuador&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;&lt;b&gt;Licenca&lt;/b&gt;&lt;br&gt;GNU GPL v3&lt;/p&gt;&lt;p&gt;&lt;b&gt;Korištene tehnologije&lt;/b&gt;&lt;br&gt;Python, PyQt6, Qt Linguist, QtSvg&lt;/p&gt;&lt;p&gt;Desktop kalkulator PDV-a sa stopama po državama, prilagođenim stopama, formatima brojeva, temama, veličinama sučelja i internacionalizacijom.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Web-stranica&lt;/b&gt;&lt;br&gt;&lt;a href="https://wachin.github.io/lucio-iva-calculator/"&gt;https://wachin.github.io/lucio-iva-calculator/&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Jipijapa, Manabí, Ecuador&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -81,11 +81,11 @@
     </message>
     <message>
       <source>Ayuda</source>
-      <translation>Pomoc</translation>
+      <translation>Pomoć</translation>
     </message>
     <message>
       <source>Siempre encima</source>
-      <translation>Always on top</translation>
+      <translation>Uvijek na vrhu</translation>
     </message>
   </context>
   <context>
@@ -264,7 +264,7 @@
     </message>
     <message>
       <source>Atajos de teclado</source>
-      <translation>Tipkovnicki precaci</translation>
+      <translation>Tipkovnički prečaci</translation>
     </message>
     <message>
       <source>Atajo</source>
@@ -343,7 +343,7 @@
     <name>HelpDialog</name>
     <message>
       <source>Ayuda</source>
-      <translation>Pomoc</translation>
+      <translation>Pomoć</translation>
     </message>
   </context>
 </TS>
