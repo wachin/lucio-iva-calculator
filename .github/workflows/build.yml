@@ -259,6 +259,8 @@ jobs:
           files: |
             lucio-iva-windows/LucioIVACalculator-${{ env.APP_VERSION }}-setup.exe
             lucio-iva-linux/LucioIVACalculator
+            lucio-iva-linux/LucioIVACalculator.desktop
+            lucio-iva-linux/app-icon.svg
             lucio-iva-macos/LucioIVACalculator-${{ env.APP_VERSION }}-macOS-x64.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
