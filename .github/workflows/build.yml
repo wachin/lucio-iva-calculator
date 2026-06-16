@@ -89,10 +89,20 @@ jobs:
           name: lucio-iva-linux
           path: lucio-iva-linux
 
+      - name: Locate Linux binary
+        run: |
+          linux_binary="$(find lucio-iva-linux -type f -name LucioIVACalculator | head -n 1)"
+          if [[ -z "$linux_binary" ]]; then
+            echo "Linux binary not found inside downloaded artifact." >&2
+            find lucio-iva-linux -maxdepth 4 -type f -print >&2 || true
+            exit 1
+          fi
+          echo "LINUX_BINARY=$linux_binary" >> $GITHUB_ENV
+
       - name: Test Linux binary
         run: |
-          chmod 770 lucio-iva-linux/build/dist/LucioIVACalculator
-          ./lucio-iva-linux/build/dist/LucioIVACalculator --pyinstaller-test
+          chmod 770 "$LINUX_BINARY"
+          "$LINUX_BINARY" --pyinstaller-test
 
   build_windows:
     name: Windows Build
@@ -246,6 +256,16 @@ jobs:
           name: lucio-iva-linux
           path: lucio-iva-linux
 
+      - name: Locate Linux release archive
+        run: |
+          linux_archive="$(find lucio-iva-linux -type f -name "LucioIVACalculator-${APP_VERSION}-linux.tar.gz" | head -n 1)"
+          if [[ -z "$linux_archive" ]]; then
+            echo "Linux release archive not found inside downloaded artifact." >&2
+            find lucio-iva-linux -maxdepth 4 -type f -print >&2 || true
+            exit 1
+          fi
+          echo "LINUX_RELEASE_ARCHIVE=$linux_archive" >> $GITHUB_ENV
+
       - name: Get macOS app
         uses: actions/download-artifact@v7
         with:
@@ -260,7 +280,7 @@ jobs:
           prerelease: false
           files: |
             lucio-iva-windows/LucioIVACalculator-${{ env.APP_VERSION }}-setup.exe
-            lucio-iva-linux/build/output/LucioIVACalculator-${{ env.APP_VERSION }}-linux.tar.gz
+            ${{ env.LINUX_RELEASE_ARCHIVE }}
             lucio-iva-macos/LucioIVACalculator-${{ env.APP_VERSION }}-macOS-x64.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
