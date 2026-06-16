@@ -376,6 +376,12 @@ build/build_linux.sh
 build/build_macos.sh
 ```
 
+Reusable developer guide for Linux icons with PyInstaller:
+
+```text
+docs/tutorial_pyinstaller_linux_icons.md
+```
+
 To publish a version, update `VERSION`, create a tag with the format `v0.1.0`, and push it to GitHub:
 
 ```bash

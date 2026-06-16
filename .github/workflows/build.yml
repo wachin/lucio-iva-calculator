@@ -64,11 +64,11 @@ jobs:
       - name: Build
         run: bash build/build_linux.sh
 
-      - name: Store Linux binary
+      - name: Store Linux build artifacts
         uses: actions/upload-artifact@v6
         with:
           name: lucio-iva-linux
-          path: build/dist/LucioIVACalculator
+          path: build/dist/
           retention-days: 7
 
   test_linux:
