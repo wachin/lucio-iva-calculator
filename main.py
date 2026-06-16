@@ -648,8 +648,10 @@ class CustomRatesDialog(QDialog):
 
 
 class AboutDialog(QDialog):
-    def __init__(self, parent=None):
+    def __init__(self, dark_theme: bool = False, settings: AppSettings | None = None, parent=None):
         super().__init__(parent)
+        self.dark_theme = dark_theme
+        self.settings = settings
         self.setWindowTitle(self.tr("Acerca de..."))
         self.setWindowIcon(QIcon(str(app_icon_path())))
         self.setMinimumSize(780, 520)
@@ -660,6 +662,7 @@ class AboutDialog(QDialog):
 
         left = QVBoxLayout()
         left.setSpacing(14)
+        left.addStretch()
         icon_label = QLabel()
         icon_label.setObjectName("aboutIcon")
         icon_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -726,6 +729,7 @@ class AboutDialog(QDialog):
 
         layout.addLayout(left)
         layout.addLayout(right, 1)
+        self.restore_or_center()
 
     def developer_card(self, name: str, email: str, facebook: str, photo_path: Path) -> QFrame:
         card = QFrame()
@@ -758,7 +762,8 @@ class AboutDialog(QDialog):
         return card
 
     def styled_links(self, html: str) -> str:
-        link_style = 'style="color:#8ec5ff; text-decoration: underline; font-weight: 600;"'
+        link_color = "#8ec5ff" if self.dark_theme else "#0645ad"
+        link_style = f'style="color:{link_color}; text-decoration: underline; font-weight: 600;"'
         return html.replace("<a href=", f"<a {link_style} href=")
 
     def rounded_photo(self, photo_path: Path, size: int, radius: int) -> QPixmap:
@@ -785,6 +790,71 @@ class AboutDialog(QDialog):
         painter.drawPixmap(0, 0, cropped)
         painter.end()
         return result
+
+    def restore_or_center(self):
+        if self.settings is not None and self.restore_saved_geometry():
+            return
+        self.center_on_parent_or_screen()
+
+    def restore_saved_geometry(self) -> bool:
+        if self.settings is None:
+            return False
+        try:
+            x = int(self.settings.value("about_window_x"))
+            y = int(self.settings.value("about_window_y"))
+            width = int(self.settings.value("about_window_width"))
+            height = int(self.settings.value("about_window_height"))
+        except (TypeError, ValueError):
+            return False
+        if width <= 0 or height <= 0:
+            return False
+        screens = QApplication.screens()
+        if screens:
+            screen = next(
+                (
+                    candidate
+                    for candidate in screens
+                    if candidate.availableGeometry().adjusted(-40, -40, 40, 40).contains(x, y)
+                ),
+                QApplication.primaryScreen() or screens[0],
+            )
+            available = screen.availableGeometry()
+            width = min(max(width, self.minimumWidth()), available.width())
+            height = min(max(height, self.minimumHeight()), available.height())
+            x = min(max(x, available.left()), available.right() - width + 1)
+            y = min(max(y, available.top()), available.bottom() - height + 1)
+        self.setGeometry(x, y, width, height)
+        return True
+
+    def center_on_parent_or_screen(self):
+        self.adjustSize()
+        parent = self.parentWidget()
+        if parent is not None:
+            center = parent.frameGeometry().center()
+            frame = self.frameGeometry()
+            frame.moveCenter(center)
+            self.move(frame.topLeft())
+            return
+        screen = QApplication.primaryScreen()
+        if screen is None:
+            return
+        frame = self.frameGeometry()
+        frame.moveCenter(screen.availableGeometry().center())
+        self.move(frame.topLeft())
+
+    def save_window_geometry(self):
+        if self.settings is None or self.isMinimized():
+            return
+        geometry = self.geometry()
+        self.settings.setValue("about_window_x", geometry.x())
+        self.settings.setValue("about_window_y", geometry.y())
+        self.settings.setValue("about_window_width", geometry.width())
+        self.settings.setValue("about_window_height", geometry.height())
+        self.settings.sync()
+
+    def closeEvent(self, event):  # noqa: N802
+        self.save_window_geometry()
+        super().closeEvent(event)
 
 
 class HelpDialog(QDialog):
@@ -1498,7 +1568,7 @@ class CalculatorWindow(QMainWindow):
                 )
 
     def open_about(self):
-        dialog = AboutDialog(self)
+        dialog = AboutDialog(self.theme_name == "Oscuro", self.settings, self)
         self.apply_dialog_window_theme(dialog)
         dialog.exec()
 
