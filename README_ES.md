@@ -169,6 +169,85 @@ y se lanzará el programa
 
 ![Calculadora de IVA](vx_images/01-Calculadora-de-IVA.png)
 
+---
+
+## Compilación en Debian 12 (Recomendado para las versiones Linux)
+
+Para obtener la máxima compatibilidad con distribuciones basadas en Debian, recomendamos compilar los ejecutables Linux en Debian 12 (Bookworm) o MX Linux 23.
+
+### ¿Por qué Debian 12?
+
+PyInstaller incluye el intérprete de Python y enlaza bibliotecas del sistema disponibles en el equipo donde se realiza la compilación. Si la aplicación se compila en una distribución más reciente (por ejemplo Ubuntu 24.04, Ubuntu 26.04, Fedora 40+, etc.), el ejecutable generado puede requerir versiones de GLIBC que no existen en sistemas más antiguos.
+
+Error típico:
+
+```text
+Failed to load Python shared library ...
+GLIBC_2.38 not found
+```
+
+Compilar en Debian 12 evita este problema porque Debian 12 utiliza GLIBC 2.36, compatible con muchas distribuciones Linux actuales.
+
+### Instalar dependencias
+
+```bash
+sudo apt update
+
+sudo apt install -y \
+    python3 \
+    python3-venv \
+    python3-pip \
+    pyqt6-dev-tools
+```
+
+### Crear un entorno virtual
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+
+### Instalar dependencias de Python
+
+```bash
+pip install --upgrade pip
+pip install -r build/requirements-linux.txt
+```
+
+### Compilar la aplicación
+
+```bash
+chmod +x build/build_linux.sh
+./build/build_linux.sh
+```
+
+El ejecutable se generará en:
+
+```text
+build/dist/LucioIVACalculator
+```
+
+### Verificar la compatibilidad
+
+Después de compilar, puede comprobar las dependencias GLIBC con:
+
+```bash
+strings build/dist/LucioIVACalculator | grep GLIBC_
+```
+
+El binario generado no debería requerir una versión de GLIBC más nueva que la disponible en Debian 12.
+
+### Entornos recomendados para compilar
+
+* Debian 12 (Bookworm)
+* MX Linux 23
+* Contenedor Docker basado en Debian 12
+* Máquina virtual Debian 12
+
+Si desea distribuir versiones Linux ampliamente compatibles, evite compilar las versiones oficiales en distribuciones demasiado recientes.
+
+---
+
 ## Configuracion
 
 La app guarda sus preferencias en un archivo INI dentro de la carpeta de configuracion del usuario:

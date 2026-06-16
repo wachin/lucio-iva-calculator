@@ -171,6 +171,85 @@ The program will launch.
 
 ![VAT Calculator](vx_images/01-Calculadora-de-IVA.png)
 
+---
+
+## Building on Debian 12 (Recommended for Linux Releases)
+
+To maximize compatibility with Debian-based distributions, we recommend building Linux binaries on Debian 12 (Bookworm) or MX Linux 23.
+
+### Why Debian 12?
+
+PyInstaller bundles the Python interpreter and links against system libraries available on the build machine. If the application is built on a newer distribution (for example Ubuntu 24.04, Ubuntu 26.04, Fedora 40+, etc.), the generated executable may require newer versions of GLIBC that are not available on older systems.
+
+Typical error:
+
+```text
+Failed to load Python shared library ...
+GLIBC_2.38 not found
+```
+
+Building on Debian 12 avoids this issue because Debian 12 ships with GLIBC 2.36, which is compatible with many current Linux distributions.
+
+### Install dependencies
+
+```bash
+sudo apt update
+
+sudo apt install -y \
+    python3 \
+    python3-venv \
+    python3-pip \
+    pyqt6-dev-tools
+```
+
+### Create a virtual environment
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+
+### Install Python requirements
+
+```bash
+pip install --upgrade pip
+pip install -r build/requirements-linux.txt
+```
+
+### Build the application
+
+```bash
+chmod +x build/build_linux.sh
+./build/build_linux.sh
+```
+
+The executable will be generated in:
+
+```text
+build/dist/LucioIVACalculator
+```
+
+### Verify compatibility
+
+After building, you can inspect the GLIBC requirements:
+
+```bash
+strings build/dist/LucioIVACalculator | grep GLIBC_
+```
+
+The generated binary should not require a newer GLIBC version than the one available on Debian 12.
+
+### Recommended build environments
+
+* Debian 12 (Bookworm)
+* MX Linux 23
+* Debian 12 Docker container
+* Debian 12 virtual machine
+
+Avoid building release binaries on very recent distributions if you want compatibility with older Linux systems.
+
+---
+
 ## Configuration
 
 The app stores its preferences in an INI file inside the user's configuration folder:
