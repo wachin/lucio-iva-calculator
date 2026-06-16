@@ -388,11 +388,11 @@ Mini checklist for creating a GitHub release:
 docs/github_release_checklist_en.md
 ```
 
-To publish a version, update `VERSION`, create a tag with the format `v0.1.0`, and push it to GitHub:
+To publish a version, update `VERSION`, create a tag with the format `v0.1.2`, and push it to GitHub:
 
 ```bash
-git tag v0.1.0
-git push origin v0.1.0
+git tag v0.1.2
+git push origin v0.1.2
 ```
 
 The workflow creates a release with the Windows, Linux, and macOS artifacts.
