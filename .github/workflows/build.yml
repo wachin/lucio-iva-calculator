@@ -257,6 +257,7 @@ jobs:
           path: lucio-iva-linux
 
       - name: Locate Linux release archive
+        id: locate_linux_archive
         run: |
           linux_archive="$(find lucio-iva-linux -type f -name "LucioIVACalculator-${APP_VERSION}-linux.tar.gz" | head -n 1)"
           if [[ -z "$linux_archive" ]]; then
@@ -264,7 +265,7 @@ jobs:
             find lucio-iva-linux -maxdepth 4 -type f -print >&2 || true
             exit 1
           fi
-          echo "LINUX_RELEASE_ARCHIVE=$linux_archive" >> $GITHUB_ENV
+          echo "path=$linux_archive" >> $GITHUB_OUTPUT
 
       - name: Get macOS app
         uses: actions/download-artifact@v7
@@ -280,7 +281,7 @@ jobs:
           prerelease: false
           files: |
             lucio-iva-windows/LucioIVACalculator-${{ env.APP_VERSION }}-setup.exe
-            ${{ env.LINUX_RELEASE_ARCHIVE }}
+            ${{ steps.locate_linux_archive.outputs.path }}
             lucio-iva-macos/LucioIVACalculator-${{ env.APP_VERSION }}-macOS-x64.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
