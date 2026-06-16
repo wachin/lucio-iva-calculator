@@ -12,6 +12,7 @@ New-Item -ItemType Directory -Force -Path $distDir, $tmpDir, $outputDir | Out-Nu
 
 & pyinstaller -w -D -y `
   --name LucioIVACalculator `
+  --noupx `
   --icon "$workspaceRoot\assets\app-icon.ico" `
   --hidden-import=PyQt6.QtCore `
   --hidden-import=PyQt6.QtGui `

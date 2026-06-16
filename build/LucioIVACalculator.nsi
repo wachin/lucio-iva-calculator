@@ -21,6 +21,7 @@ Caption "${APP_NAME}"
 OutFile "${INSTALLER_NAME}"
 BrandingText "${APP_NAME}"
 XPStyle on
+RequestExecutionLevel user
 InstallDir "$LOCALAPPDATA\Programs\${APP_DIR}"
 Icon "app-icon.ico"
 UninstallIcon "app-icon.ico"
