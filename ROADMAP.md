@@ -11,4 +11,5 @@
 - [x] Review country and rate labels so the internal model remains stable while the UI becomes English-first.
 - [x] Review local help content and decide whether English becomes the source version there as well.
 - [x] Rebuild or realign translation files after the source-language migration.
+- [x] Remove obsolete Qt translation entries (`vanished` / `obsolete`) after the source-language migration.
 - [x] Run verification passes and update this roadmap with what was completed.

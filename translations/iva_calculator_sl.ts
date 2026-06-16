@@ -1,4 +1,5 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
 <TS version="2.1" language="sl" sourcelanguage="en">
   <context>
     <name>AboutDialog</name>
@@ -21,10 +22,6 @@
       <location filename="../main.py" line="856" />
       <source>&lt;p&gt;&lt;b&gt;License&lt;/b&gt;&lt;br&gt;GNU GPL v3&lt;/p&gt;&lt;p&gt;&lt;b&gt;Technologies used&lt;/b&gt;&lt;br&gt;Python, PyQt6, Qt Linguist, QtSvg&lt;/p&gt;&lt;p&gt;Desktop VAT calculator with country rates, custom rates, numeric formats, themes, interface sizes, and internationalization.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Website&lt;/b&gt;&lt;br&gt;&lt;a href="https://wachin.github.io/lucio-iva-calculator/"&gt;https://wachin.github.io/lucio-iva-calculator/&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Jipijapa, Manabí, Ecuador&lt;/p&gt;</source>
       <translation>&lt;p&gt;&lt;b&gt;Licenca&lt;/b&gt;&lt;br&gt;GNU GPL v3&lt;/p&gt;&lt;p&gt;&lt;b&gt;Uporabljene tehnologije&lt;/b&gt;&lt;br&gt;Python, PyQt6, Qt Linguist, QtSvg&lt;/p&gt;&lt;p&gt;Namizni kalkulator DDV s stopnjami po državah, meri po meri, številskimi oblikami, temami, velikostmi vmesnika in internacionalizacijo.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Spletno mesto&lt;/b&gt;&lt;br&gt;&lt;a href="https://wachin.github.io/lucio-iva-calculator/"&gt;https://wachin.github.io/lucio-iva-calculator/&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Jipijapa, Manabí, Ecuador&lt;/p&gt;</translation>
-    </message>
-    <message>
-      <source>&lt;h2&gt;Calculadora de IVA&lt;/h2&gt;&lt;p&gt;&lt;b&gt;Desarrolladores&lt;/b&gt;&lt;/p&gt;&lt;p&gt;© 2026 Washington Indacochea Delgado&lt;br&gt;&lt;a href="mailto:linuxfrontier@proton.me"&gt;linuxfrontier@proton.me&lt;/a&gt;&lt;/p&gt;&lt;p&gt;© 2026 Joseph Lucio Guerrero&lt;br&gt;&lt;a href="mailto:josephsteveng@gmail.com"&gt;josephsteveng@gmail.com&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Licencia&lt;/b&gt;&lt;br&gt;GNU GPL v3&lt;/p&gt;&lt;p&gt;&lt;b&gt;Tecnologías usadas&lt;/b&gt;&lt;br&gt;Python, PyQt6, Qt Linguist, QtSvg&lt;/p&gt;&lt;p&gt;Calculadora de IVA de escritorio con tasas por país, tasas personalizadas, formatos numéricos, temas, tamaños de interfaz e internacionalización.&lt;/p&gt;&lt;p&gt;Jipijapa, Manabí, Ecuador&lt;/p&gt;</source>
-      <translation type="vanished">&lt;h2&gt;Kalkulator DDV&lt;/h2&gt;&lt;p&gt;&lt;b&gt;Razvijalci&lt;/b&gt;&lt;/p&gt;&lt;p&gt;© 2026 Washington Indacochea Delgado&lt;br&gt;&lt;a href="mailto:linuxfrontier@proton.me"&gt;linuxfrontier@proton.me&lt;/a&gt;&lt;/p&gt;&lt;p&gt;© 2026 Joseph Lucio Guerrero&lt;br&gt;&lt;a href="mailto:josephsteveng@gmail.com"&gt;josephsteveng@gmail.com&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Licenca&lt;/b&gt;&lt;br&gt;GNU GPL v3&lt;/p&gt;&lt;p&gt;&lt;b&gt;Uporabljene tehnologije&lt;/b&gt;&lt;br&gt;Python, PyQt6, Qt Linguist, QtSvg&lt;/p&gt;&lt;p&gt;Namizni kalkulator DDV s stopnjami po državah, meri po meri, številskimi oblikami, temami, velikostmi vmesnika in internacionalizacijo.&lt;/p&gt;&lt;p&gt;Jipijapa, Manabí, Ecuador&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -375,34 +372,6 @@
       <location filename="../main.py" line="1192" />
       <source>Very large</source>
       <translation>Very large</translation>
-    </message>
-    <message>
-      <source>Keyboard Shortcuts</source>
-      <translation type="vanished">Bliznjice na tipkovnici</translation>
-    </message>
-    <message>
-      <source>Type numbers</source>
-      <translation type="vanished">Type numbers</translation>
-    </message>
-    <message>
-      <source>Type decimal separator</source>
-      <translation type="vanished">Type decimal separator</translation>
-    </message>
-    <message>
-      <source>Delete the last digit</source>
-      <translation type="vanished">Delete the last digit</translation>
-    </message>
-    <message>
-      <source>Clear everything</source>
-      <translation type="vanished">Clear everything</translation>
-    </message>
-    <message>
-      <source>Switch to the next value</source>
-      <translation type="vanished">Switch to the next value</translation>
-    </message>
-    <message>
-      <source>Switch to the previous value</source>
-      <translation type="vanished">Switch to the previous value</translation>
     </message>
   </context>
 </TS>
