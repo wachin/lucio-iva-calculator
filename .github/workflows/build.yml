@@ -133,7 +133,9 @@ jobs:
         uses: actions/upload-artifact@v6
         with:
           name: lucio-iva-windows
-          path: build/output/LucioIVACalculator-${{ env.APP_VERSION }}-setup.exe
+          path: |
+            build/output/LucioIVACalculator-${{ env.APP_VERSION }}-setup.exe
+            build/output/LucioIVACalculator-${{ env.APP_VERSION }}-Windows-x64-portable.zip
           retention-days: 7
 
   test_windows:
@@ -170,6 +172,20 @@ jobs:
         shell: powershell
         run: |
           & "$env:GITHUB_WORKSPACE\installed\LucioIVACalculator\LucioIVACalculator.exe" --pyinstaller-test
+          if ($LASTEXITCODE -ne 0) {
+            exit $LASTEXITCODE
+          }
+
+      - name: Test Windows portable exe
+        shell: powershell
+        run: |
+          $portableZip = Resolve-Path ".\lucio-iva-windows\LucioIVACalculator-${env:APP_VERSION}-Windows-x64-portable.zip"
+          $portableDir = Join-Path $env:GITHUB_WORKSPACE "portable"
+          if (Test-Path $portableDir) {
+            Remove-Item $portableDir -Recurse -Force
+          }
+          Expand-Archive -Path $portableZip -DestinationPath $portableDir
+          & "$portableDir\LucioIVACalculator\LucioIVACalculator.exe" --pyinstaller-test
           if ($LASTEXITCODE -ne 0) {
             exit $LASTEXITCODE
           }
@@ -281,6 +297,7 @@ jobs:
           prerelease: false
           files: |
             lucio-iva-windows/LucioIVACalculator-${{ env.APP_VERSION }}-setup.exe
+            lucio-iva-windows/LucioIVACalculator-${{ env.APP_VERSION }}-Windows-x64-portable.zip
             ${{ steps.locate_linux_archive.outputs.path }}
             lucio-iva-macos/LucioIVACalculator-${{ env.APP_VERSION }}-macOS-x64.zip
         env:

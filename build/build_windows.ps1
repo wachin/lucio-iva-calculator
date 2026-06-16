@@ -32,6 +32,13 @@ Copy-Item "$workspaceRoot\assets\nsis-welcome.bmp" "$distDir\" -Force
 Copy-Item "$workspaceRoot\assets\nsis-header.bmp" "$distDir\" -Force
 $version = Get-Content "$workspaceRoot\VERSION" -Raw
 $version = $version.Trim()
+
+$portableZipPath = Join-Path $outputDir "LucioIVACalculator-$version-Windows-x64-portable.zip"
+if (Test-Path $portableZipPath) {
+    Remove-Item $portableZipPath -Force
+}
+Compress-Archive -Path "$distDir\LucioIVACalculator", "$distDir\LICENSE" -DestinationPath $portableZipPath
+
 $nsiContent = Get-Content "$workspaceRoot\build\LucioIVACalculator.nsi" -Raw
 $nsiContent = $nsiContent.Replace('!define VERSION "0.1.0.0"', "!define VERSION `"$version.0`"")
 $nsiContent = $nsiContent.Replace('!define INSTALLER_NAME "LucioIVACalculator-0.1.0-setup.exe"', "!define INSTALLER_NAME `"LucioIVACalculator-$version-setup.exe`"")
@@ -45,9 +52,5 @@ if (Test-Path $makensis) {
     Move-Item "LucioIVACalculator-*-setup.exe" "$outputDir" -Force
     Pop-Location
 } else {
-    $zipPath = Join-Path $outputDir "LucioIVACalculator-$version-Windows-x64.zip"
-    if (Test-Path $zipPath) {
-        Remove-Item $zipPath -Force
-    }
-    Compress-Archive -Path "$distDir\LucioIVACalculator", "$distDir\LICENSE" -DestinationPath $zipPath
+    Write-Warning "NSIS was not found. Portable ZIP was created, but the installer was not built."
 }
