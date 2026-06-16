@@ -1,0 +1,109 @@
+name: Build Lucio IVA Calculator with Nuitka
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - test-nuitka
+
+permissions:
+  contents: read
+
+jobs:
+  build_windows_nuitka:
+    name: Windows Nuitka Build
+    runs-on: windows-2025
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Get version number
+        run: echo "APP_VERSION=$(Get-Content VERSION)" >> $env:GITHUB_ENV
+
+      - name: Python setup
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          architecture: "x64"
+
+      - name: Install NSIS
+        run: choco install nsis -y
+
+      - name: Install Qt translation tools
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: "6.7.3"
+          host: "windows"
+          target: "desktop"
+          arch: "win64_msvc2019_64"
+          cache: true
+
+      - name: Install pip modules
+        run: pip install -r build/requirements-windows-nuitka.txt
+
+      - name: Run unit tests
+        run: python -m unittest discover -s tests
+
+      - name: Build with Nuitka
+        run: .\build\build_windows_nuitka.ps1
+
+      - name: Store Windows Nuitka artifacts
+        uses: actions/upload-artifact@v6
+        with:
+          name: lucio-iva-windows-nuitka
+          path: |
+            build/output/LucioIVACalculator-${{ env.APP_VERSION }}-nuitka-setup.exe
+            build/output/LucioIVACalculator-${{ env.APP_VERSION }}-Windows-x64-nuitka-portable.zip
+          retention-days: 7
+
+  test_windows_nuitka:
+    needs: build_windows_nuitka
+    name: Windows Nuitka Smoke Test
+    runs-on: windows-2025
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Get version number
+        run: echo "APP_VERSION=$(Get-Content VERSION)" >> $env:GITHUB_ENV
+
+      - name: Get Windows Nuitka artifacts
+        uses: actions/download-artifact@v7
+        with:
+          name: lucio-iva-windows-nuitka
+          path: lucio-iva-windows-nuitka
+
+      - name: Install Windows Nuitka app
+        shell: powershell
+        run: |
+          $installer = Resolve-Path ".\lucio-iva-windows-nuitka\LucioIVACalculator-${env:APP_VERSION}-nuitka-setup.exe"
+          $installDir = Join-Path $env:GITHUB_WORKSPACE "installed-nuitka"
+          if (Test-Path $installDir) {
+            Remove-Item $installDir -Recurse -Force
+          }
+          $process = Start-Process -FilePath $installer -ArgumentList "/S", "/D=$installDir" -Wait -PassThru
+          if ($process.ExitCode -ne 0) {
+            exit $process.ExitCode
+          }
+
+      - name: Test installed Windows Nuitka exe
+        shell: powershell
+        run: |
+          & "$env:GITHUB_WORKSPACE\installed-nuitka\LucioIVACalculator\LucioIVACalculator.exe" --pyinstaller-test
+          if ($LASTEXITCODE -ne 0) {
+            exit $LASTEXITCODE
+          }
+
+      - name: Test Windows Nuitka portable exe
+        shell: powershell
+        run: |
+          $portableZip = Resolve-Path ".\lucio-iva-windows-nuitka\LucioIVACalculator-${env:APP_VERSION}-Windows-x64-nuitka-portable.zip"
+          $portableDir = Join-Path $env:GITHUB_WORKSPACE "portable-nuitka"
+          if (Test-Path $portableDir) {
+            Remove-Item $portableDir -Recurse -Force
+          }
+          Expand-Archive -Path $portableZip -DestinationPath $portableDir
+          & "$portableDir\LucioIVACalculator\LucioIVACalculator.exe" --pyinstaller-test
+          if ($LASTEXITCODE -ne 0) {
+            exit $LASTEXITCODE
+          }
