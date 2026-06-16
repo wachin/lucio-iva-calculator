@@ -11,9 +11,15 @@ icon_path="$workspace_root/assets/app-icon.ico"
 desktop_file="$workspace_root/build/LucioIVACalculator.desktop"
 dist_binary="$dist_dir/$app_name"
 version="$(tr -d '\r\n' < "$workspace_root/VERSION")"
-linux_archive="$output_dir/${app_name}-${version}-linux.tar.gz"
+build_variant="${1:-}"
+linux_package_suffix="${LINUX_PACKAGE_SUFFIX:-linux}"
+if [[ -n "$build_variant" ]]; then
+    linux_package_suffix="linux_${build_variant}"
+fi
+linux_archive="$output_dir/${app_name}-${version}-${linux_package_suffix}.tar.gz"
 
 echo "Workspace root is ${workspace_root}"
+echo "Linux package suffix is ${linux_package_suffix}"
 mkdir -p "$dist_dir" "$tmp_dir" "$output_dir"
 
 if command -v lrelease >/dev/null 2>&1; then

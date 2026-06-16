@@ -229,6 +229,27 @@ The executable will be generated in:
 build/dist/LucioIVACalculator
 ```
 
+The Linux release archive will be generated in:
+
+```text
+build/output/LucioIVACalculator-<version>-linux.tar.gz
+```
+
+For local Debian 12 builds intended to distinguish the package from newer-distribution Linux builds, you can pass `debian12` as an argument:
+
+```bash
+echo 0.1.1 > VERSION
+./build/build_linux.sh debian12
+```
+
+That produces:
+
+```text
+build/output/LucioIVACalculator-0.1.1-linux_debian12.tar.gz
+```
+
+This is useful when you want to keep the standard `-linux.tar.gz` name for GitHub Actions or modern Linux builds, while generating a clearly labeled Debian 12 compatible package locally.
+
 ### Verify compatibility
 
 After building, you can inspect the GLIBC requirements:

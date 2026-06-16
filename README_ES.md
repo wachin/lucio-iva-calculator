@@ -227,6 +227,27 @@ El ejecutable se generará en:
 build/dist/LucioIVACalculator
 ```
 
+El archivo comprimido para la versión Linux se generará en:
+
+```text
+build/output/LucioIVACalculator-<version>-linux.tar.gz
+```
+
+Para compilaciones locales hechas específicamente en Debian 12, si desea diferenciar ese paquete de otras compilaciones Linux hechas en distribuciones más recientes, puede pasar `debian12` como argumento:
+
+```bash
+echo 0.1.1 > VERSION
+./build/build_linux.sh debian12
+```
+
+Eso producirá:
+
+```text
+build/output/LucioIVACalculator-0.1.1-linux_debian12.tar.gz
+```
+
+Esto resulta útil cuando desea conservar el nombre estándar `-linux.tar.gz` para GitHub Actions o para compilaciones Linux modernas, pero generar localmente un paquete claramente identificado como compatible con Debian 12.
+
 ### Verificar la compatibilidad
 
 Después de compilar, puede comprobar las dependencias GLIBC con:
