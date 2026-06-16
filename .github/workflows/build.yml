@@ -91,8 +91,8 @@ jobs:
 
       - name: Test Linux binary
         run: |
-          chmod 770 lucio-iva-linux/LucioIVACalculator
-          ./lucio-iva-linux/LucioIVACalculator --pyinstaller-test
+          chmod 770 lucio-iva-linux/build/dist/LucioIVACalculator
+          ./lucio-iva-linux/build/dist/LucioIVACalculator --pyinstaller-test
 
   build_windows:
     name: Windows Build
@@ -260,7 +260,7 @@ jobs:
           prerelease: false
           files: |
             lucio-iva-windows/LucioIVACalculator-${{ env.APP_VERSION }}-setup.exe
-            lucio-iva-linux/LucioIVACalculator-${{ env.APP_VERSION }}-linux.tar.gz
+            lucio-iva-linux/build/output/LucioIVACalculator-${{ env.APP_VERSION }}-linux.tar.gz
             lucio-iva-macos/LucioIVACalculator-${{ env.APP_VERSION }}-macOS-x64.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
