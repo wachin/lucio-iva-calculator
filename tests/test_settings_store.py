@@ -30,6 +30,22 @@ class AppSettingsTest(unittest.TestCase):
         self.assertEqual(default_country_for_language("pt"), "Portugal")
         self.assertEqual(rate_by_country_name("Alemania").rate, 19)
 
+    def test_geometry_values_round_trip(self):
+        settings_path = Path(__file__).parent / "tmp" / "Lucio" / "Geometry.ini"
+        settings = AppSettings(settings_path)
+        settings.setValue("window_x", 120)
+        settings.setValue("window_y", 80)
+        settings.setValue("window_width", 360)
+        settings.setValue("window_height", 640)
+        settings.sync()
+
+        loaded = AppSettings(settings_path)
+
+        self.assertEqual(int(loaded.value("window_x")), 120)
+        self.assertEqual(int(loaded.value("window_y")), 80)
+        self.assertEqual(int(loaded.value("window_width")), 360)
+        self.assertEqual(int(loaded.value("window_height")), 640)
+
 
 if __name__ == "__main__":
     unittest.main()

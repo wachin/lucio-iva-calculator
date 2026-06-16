@@ -15,7 +15,7 @@ except ImportError:
     winreg = None
 
 from PyQt6.QtCore import QEvent, QTimer, Qt, QLocale, QSettings, QSize, QTranslator, QUrl
-from PyQt6.QtGui import QAction, QFont, QFontDatabase, QIcon, QKeySequence, QPixmap
+from PyQt6.QtGui import QAction, QFont, QFontDatabase, QIcon, QKeySequence, QPainter, QPainterPath, QPixmap
 from PyQt6.QtWidgets import (
     QApplication,
     QCheckBox,
@@ -300,6 +300,10 @@ def translations_dir() -> Path:
 
 def app_icon_path() -> Path:
     return application_root() / "assets" / "app-icon.svg"
+
+
+def photos_dir() -> Path:
+    return application_root() / "assets" / "Photos"
 
 
 def docs_dir() -> Path:
@@ -648,12 +652,14 @@ class AboutDialog(QDialog):
         super().__init__(parent)
         self.setWindowTitle(self.tr("Acerca de..."))
         self.setWindowIcon(QIcon(str(app_icon_path())))
-        self.setMinimumSize(620, 380)
+        self.setMinimumSize(780, 520)
 
         layout = QHBoxLayout(self)
         layout.setContentsMargins(24, 24, 24, 24)
         layout.setSpacing(24)
 
+        left = QVBoxLayout()
+        left.setSpacing(14)
         icon_label = QLabel()
         icon_label.setObjectName("aboutIcon")
         icon_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -664,42 +670,121 @@ class AboutDialog(QDialog):
             Qt.AspectRatioMode.KeepAspectRatio,
             Qt.TransformationMode.SmoothTransformation,
         ))
+        title = QLabel(self.tr("Calculadora de IVA"))
+        title.setObjectName("aboutAppTitle")
+        title.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        left.addWidget(icon_label)
+        left.addWidget(title)
+        left.addStretch()
 
-        text = QLabel()
-        text.setObjectName("aboutText")
-        text.setTextFormat(Qt.TextFormat.RichText)
-        text.setOpenExternalLinks(True)
-        text.setWordWrap(True)
-        about_html = self.tr(
-            "<h2>Calculadora de IVA</h2>"
-            "<p><b>Desarrolladores</b></p>"
-            "<p>© 2026 Washington Indacochea Delgado<br>"
-            '<a href="mailto:linuxfrontier@proton.me">linuxfrontier@proton.me</a><br>'
-            '<a href="https://www.facebook.com/wachin.id">facebook.com/wachin.id</a></p>'
-            "<p>© 2026 Joseph Lucio Guerrero<br>"
-            '<a href="mailto:josephsteveng@gmail.com">josephsteveng@gmail.com</a><br>'
-            '<a href="https://www.facebook.com/jose.guerrero.718689">'
-            "facebook.com/jose.guerrero.718689</a></p>"
-            "<p><b>Licencia</b><br>GNU GPL v3</p>"
-            "<p><b>Tecnologías usadas</b><br>Python, PyQt6, Qt Linguist, QtSvg</p>"
-            "<p>Calculadora de IVA de escritorio con tasas por país, tasas personalizadas, "
-            "formatos numéricos, temas, tamaños de interfaz e internacionalización.</p>"
-            '<p><b>Sitio web</b><br><a href="https://wachin.github.io/lucio-iva-calculator/">'
-            "https://wachin.github.io/lucio-iva-calculator/</a></p>"
-            "<p>Jipijapa, Manabí, Ecuador</p>"
+        right = QVBoxLayout()
+        right.setSpacing(12)
+        developers_title = QLabel(self.tr("Desarrolladores"))
+        developers_title.setObjectName("dialogTitle")
+        right.addWidget(developers_title)
+        right.addWidget(
+            self.developer_card(
+                "Washington Indacochea Delgado",
+                "linuxfrontier@proton.me",
+                "https://www.facebook.com/wachin.id",
+                photos_dir() / "Washington_Indacochea_FB_IMG.jpg",
+            )
         )
-        link_style = 'style="color:#8ec5ff; text-decoration: underline; font-weight: 600;"'
-        text.setText(about_html.replace("<a href=", f"<a {link_style} href="))
+        right.addWidget(
+            self.developer_card(
+                "Joseph Lucio Guerrero",
+                "josephsteveng@gmail.com",
+                "https://www.facebook.com/jose.guerrero.718689",
+                photos_dir() / "Joseph_Lucio_FB_IMG.jpg",
+            )
+        )
+
+        details = QLabel()
+        details.setObjectName("aboutText")
+        details.setTextFormat(Qt.TextFormat.RichText)
+        details.setOpenExternalLinks(True)
+        details.setWordWrap(True)
+        details.setText(
+            self.styled_links(
+                self.tr(
+                    "<p><b>Licencia</b><br>GNU GPL v3</p>"
+                    "<p><b>Tecnologías usadas</b><br>Python, PyQt6, Qt Linguist, QtSvg</p>"
+                    "<p>Calculadora de IVA de escritorio con tasas por país, tasas personalizadas, "
+                    "formatos numéricos, temas, tamaños de interfaz e internacionalización.</p>"
+                    '<p><b>Sitio web</b><br><a href="https://wachin.github.io/lucio-iva-calculator/">'
+                    "https://wachin.github.io/lucio-iva-calculator/</a></p>"
+                    "<p>Jipijapa, Manabí, Ecuador</p>"
+                )
+            )
+        )
+        right.addWidget(details, 1)
 
         buttons = QDialogButtonBox(QDialogButtonBox.StandardButton.Close)
         buttons.rejected.connect(self.reject)
 
-        right = QVBoxLayout()
-        right.addWidget(text, 1)
         right.addWidget(buttons)
 
-        layout.addWidget(icon_label)
+        layout.addLayout(left)
         layout.addLayout(right, 1)
+
+    def developer_card(self, name: str, email: str, facebook: str, photo_path: Path) -> QFrame:
+        card = QFrame()
+        card.setObjectName("developerCard")
+        layout = QHBoxLayout(card)
+        layout.setContentsMargins(12, 12, 12, 12)
+        layout.setSpacing(14)
+
+        photo = QLabel()
+        photo.setObjectName("developerPhoto")
+        photo.setFixedSize(104, 104)
+        photo.setPixmap(self.rounded_photo(photo_path, 104, 12))
+        photo.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        info = QLabel()
+        info.setObjectName("aboutText")
+        info.setTextFormat(Qt.TextFormat.RichText)
+        info.setOpenExternalLinks(True)
+        info.setWordWrap(True)
+        info.setText(
+            self.styled_links(
+                f"<p><b>© 2026 {name}</b><br>"
+                f'<a href="mailto:{email}">{email}</a><br>'
+                f'<a href="{facebook}">{facebook.replace("https://www.", "")}</a></p>'
+            )
+        )
+
+        layout.addWidget(photo)
+        layout.addWidget(info, 1)
+        return card
+
+    def styled_links(self, html: str) -> str:
+        link_style = 'style="color:#8ec5ff; text-decoration: underline; font-weight: 600;"'
+        return html.replace("<a href=", f"<a {link_style} href=")
+
+    def rounded_photo(self, photo_path: Path, size: int, radius: int) -> QPixmap:
+        source = QPixmap(str(photo_path))
+        if source.isNull():
+            source = QPixmap(size, size)
+            source.fill(Qt.GlobalColor.transparent)
+        scaled_photo = source.scaled(
+            size,
+            size,
+            Qt.AspectRatioMode.KeepAspectRatioByExpanding,
+            Qt.TransformationMode.SmoothTransformation,
+        )
+        x = max(0, (scaled_photo.width() - size) // 2)
+        y = max(0, (scaled_photo.height() - size) // 2)
+        cropped = scaled_photo.copy(x, y, size, size)
+        result = QPixmap(size, size)
+        result.fill(Qt.GlobalColor.transparent)
+        painter = QPainter(result)
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
+        path = QPainterPath()
+        path.addRoundedRect(0, 0, size, size, radius, radius)
+        painter.setClipPath(path)
+        painter.drawPixmap(0, 0, cropped)
+        painter.end()
+        return result
 
 
 class HelpDialog(QDialog):
@@ -955,7 +1040,7 @@ class CalculatorWindow(QMainWindow):
         self.apply_app_font()
         self.apply_ui_size(resize_window=False)
         self.apply_theme()
-        self.resize_to_available_screen()
+        self.restore_or_place_window()
         if should_apply_language_rate:
             self.apply_default_rate_for_language()
         self.sync_from_active()
@@ -979,6 +1064,64 @@ class CalculatorWindow(QMainWindow):
         width = min(int(preset["width"]), max(280, available.width() - 48))
         height = min(int(preset["height"]), max(460, available.height() - 48))
         self.resize(width, height)
+
+    def restore_or_place_window(self):
+        if self.restore_saved_geometry():
+            return
+        self.resize_to_available_screen()
+        self.center_on_screen()
+
+    def restore_saved_geometry(self) -> bool:
+        try:
+            x = int(self.settings.value("window_x"))
+            y = int(self.settings.value("window_y"))
+            width = int(self.settings.value("window_width"))
+            height = int(self.settings.value("window_height"))
+        except (TypeError, ValueError):
+            return False
+        if width <= 0 or height <= 0:
+            return False
+        rect = self.clamp_window_geometry(x, y, width, height)
+        self.setGeometry(rect[0], rect[1], rect[2], rect[3])
+        return True
+
+    def clamp_window_geometry(self, x: int, y: int, width: int, height: int) -> tuple[int, int, int, int]:
+        screens = QApplication.screens()
+        if not screens:
+            return x, y, width, height
+        screen = next(
+            (
+                candidate
+                for candidate in screens
+                if candidate.availableGeometry().adjusted(-40, -40, 40, 40).contains(x, y)
+            ),
+            QApplication.primaryScreen() or screens[0],
+        )
+        available = screen.availableGeometry()
+        width = min(max(width, self.minimumWidth()), available.width())
+        height = min(max(height, self.minimumHeight()), available.height())
+        x = min(max(x, available.left()), available.right() - width + 1)
+        y = min(max(y, available.top()), available.bottom() - height + 1)
+        return x, y, width, height
+
+    def center_on_screen(self):
+        screen = self.screen() or QApplication.primaryScreen()
+        if screen is None:
+            return
+        available = screen.availableGeometry()
+        frame = self.frameGeometry()
+        frame.moveCenter(available.center())
+        self.move(frame.topLeft())
+
+    def save_window_geometry(self):
+        if self.isMinimized():
+            return
+        geometry = self.normalGeometry() if self.isMaximized() else self.geometry()
+        self.settings.setValue("window_x", geometry.x())
+        self.settings.setValue("window_y", geometry.y())
+        self.settings.setValue("window_width", geometry.width())
+        self.settings.setValue("window_height", geometry.height())
+        self.settings.sync()
 
     def apply_app_font(self):
         app = QApplication.instance()
@@ -1440,6 +1583,8 @@ class CalculatorWindow(QMainWindow):
         preview_text = "#f7f7f7" if dark_theme else "rgba(0,0,0,0.75)"
         about_icon_background = "#333333" if dark_theme else "#f7f7f7"
         about_icon_border = "#555555" if dark_theme else "#dddddd"
+        developer_card_background = "#333333" if dark_theme else "#ffffff"
+        developer_card_border = "#555555" if dark_theme else "#dddddd"
         keypad_background = "#191919" if dark_theme else "#f7f7f7"
         number_key_background = "#323232" if dark_theme else "#ffffff"
         number_key_text = "#ffffff" if dark_theme else "#111111"
@@ -1449,7 +1594,7 @@ class CalculatorWindow(QMainWindow):
         operation_hover_background = "#4a4a4a" if dark_theme else "#d8d8d8"
         ui_font_family = css_font_family(effective_font_family(self.font_family))
         factor = self.ui_scale
-        display_title_font = scaled(14, factor)
+        display_title_font = scaled(17, factor)
         display_value_font = scaled(36, factor)
         key_font = scaled(27, factor)
         danger_font = scaled(24, factor)
@@ -1636,9 +1781,23 @@ class CalculatorWindow(QMainWindow):
                 border-radius: 8px;
                 padding: 16px;
             }}
+            #aboutAppTitle {{
+                color: {dialog_text};
+                font-size: {scaled(18, factor)}px;
+                font-weight: 700;
+            }}
+            #developerCard {{
+                background: {developer_card_background};
+                border: 1px solid {developer_card_border};
+                border-radius: 8px;
+            }}
+            #developerPhoto {{
+                border: 2px solid {developer_card_border};
+                border-radius: 12px;
+            }}
             #aboutText {{
                 color: {dialog_text};
-                font-size: 13px;
+                font-size: {scaled(14, factor)}px;
                 line-height: 1.35;
             }}
             #aboutText a {{
@@ -1653,6 +1812,10 @@ class CalculatorWindow(QMainWindow):
 
     def apply_dialog_window_theme(self, dialog: QDialog):
         set_windows_title_bar_dark(dialog, self.theme_name == "Oscuro")
+
+    def closeEvent(self, event):  # noqa: N802
+        self.save_window_geometry()
+        super().closeEvent(event)
 
 
 def main() -> int:
