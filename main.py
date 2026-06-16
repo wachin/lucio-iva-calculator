@@ -50,12 +50,12 @@ APP_DISPLAY_NAME = "Lucio IVA Calculator"
 CONFIG_FILE_NAME = "IVA Calculator.ini"
 APP_EXECUTABLE_NAME = "LucioIVACalculator"
 LINUX_DESKTOP_FILE_BASENAME = "LucioIVACalculator"
-DEFAULT_LANGUAGE = "es"
+DEFAULT_LANGUAGE = "en"
 DEFAULT_LANGUAGE_SETTING = "system"
 SYSTEM_FONT_SETTING = "system"
 LANGUAGES = {
-    "system": "Sistema",
-    "es": "Español",
+    "system": "System",
+    "es": "Spanish",
     "en": "English",
     "de": "Deutsch",
     "fr": "Français",
@@ -86,37 +86,37 @@ LANGUAGES = {
 }
 LANGUAGE_DEFAULT_COUNTRIES = {
     "es": "Ecuador",
-    "en": "Reino Unido",
-    "de": "Alemania",
-    "fr": "Francia",
-    "it": "Italia",
+    "en": "United Kingdom",
+    "de": "Germany",
+    "fr": "France",
+    "it": "Italy",
     "pt": "Portugal",
-    "nl": "Paises Bajos",
-    "pl": "Polonia",
-    "ro": "Rumania",
+    "nl": "Netherlands",
+    "pl": "Poland",
+    "ro": "Romania",
     "bg": "Bulgaria",
-    "hr": "Croacia",
-    "cs": "Republica Checa",
-    "sk": "Eslovaquia",
-    "sl": "Eslovenia",
+    "hr": "Croatia",
+    "cs": "Czech Republic",
+    "sk": "Slovakia",
+    "sl": "Slovenia",
     "et": "Estonia",
-    "fi": "Finlandia",
-    "sv": "Suecia",
-    "da": "Dinamarca",
-    "el": "Grecia",
-    "hu": "Hungria",
-    "lv": "Letonia",
-    "lt": "Lituania",
+    "fi": "Finland",
+    "sv": "Sweden",
+    "da": "Denmark",
+    "el": "Greece",
+    "hu": "Hungary",
+    "lv": "Latvia",
+    "lt": "Lithuania",
     "mt": "Malta",
-    "no": "Noruega",
-    "ja": "Japon",
-    "ko": "Corea del Sur",
+    "no": "Norway",
+    "ja": "Japan",
+    "ko": "South Korea",
     "zh": "China",
     "hi": "India GST",
 }
 LOCALE_DEFAULT_COUNTRIES = {
     "es_EC": "Ecuador",
-    "es_ES": "Espana",
+    "es_ES": "Spain",
     "es_MX": "Mexico",
     "es_AR": "Argentina",
     "es_CL": "Chile",
@@ -125,46 +125,116 @@ LOCALE_DEFAULT_COUNTRIES = {
     "es_UY": "Uruguay",
     "es_PY": "Paraguay",
     "es_BO": "Bolivia",
-    "pt_BR": "Brasil",
+    "pt_BR": "Brazil",
     "pt_PT": "Portugal",
-    "en_US": "Estados Unidos",
-    "en_GB": "Reino Unido",
+    "en_US": "United States",
+    "en_GB": "United Kingdom",
     "en_CA": "Canada GST",
     "en_AU": "Australia",
-    "en_NZ": "Nueva Zelanda",
-    "fr_FR": "Francia",
+    "en_NZ": "New Zealand",
+    "fr_FR": "France",
     "fr_CA": "Canada GST",
-    "de_DE": "Alemania",
+    "de_DE": "Germany",
     "de_AT": "Austria",
-    "de_CH": "Suiza",
-    "it_IT": "Italia",
-    "it_CH": "Suiza",
-    "nl_NL": "Paises Bajos",
+    "de_CH": "Switzerland",
+    "it_IT": "Italy",
+    "it_CH": "Switzerland",
+    "nl_NL": "Netherlands",
 }
-DEFAULT_UI_SIZE = "Mediano"
+LEGACY_COUNTRY_NAMES = {
+    "Espana": "Spain",
+    "Islas Canarias": "Canary Islands",
+    "Alemania": "Germany",
+    "Austria": "Austria",
+    "Belgica": "Belgium",
+    "Bulgaria": "Bulgaria",
+    "Croacia": "Croatia",
+    "Chipre": "Cyprus",
+    "Dinamarca": "Denmark",
+    "Eslovaquia": "Slovakia",
+    "Eslovenia": "Slovenia",
+    "Estonia": "Estonia",
+    "Finlandia": "Finland",
+    "Francia": "France",
+    "Grecia": "Greece",
+    "Hungria": "Hungary",
+    "Irlanda": "Ireland",
+    "Italia": "Italy",
+    "Letonia": "Latvia",
+    "Lituania": "Lithuania",
+    "Luxemburgo": "Luxembourg",
+    "Malta": "Malta",
+    "Countries Bajos": "Netherlands",
+    "Polonia": "Poland",
+    "Portugal": "Portugal",
+    "Republica Checa": "Czech Republic",
+    "Rumania": "Romania",
+    "Suecia": "Sweden",
+    "Reino Unido": "United Kingdom",
+    "Noruega": "Norway",
+    "Suiza": "Switzerland",
+    "Canada GST": "Canada GST",
+    "Mexico": "Mexico",
+    "Argentina": "Argentina",
+    "Chile": "Chile",
+    "Colombia": "Colombia",
+    "Peru": "Peru",
+    "Brasil": "Brazil",
+    "Uruguay": "Uruguay",
+    "Paraguay": "Paraguay",
+    "Bolivia": "Bolivia",
+    "Estados Unidos": "United States",
+    "Australia": "Australia",
+    "Nueva Zelanda": "New Zealand",
+    "Japon": "Japan",
+    "Corea del Sur": "South Korea",
+    "India GST": "India GST",
+    "China": "China",
+    "Sudafrica": "South Africa",
+}
+LEGACY_THEME_NAMES = {
+    "Rojo": "Red",
+    "Azul": "Blue",
+    "Cian": "Cyan",
+    "Verde azulado": "Teal",
+    "Verde": "Green",
+    "Lima": "Lime",
+    "Ambar": "Amber",
+    "Purpura": "Purple",
+    "Rosa": "Pink",
+    "Oscuro": "Dark",
+}
+LEGACY_UI_SIZE_NAMES = {
+    "Muy pequeno": "Very small",
+    "Pequeno": "Small",
+    "Mediano": "Medium",
+    "Grande": "Large",
+    "Muy grande": "Very large",
+}
+DEFAULT_UI_SIZE = "Medium"
 UI_SIZE_PRESETS = {
-    "Muy pequeno": {"scale": 0.82, "width": 330, "height": 570, "min_width": 290, "min_height": 500},
-    "Pequeno": {"scale": 0.92, "width": 360, "height": 630, "min_width": 310, "min_height": 530},
-    "Mediano": {"scale": 1.0, "width": 392, "height": 690, "min_width": 330, "min_height": 560},
-    "Grande": {"scale": 1.16, "width": 455, "height": 790, "min_width": 380, "min_height": 640},
-    "Muy grande": {"scale": 1.32, "width": 520, "height": 900, "min_width": 430, "min_height": 720},
+    "Very small": {"scale": 0.82, "width": 330, "height": 570, "min_width": 290, "min_height": 500},
+    "Small": {"scale": 0.92, "width": 360, "height": 630, "min_width": 310, "min_height": 530},
+    "Medium": {"scale": 1.0, "width": 392, "height": 690, "min_width": 330, "min_height": 560},
+    "Large": {"scale": 1.16, "width": 455, "height": 790, "min_width": 380, "min_height": 640},
+    "Very large": {"scale": 1.32, "width": 520, "height": 900, "min_width": 430, "min_height": 720},
 }
 KEYBOARD_SHORTCUTS = [
-    ("0-9", "Escribir numeros"),
-    (". / ,", "Escribir separador decimal"),
-    ("+  -  *  /", "Operaciones basicas"),
-    ("Enter", "Calcular operacion pendiente"),
-    ("Backspace / Delete", "Borrar el ultimo digito"),
-    ("Esc", "Limpiar todo"),
-    ("Ctrl+1", "Editar IVA excluido"),
-    ("Ctrl+2", "Editar IVA"),
-    ("Ctrl+3", "Editar IVA incluido"),
-    ("Ctrl+Tab", "Cambiar al siguiente valor"),
-    ("Ctrl+Shift+Tab", "Cambiar al valor anterior"),
-    ("Ctrl+P", "Seleccionar pais"),
-    ("Ctrl+R", "Abrir tasas personalizadas"),
-    ("Ctrl+,", "Abrir configuracion"),
-    ("F1", "Abrir ayuda"),
+    ("0-9", "Enter numbers"),
+    (". / ,", "Enter decimal separator"),
+    ("+  -  *  /", "Basic operations"),
+    ("Enter", "Calculate pending operation"),
+    ("Backspace / Delete", "Delete last digit"),
+    ("Esc", "Clear all"),
+    ("Ctrl+1", "Edit VAT excluded"),
+    ("Ctrl+2", "Edit VAT"),
+    ("Ctrl+3", "Edit VAT included"),
+    ("Ctrl+Tab", "Switch to next value"),
+    ("Ctrl+Shift+Tab", "Switch to previous value"),
+    ("Ctrl+P", "Select country"),
+    ("Ctrl+R", "Open custom rates"),
+    ("Ctrl+,", "Open settings"),
+    ("F1", "Open help"),
 ]
 
 
@@ -238,12 +308,13 @@ class AppSettings:
             with self.path.open("w", encoding="utf-8") as file:
                 parser.write(file)
         except OSError as error:
-            print(f"No se pudo guardar la configuracion en {self.path}: {error}", file=sys.stderr)
+            print(f"Could not save configuration to {self.path}: {error}", file=sys.stderr)
 
 
 def app_settings() -> AppSettings:
     settings = AppSettings(settings_file_path())
     migrate_legacy_settings(settings)
+    normalize_settings_values(settings)
     return settings
 
 
@@ -254,6 +325,34 @@ def migrate_legacy_settings(settings: AppSettings):
     for key in legacy_settings.allKeys():
         settings.setValue(key, legacy_settings.value(key))
     settings.sync()
+
+
+def normalize_settings_values(settings: AppSettings):
+    changed = False
+
+    theme_name = canonical_theme_name(settings.value("theme"))
+    if theme_name != settings.value("theme"):
+        settings.setValue("theme", theme_name)
+        changed = True
+
+    ui_size_name = canonical_ui_size_name(settings.value("ui_size"))
+    if ui_size_name != settings.value("ui_size"):
+        settings.setValue("ui_size", ui_size_name)
+        changed = True
+
+    language_code = settings.value("language")
+    if language_code is not None and language_code not in LANGUAGES:
+        normalized_language = DEFAULT_LANGUAGE_SETTING if language_code == "system" else DEFAULT_LANGUAGE
+        settings.setValue("language", normalized_language)
+        changed = True
+
+    rate_name = canonical_country_name(settings.value("rate_name"))
+    if rate_name != settings.value("rate_name"):
+        settings.setValue("rate_name", rate_name)
+        changed = True
+
+    if changed:
+        settings.sync()
 
 
 def settings_bool(value, default: bool = False) -> bool:
@@ -335,12 +434,10 @@ def docs_dir() -> Path:
 
 def help_file_path(language_code: str) -> Path:
     code = effective_language_code(language_code)
-    if code != "en":
-        code = DEFAULT_LANGUAGE
     help_path = docs_dir() / f"help_{code}.html"
     if help_path.exists():
         return help_path
-    return docs_dir() / "help_es.html"
+    return docs_dir() / "help_en.html"
 
 
 def application_root() -> Path:
@@ -388,11 +485,30 @@ def default_country_for_language(language_code: str) -> str | None:
     return LANGUAGE_DEFAULT_COUNTRIES.get(language_code)
 
 
-def rate_by_country_name(country_name: str | None) -> TaxRate | None:
+def canonical_country_name(country_name: str | None) -> str | None:
     if not country_name:
+        return country_name
+    return LEGACY_COUNTRY_NAMES.get(country_name, country_name)
+
+
+def canonical_theme_name(theme_name: str | None) -> str:
+    if not theme_name:
+        return "Red"
+    return LEGACY_THEME_NAMES.get(theme_name, theme_name)
+
+
+def canonical_ui_size_name(ui_size_name: str | None) -> str:
+    if not ui_size_name:
+        return DEFAULT_UI_SIZE
+    return LEGACY_UI_SIZE_NAMES.get(ui_size_name, ui_size_name)
+
+
+def rate_by_country_name(country_name: str | None) -> TaxRate | None:
+    canonical_name = canonical_country_name(country_name)
+    if not canonical_name:
         return None
     for rate in COUNTRY_RATES:
-        if rate.name == country_name:
+        if rate.name == canonical_name:
             return rate
     return None
 
@@ -422,69 +538,69 @@ class TaxRate:
 
 COUNTRY_RATES = [
     TaxRate("Ecuador", Decimal("15"), "EC"),
-    TaxRate("Espana", Decimal("21"), "ES"),
-    TaxRate("Islas Canarias", Decimal("7"), "IC"),
-    TaxRate("Alemania", Decimal("19"), "DE"),
+    TaxRate("Spain", Decimal("21"), "ES"),
+    TaxRate("Canary Islands", Decimal("7"), "IC"),
+    TaxRate("Germany", Decimal("19"), "DE"),
     TaxRate("Austria", Decimal("20"), "AT"),
-    TaxRate("Belgica", Decimal("21"), "BE"),
+    TaxRate("Belgium", Decimal("21"), "BE"),
     TaxRate("Bulgaria", Decimal("20"), "BG"),
-    TaxRate("Croacia", Decimal("25"), "HR"),
-    TaxRate("Chipre", Decimal("19"), "CY"),
-    TaxRate("Dinamarca", Decimal("25"), "DK"),
-    TaxRate("Eslovaquia", Decimal("20"), "SK"),
-    TaxRate("Eslovenia", Decimal("22"), "SI"),
+    TaxRate("Croatia", Decimal("25"), "HR"),
+    TaxRate("Cyprus", Decimal("19"), "CY"),
+    TaxRate("Denmark", Decimal("25"), "DK"),
+    TaxRate("Slovakia", Decimal("20"), "SK"),
+    TaxRate("Slovenia", Decimal("22"), "SI"),
     TaxRate("Estonia", Decimal("22"), "EE"),
-    TaxRate("Finlandia", Decimal("24"), "FI"),
-    TaxRate("Francia", Decimal("20"), "FR"),
-    TaxRate("Grecia", Decimal("24"), "GR"),
-    TaxRate("Hungria", Decimal("27"), "HU"),
-    TaxRate("Irlanda", Decimal("23"), "IE"),
-    TaxRate("Italia", Decimal("22"), "IT"),
-    TaxRate("Letonia", Decimal("21"), "LV"),
-    TaxRate("Lituania", Decimal("21"), "LT"),
-    TaxRate("Luxemburgo", Decimal("17"), "LU"),
+    TaxRate("Finland", Decimal("24"), "FI"),
+    TaxRate("France", Decimal("20"), "FR"),
+    TaxRate("Greece", Decimal("24"), "GR"),
+    TaxRate("Hungary", Decimal("27"), "HU"),
+    TaxRate("Ireland", Decimal("23"), "IE"),
+    TaxRate("Italy", Decimal("22"), "IT"),
+    TaxRate("Latvia", Decimal("21"), "LV"),
+    TaxRate("Lithuania", Decimal("21"), "LT"),
+    TaxRate("Luxembourg", Decimal("17"), "LU"),
     TaxRate("Malta", Decimal("18"), "MT"),
-    TaxRate("Paises Bajos", Decimal("21"), "NL"),
-    TaxRate("Polonia", Decimal("23"), "PL"),
+    TaxRate("Netherlands", Decimal("21"), "NL"),
+    TaxRate("Poland", Decimal("23"), "PL"),
     TaxRate("Portugal", Decimal("23"), "PT"),
-    TaxRate("Republica Checa", Decimal("21"), "CZ"),
-    TaxRate("Rumania", Decimal("19"), "RO"),
-    TaxRate("Suecia", Decimal("25"), "SE"),
-    TaxRate("Reino Unido", Decimal("20"), "GB"),
-    TaxRate("Noruega", Decimal("25"), "NO"),
-    TaxRate("Suiza", Decimal("8.1"), "CH"),
+    TaxRate("Czech Republic", Decimal("21"), "CZ"),
+    TaxRate("Romania", Decimal("19"), "RO"),
+    TaxRate("Sweden", Decimal("25"), "SE"),
+    TaxRate("United Kingdom", Decimal("20"), "GB"),
+    TaxRate("Norway", Decimal("25"), "NO"),
+    TaxRate("Switzerland", Decimal("8.1"), "CH"),
     TaxRate("Canada GST", Decimal("5"), "CA"),
     TaxRate("Mexico", Decimal("16"), "MX"),
     TaxRate("Argentina", Decimal("21"), "AR"),
     TaxRate("Chile", Decimal("19"), "CL"),
     TaxRate("Colombia", Decimal("19"), "CO"),
     TaxRate("Peru", Decimal("18"), "PE"),
-    TaxRate("Brasil", Decimal("17"), "BR"),
+    TaxRate("Brazil", Decimal("17"), "BR"),
     TaxRate("Uruguay", Decimal("22"), "UY"),
     TaxRate("Paraguay", Decimal("10"), "PY"),
     TaxRate("Bolivia", Decimal("13"), "BO"),
-    TaxRate("Estados Unidos", Decimal("0"), "US"),
+    TaxRate("United States", Decimal("0"), "US"),
     TaxRate("Australia", Decimal("10"), "AU"),
-    TaxRate("Nueva Zelanda", Decimal("15"), "NZ"),
-    TaxRate("Japon", Decimal("10"), "JP"),
-    TaxRate("Corea del Sur", Decimal("10"), "KR"),
+    TaxRate("New Zealand", Decimal("15"), "NZ"),
+    TaxRate("Japan", Decimal("10"), "JP"),
+    TaxRate("South Korea", Decimal("10"), "KR"),
     TaxRate("India GST", Decimal("18"), "IN"),
     TaxRate("China", Decimal("13"), "CN"),
-    TaxRate("Sudafrica", Decimal("15"), "ZA"),
+    TaxRate("South Africa", Decimal("15"), "ZA"),
 ]
 
 THEMES = {
-    "Rojo": "#ef5350",
-    "Azul": "#42a5f5",
+    "Red": "#ef5350",
+    "Blue": "#42a5f5",
     "Indigo": "#7986cb",
-    "Cian": "#4dd0e1",
-    "Verde azulado": "#4db6ac",
-    "Verde": "#81c784",
-    "Lima": "#dce775",
-    "Ambar": "#ffb74d",
-    "Purpura": "#ba68c8",
-    "Rosa": "#f06292",
-    "Oscuro": "#3d3d3d",
+    "Cyan": "#4dd0e1",
+    "Teal": "#4db6ac",
+    "Green": "#81c784",
+    "Lime": "#dce775",
+    "Amber": "#ffb74d",
+    "Purple": "#ba68c8",
+    "Pink": "#f06292",
+    "Dark": "#3d3d3d",
 }
 
 
@@ -590,10 +706,10 @@ class DisplayPanel(QFrame):
 class CountryDialog(QDialog):
     def __init__(self, rates: list[TaxRate], parent=None):
         super().__init__(parent)
-        self.setWindowTitle(self.tr("Paises"))
+        self.setWindowTitle(self.tr("Countries"))
         self.setMinimumSize(430, 560)
         layout = QVBoxLayout(self)
-        title = QLabel(self.tr("Paises"))
+        title = QLabel(self.tr("Countries"))
         title.setObjectName("dialogTitle")
         self.list_widget = QListWidget()
         for rate in rates:
@@ -617,11 +733,11 @@ class CustomRatesDialog(QDialog):
     def __init__(self, rates: list[Decimal], parent=None):
         super().__init__(parent)
         self.rates = rates
-        self.setWindowTitle(self.tr("Tasas personalizadas"))
+        self.setWindowTitle(self.tr("Custom rates"))
         self.setMinimumSize(360, 470)
         layout = QVBoxLayout(self)
         header = QHBoxLayout()
-        title = QLabel(self.tr("Tasas personalizadas"))
+        title = QLabel(self.tr("Custom rates"))
         title.setObjectName("dialogTitle")
         add = QPushButton("+")
         add.setObjectName("roundButton")
@@ -631,7 +747,7 @@ class CustomRatesDialog(QDialog):
         header.addWidget(add)
         self.list_widget = QListWidget()
         self.list_widget.itemDoubleClicked.connect(self.accept)
-        remove = QPushButton(self.tr("Eliminar seleccionada"))
+        remove = QPushButton(self.tr("Delete selected"))
         remove.clicked.connect(self.remove_rate)
         buttons = QDialogButtonBox(QDialogButtonBox.StandardButton.Close | QDialogButtonBox.StandardButton.Ok)
         buttons.accepted.connect(self.accept)
@@ -652,8 +768,8 @@ class CustomRatesDialog(QDialog):
     def add_rate(self):
         value, ok = QInputDialog.getDouble(
             self,
-            self.tr("Nueva tasa"),
-            self.tr("Porcentaje"),
+            self.tr("New rate"),
+            self.tr("Percentage"),
             12.0,
             0.0,
             999.0,
@@ -684,7 +800,7 @@ class AboutDialog(QDialog):
         self.settings = settings
         self._center_on_show = False
         self.setWindowModality(Qt.WindowModality.ApplicationModal)
-        self.setWindowTitle(self.tr("Acerca de..."))
+        self.setWindowTitle(self.tr("About..."))
         self.setWindowIcon(load_app_icon())
         self.setMinimumSize(780, 520)
 
@@ -701,7 +817,7 @@ class AboutDialog(QDialog):
         icon_label.setMinimumWidth(168)
         icon_pixmap = load_app_icon().pixmap(QSize(152, 152))
         icon_label.setPixmap(icon_pixmap)
-        title = QLabel(self.tr("Calculadora de IVA"))
+        title = QLabel(self.tr("VAT Calculator"))
         title.setObjectName("aboutAppTitle")
         title.setAlignment(Qt.AlignmentFlag.AlignCenter)
         left.addWidget(icon_label)
@@ -710,7 +826,7 @@ class AboutDialog(QDialog):
 
         right = QVBoxLayout()
         right.setSpacing(8)
-        developers_title = QLabel(self.tr("Desarrolladores"))
+        developers_title = QLabel(self.tr("Developers"))
         developers_title.setObjectName("dialogTitle")
         right.addWidget(developers_title)
         right.addWidget(
@@ -738,11 +854,11 @@ class AboutDialog(QDialog):
         details.setText(
             self.styled_links(
                 self.tr(
-                    "<p><b>Licencia</b><br>GNU GPL v3</p>"
-                    "<p><b>Tecnologías usadas</b><br>Python, PyQt6, Qt Linguist, QtSvg</p>"
-                    "<p>Calculadora de IVA de escritorio con tasas por país, tasas personalizadas, "
-                    "formatos numéricos, temas, tamaños de interfaz e internacionalización.</p>"
-                    '<p><b>Sitio web</b><br><a href="https://wachin.github.io/lucio-iva-calculator/">'
+                    "<p><b>License</b><br>GNU GPL v3</p>"
+                    "<p><b>Technologies used</b><br>Python, PyQt6, Qt Linguist, QtSvg</p>"
+                    "<p>Desktop VAT calculator with country rates, custom rates, numeric formats, "
+                    "themes, interface sizes, and internationalization.</p>"
+                    '<p><b>Website</b><br><a href="https://wachin.github.io/lucio-iva-calculator/">'
                     "https://wachin.github.io/lucio-iva-calculator/</a></p>"
                     "<p>Jipijapa, Manabí, Ecuador</p>"
                 )
@@ -890,7 +1006,7 @@ class AboutDialog(QDialog):
 class HelpDialog(QDialog):
     def __init__(self, language_code: str, dark_theme: bool = False, parent=None):
         super().__init__(parent)
-        self.setWindowTitle(self.tr("Ayuda"))
+        self.setWindowTitle(self.tr("Help"))
         self.setWindowIcon(load_app_icon())
         self.setMinimumSize(680, 560)
 
@@ -939,7 +1055,7 @@ class SettingsDialog(QDialog):
         parent=None,
     ):
         super().__init__(parent)
-        self.setWindowTitle(self.tr("Configuracion"))
+        self.setWindowTitle(self.tr("Settings"))
         self.setMinimumSize(500, 560)
         layout = QVBoxLayout(self)
         tabs = QTabWidget()
@@ -955,7 +1071,7 @@ class SettingsDialog(QDialog):
         self.decimals = QComboBox()
         self.decimals.addItems(["0", "1", "2", "3", "4"])
         self.decimals.setCurrentText(str(formatter.decimals))
-        self.show_decimals = QCheckBox(self.tr("Mostrar"))
+        self.show_decimals = QCheckBox(self.tr("Show"))
         self.show_decimals.setChecked(formatter.show_decimals)
         self.grouping = QComboBox()
         self.grouping.addItems(["3", "4"])
@@ -969,7 +1085,7 @@ class SettingsDialog(QDialog):
             self.ui_size.addItem(self.ui_size_label(ui_size), ui_size)
         combo_set_data(self.ui_size, ui_size_name if ui_size_name in UI_SIZE_PRESETS else DEFAULT_UI_SIZE)
         self.font_family = QComboBox()
-        self.font_family.addItem(self.tr("Sistema"), SYSTEM_FONT_SETTING)
+        self.font_family.addItem(self.tr("System"), SYSTEM_FONT_SETTING)
         font_families = QFontDatabase.families() or [system_font_family()]
         for family in font_families:
             self.font_family.addItem(family, family)
@@ -978,15 +1094,15 @@ class SettingsDialog(QDialog):
         for code, label in LANGUAGES.items():
             self.language.addItem(self.language_label(code, label), code)
         combo_set_data(self.language, language_code if language_code in LANGUAGES else DEFAULT_LANGUAGE_SETTING)
-        form.addRow(self.tr("Separador de miles"), self.thousands)
-        form.addRow(self.tr("Separador decimal"), self.decimal)
-        form.addRow(self.tr("Lugares decimales"), self.decimals)
+        form.addRow(self.tr("Thousands separator"), self.thousands)
+        form.addRow(self.tr("Decimal separator"), self.decimal)
+        form.addRow(self.tr("Decimal places"), self.decimals)
         form.addRow("", self.show_decimals)
-        form.addRow(self.tr("Agrupacion de cifras"), self.grouping)
-        form.addRow(self.tr("Tema"), self.theme)
-        form.addRow(self.tr("Tamano de interfaz"), self.ui_size)
-        form.addRow(self.tr("Fuente"), self.font_family)
-        form.addRow(self.tr("Idioma"), self.language)
+        form.addRow(self.tr("Digit grouping"), self.grouping)
+        form.addRow(self.tr("Theme"), self.theme)
+        form.addRow(self.tr("Interface size"), self.ui_size)
+        form.addRow(self.tr("Font"), self.font_family)
+        form.addRow(self.tr("Language"), self.language)
         self.preview = QLabel()
         self.preview.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.preview.setMinimumHeight(86)
@@ -999,11 +1115,11 @@ class SettingsDialog(QDialog):
         buttons.accepted.connect(self.accept)
         buttons.rejected.connect(self.reject)
         general_layout.addLayout(form)
-        general_layout.addWidget(QLabel(self.tr("Vista previa")))
+        general_layout.addWidget(QLabel(self.tr("Preview")))
         general_layout.addWidget(self.preview)
         general_layout.addStretch()
         tabs.addTab(general_tab, self.tr("General"))
-        tabs.addTab(self.build_shortcuts_tab(), self.tr("Atajos de teclado"))
+        tabs.addTab(self.build_shortcuts_tab(), self.tr("Keyboard shortcuts"))
         layout.addWidget(tabs, 1)
         layout.addWidget(buttons)
         self.update_preview()
@@ -1014,8 +1130,8 @@ class SettingsDialog(QDialog):
         layout.setContentsMargins(12, 12, 12, 12)
         layout.setHorizontalSpacing(18)
         layout.setVerticalSpacing(8)
-        shortcut_header = QLabel(self.tr("Atajo"))
-        action_header = QLabel(self.tr("Accion"))
+        shortcut_header = QLabel(self.tr("Shortcut"))
+        action_header = QLabel(self.tr("Action"))
         shortcut_header.setStyleSheet("font-weight: 700;")
         action_header.setStyleSheet("font-weight: 700;")
         layout.addWidget(shortcut_header, 0, 0)
@@ -1033,53 +1149,53 @@ class SettingsDialog(QDialog):
 
     def shortcut_description(self, description: str) -> str:
         labels = {
-            "Escribir numeros": self.tr("Escribir numeros"),
-            "Escribir separador decimal": self.tr("Escribir separador decimal"),
-            "Operaciones basicas": self.tr("Operaciones basicas"),
-            "Calcular operacion pendiente": self.tr("Calcular operacion pendiente"),
-            "Borrar el ultimo digito": self.tr("Borrar el ultimo digito"),
-            "Limpiar todo": self.tr("Limpiar todo"),
-            "Editar IVA excluido": self.tr("Editar IVA excluido"),
-            "Editar IVA": self.tr("Editar IVA"),
-            "Editar IVA incluido": self.tr("Editar IVA incluido"),
-            "Cambiar al siguiente valor": self.tr("Cambiar al siguiente valor"),
-            "Cambiar al valor anterior": self.tr("Cambiar al valor anterior"),
-            "Seleccionar pais": self.tr("Seleccionar pais"),
-            "Abrir tasas personalizadas": self.tr("Abrir tasas personalizadas"),
-            "Abrir configuracion": self.tr("Abrir configuracion"),
-            "Abrir ayuda": self.tr("Abrir ayuda"),
+            "Enter numbers": self.tr("Enter numbers"),
+            "Enter decimal separator": self.tr("Enter decimal separator"),
+            "Basic operations": self.tr("Basic operations"),
+            "Calculate pending operation": self.tr("Calculate pending operation"),
+            "Delete last digit": self.tr("Delete last digit"),
+            "Clear all": self.tr("Clear all"),
+            "Edit VAT excluded": self.tr("Edit VAT excluded"),
+            "Edit VAT": self.tr("Edit VAT"),
+            "Edit VAT included": self.tr("Edit VAT included"),
+            "Switch to next value": self.tr("Switch to next value"),
+            "Switch to previous value": self.tr("Switch to previous value"),
+            "Select country": self.tr("Select country"),
+            "Open custom rates": self.tr("Open custom rates"),
+            "Open settings": self.tr("Open settings"),
+            "Open help": self.tr("Open help"),
         }
         return labels.get(description, description)
 
     def theme_label(self, theme_name: str) -> str:
         labels = {
-            "Rojo": self.tr("Rojo"),
-            "Azul": self.tr("Azul"),
+            "Red": self.tr("Red"),
+            "Blue": self.tr("Blue"),
             "Indigo": self.tr("Indigo"),
-            "Cian": self.tr("Cian"),
-            "Verde azulado": self.tr("Verde azulado"),
-            "Verde": self.tr("Verde"),
-            "Lima": self.tr("Lima"),
-            "Ambar": self.tr("Ambar"),
-            "Purpura": self.tr("Purpura"),
-            "Rosa": self.tr("Rosa"),
-            "Oscuro": self.tr("Oscuro"),
+            "Cyan": self.tr("Cyan"),
+            "Teal": self.tr("Teal"),
+            "Green": self.tr("Green"),
+            "Lime": self.tr("Lime"),
+            "Amber": self.tr("Amber"),
+            "Purple": self.tr("Purple"),
+            "Pink": self.tr("Pink"),
+            "Dark": self.tr("Dark"),
         }
         return labels.get(theme_name, theme_name)
 
     def ui_size_label(self, ui_size_name: str) -> str:
         labels = {
-            "Muy pequeno": self.tr("Muy pequeno"),
-            "Pequeno": self.tr("Pequeno"),
-            "Mediano": self.tr("Mediano"),
-            "Grande": self.tr("Grande"),
-            "Muy grande": self.tr("Muy grande"),
+            "Very small": self.tr("Very small"),
+            "Small": self.tr("Small"),
+            "Medium": self.tr("Medium"),
+            "Large": self.tr("Large"),
+            "Very large": self.tr("Very large"),
         }
         return labels.get(ui_size_name, ui_size_name)
 
     def language_label(self, code: str, label: str) -> str:
         if code == "system":
-            return self.tr("Sistema")
+            return self.tr("System")
         return label
 
     def formatter(self) -> NumberFormatter:
@@ -1093,8 +1209,8 @@ class SettingsDialog(QDialog):
 
     def update_preview(self):
         formatter = self.formatter()
-        theme_name = combo_data(self.theme, "Rojo")
-        preview_text = "#f7f7f7" if theme_name == "Oscuro" else "rgba(0,0,0,0.75)"
+        theme_name = combo_data(self.theme, "Red")
+        preview_text = "#f7f7f7" if theme_name == "Dark" else "rgba(0,0,0,0.75)"
         self.preview.setText(formatter.format(Decimal("1234567890.12")))
         self.preview.setStyleSheet(f"background:{THEMES[theme_name]}; color:{preview_text};")
 
@@ -1110,18 +1226,18 @@ class CalculatorWindow(QMainWindow):
             grouping=int(self.settings.value("grouping", 3)),
             show_decimals=settings_bool(self.settings.value("show_decimals", "true"), True),
         )
-        self.theme_name = self.settings.value("theme", "Rojo")
+        self.theme_name = canonical_theme_name(self.settings.value("theme", "Red"))
         stored_language = self.settings.value("language", DEFAULT_LANGUAGE_SETTING)
         self.language_code = stored_language if stored_language in LANGUAGES else DEFAULT_LANGUAGE_SETTING
         should_apply_language_rate = "rate_name" not in self.settings.allKeys()
-        stored_ui_size = self.settings.value("ui_size", DEFAULT_UI_SIZE)
+        stored_ui_size = canonical_ui_size_name(self.settings.value("ui_size", DEFAULT_UI_SIZE))
         self.ui_size_name = stored_ui_size if stored_ui_size in UI_SIZE_PRESETS else DEFAULT_UI_SIZE
         self.font_family = self.settings.value("font_family", SYSTEM_FONT_SETTING)
         self.always_on_top = settings_bool(self.settings.value("always_on_top", "false"))
         self.key_buttons: list[QPushButton] = []
         self.custom_rates = self.load_custom_rates()
         self.current_rate = TaxRate(
-            self.settings.value("rate_name", "Ecuador"),
+            canonical_country_name(self.settings.value("rate_name", "Ecuador")) or "Ecuador",
             dec(self.settings.value("rate_value", "15")),
             self.settings.value("rate_flag", "EC"),
             settings_bool(self.settings.value("rate_custom", "false")),
@@ -1134,7 +1250,7 @@ class CalculatorWindow(QMainWindow):
         self.panels: dict[str, DisplayPanel] = {}
         self.last_system_dark_theme = windows_apps_dark_theme()
         self.system_theme_timer: QTimer | None = None
-        self.setWindowTitle(self.tr("Calculadora de IVA"))
+        self.setWindowTitle(self.tr("VAT Calculator"))
         self.setWindowIcon(load_app_icon())
         self.setObjectName(LINUX_DESKTOP_FILE_BASENAME)
         self.build_ui()
@@ -1294,8 +1410,8 @@ class CalculatorWindow(QMainWindow):
             return
         was_light = not self.last_system_dark_theme
         self.last_system_dark_theme = system_dark
-        if was_light and system_dark and self.theme_name != "Oscuro":
-            self.theme_name = "Oscuro"
+        if was_light and system_dark and self.theme_name != "Dark":
+            self.theme_name = "Dark"
             self.save_settings()
             self.apply_theme()
 
@@ -1332,15 +1448,15 @@ class CalculatorWindow(QMainWindow):
         menu_button.setText("☰")
         menu_button.setPopupMode(QToolButton.ToolButtonPopupMode.InstantPopup)
         menu = QMenu(menu_button)
-        select_country_action = QAction(self.tr("Seleccionar pais"), self, triggered=self.select_country)
+        select_country_action = QAction(self.tr("Select country"), self, triggered=self.select_country)
         select_country_action.setShortcut(QKeySequence("Ctrl+P"))
-        custom_rates_action = QAction(self.tr("Tasas personalizadas"), self, triggered=self.manage_custom_rates)
+        custom_rates_action = QAction(self.tr("Custom rates"), self, triggered=self.manage_custom_rates)
         custom_rates_action.setShortcut(QKeySequence("Ctrl+R"))
-        settings_action = QAction(self.tr("Configuracion"), self, triggered=self.open_settings)
+        settings_action = QAction(self.tr("Settings"), self, triggered=self.open_settings)
         settings_action.setShortcut(QKeySequence("Ctrl+,"))
-        help_action = QAction(self.tr("Ayuda"), self, triggered=self.open_help)
+        help_action = QAction(self.tr("Help"), self, triggered=self.open_help)
         help_action.setShortcut(QKeySequence("F1"))
-        self.always_on_top_action = QAction(self.tr("Siempre encima"), self, triggered=self.toggle_always_on_top)
+        self.always_on_top_action = QAction(self.tr("Always on top"), self, triggered=self.toggle_always_on_top)
         self.always_on_top_action.setCheckable(True)
         self.always_on_top_action.setChecked(self.always_on_top)
         menu.addAction(select_country_action)
@@ -1349,9 +1465,9 @@ class CalculatorWindow(QMainWindow):
         menu.addSeparator()
         menu.addAction(self.always_on_top_action)
         menu.addSeparator()
-        menu.addSection(self.tr("Ayuda"))
+        menu.addSection(self.tr("Help"))
         menu.addAction(help_action)
-        about_action = QAction(self.tr("Acerca de..."), self, triggered=self.open_about)
+        about_action = QAction(self.tr("About..."), self, triggered=self.open_about)
         menu.addAction(about_action)
         self.addActions([
             select_country_action,
@@ -1380,9 +1496,9 @@ class CalculatorWindow(QMainWindow):
         displays_layout.setContentsMargins(10, 10, 10, 10)
         displays_layout.setSpacing(7)
         for key, title in [
-            ("net", self.tr("IVA EXCLUIDO")),
-            ("tax", self.tr("IVA")),
-            ("gross", self.tr("IVA INCLUIDO")),
+            ("net", self.tr("VAT EXCLUDED")),
+            ("tax", self.tr("VAT")),
+            ("gross", self.tr("VAT INCLUDED")),
         ]:
             panel = DisplayPanel(key, title)
             self.panels[key] = panel
@@ -1575,7 +1691,7 @@ class CalculatorWindow(QMainWindow):
             panel.value.setText(self.formatter.format(self.values[key]))
 
     def select_country(self):
-        rates = COUNTRY_RATES + [TaxRate(self.tr("Personalizado"), rate, "*", True) for rate in self.custom_rates]
+        rates = COUNTRY_RATES + [TaxRate(self.tr("Custom"), rate, "*", True) for rate in self.custom_rates]
         dialog = CountryDialog(rates, self)
         self.apply_dialog_window_theme(dialog)
         if dialog.exec() == QDialog.DialogCode.Accepted:
@@ -1593,7 +1709,7 @@ class CalculatorWindow(QMainWindow):
             self.custom_rates = dialog.rates
             selected = dialog.selected_rate()
             if selected is not None:
-                self.current_rate = TaxRate("Personalizado", selected, "*", True)
+                self.current_rate = TaxRate("Custom", selected, "*", True)
             self.save_custom_rates()
             self.save_current_rate()
             self.update_header()
@@ -1612,7 +1728,7 @@ class CalculatorWindow(QMainWindow):
         if dialog.exec() == QDialog.DialogCode.Accepted:
             previous_language = self.language_code
             self.formatter = dialog.formatter()
-            self.theme_name = combo_data(dialog.theme, "Rojo")
+            self.theme_name = combo_data(dialog.theme, "Red")
             self.ui_size_name = combo_data(dialog.ui_size, DEFAULT_UI_SIZE)
             self.font_family = combo_data(dialog.font_family, SYSTEM_FONT_SETTING)
             self.language_code = combo_data(dialog.language, DEFAULT_LANGUAGE_SETTING)
@@ -1625,17 +1741,17 @@ class CalculatorWindow(QMainWindow):
                 self.apply_default_rate_for_language()
                 QMessageBox.information(
                     self,
-                    self.tr("Idioma"),
-                    self.tr("El idioma se aplicara al reiniciar la aplicacion."),
+                    self.tr("Language"),
+                    self.tr("The language will be applied after restarting the application."),
                 )
 
     def open_about(self):
-        dialog = AboutDialog(self.theme_name == "Oscuro", self.settings)
+        dialog = AboutDialog(self.theme_name == "Dark", self.settings)
         self.apply_dialog_window_theme(dialog)
         dialog.exec()
 
     def open_help(self):
-        dialog = HelpDialog(self.language_code, self.theme_name == "Oscuro", self)
+        dialog = HelpDialog(self.language_code, self.theme_name == "Dark", self)
         self.apply_dialog_window_theme(dialog)
         dialog.exec()
 
@@ -1655,8 +1771,8 @@ class CalculatorWindow(QMainWindow):
             button.setText(self.current_rate.flag or "%")
 
     def rate_display_name(self, rate: TaxRate) -> str:
-        if rate.custom or rate.name in {"Personalizado", "Custom"}:
-            return self.tr("Personalizado")
+        if rate.custom or rate.name == "Custom":
+            return self.tr("Custom")
         return rate.name
 
     def load_custom_rates(self) -> list[Decimal]:
@@ -1689,7 +1805,7 @@ class CalculatorWindow(QMainWindow):
 
     def apply_theme(self):
         color = THEMES[self.theme_name]
-        dark_theme = self.theme_name == "Oscuro"
+        dark_theme = self.theme_name == "Dark"
         set_windows_title_bar_dark(self, dark_theme)
         header_text = "#ffffff" if dark_theme else "#111111"
         display_title_color = "rgba(255,255,255,0.78)" if dark_theme else "rgba(0,0,0,0.62)"
@@ -1944,7 +2060,7 @@ class CalculatorWindow(QMainWindow):
         self.setStyleSheet(style)
 
     def apply_dialog_window_theme(self, dialog: QDialog):
-        set_windows_title_bar_dark(dialog, self.theme_name == "Oscuro")
+        set_windows_title_bar_dark(dialog, self.theme_name == "Dark")
 
     def closeEvent(self, event):  # noqa: N802
         self.save_window_geometry()
