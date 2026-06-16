@@ -123,6 +123,15 @@ jobs:
       - name: Install NSIS
         run: choco install nsis -y
 
+      - name: Install Qt translation tools
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: "6.7.3"
+          host: "windows"
+          target: "desktop"
+          arch: "win64_msvc2019_64"
+          cache: true
+
       - name: Install pip modules
         run: pip install -r build/requirements-windows.txt
 
@@ -289,6 +298,16 @@ jobs:
           name: lucio-iva-macos
           path: lucio-iva-macos
 
+      - name: Generate SHA256 checksums
+        run: |
+          sha256sum \
+            "lucio-iva-windows/LucioIVACalculator-${APP_VERSION}-setup.exe" \
+            "lucio-iva-windows/LucioIVACalculator-${APP_VERSION}-Windows-x64-portable.zip" \
+            "${{ steps.locate_linux_archive.outputs.path }}" \
+            "lucio-iva-macos/LucioIVACalculator-${APP_VERSION}-macOS-x64.zip" \
+            > SHA256SUMS.txt
+          cat SHA256SUMS.txt
+
       - name: Create GitHub Release and upload assets
         uses: softprops/action-gh-release@v2
         with:
@@ -300,5 +319,6 @@ jobs:
             lucio-iva-windows/LucioIVACalculator-${{ env.APP_VERSION }}-Windows-x64-portable.zip
             ${{ steps.locate_linux_archive.outputs.path }}
             lucio-iva-macos/LucioIVACalculator-${{ env.APP_VERSION }}-macOS-x64.zip
+            SHA256SUMS.txt
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

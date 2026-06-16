@@ -5,15 +5,60 @@ $workspaceRoot = Split-Path -Parent "$PSScriptRoot"
 $distDir = Join-Path $workspaceRoot "build\dist"
 $tmpDir = Join-Path $workspaceRoot "build\tmp"
 $outputDir = Join-Path $workspaceRoot "build\output"
+$version = Get-Content "$workspaceRoot\VERSION" -Raw
+$version = $version.Trim()
+$versionParts = @($version.Split(".") | ForEach-Object { [int]$_ })
+while ($versionParts.Count -lt 4) {
+    $versionParts += 0
+}
+$versionTuple = "$($versionParts[0]), $($versionParts[1]), $($versionParts[2]), $($versionParts[3])"
+$versionInfoPath = Join-Path $tmpDir "LucioIVACalculator-version-info.txt"
 
 New-Item -ItemType Directory -Force -Path $distDir, $tmpDir, $outputDir | Out-Null
 
 & powershell -NoProfile -ExecutionPolicy Bypass -File "$workspaceRoot\scripts\compile_translations.ps1"
 
+@"
+# UTF-8
+VSVersionInfo(
+  ffi=FixedFileInfo(
+    filevers=($versionTuple),
+    prodvers=($versionTuple),
+    mask=0x3f,
+    flags=0x0,
+    OS=0x40004,
+    fileType=0x1,
+    subtype=0x0,
+    date=(0, 0)
+  ),
+  kids=[
+    StringFileInfo([
+      StringTable(
+        '040904B0',
+        [
+          StringStruct('CompanyName', 'Lucio'),
+          StringStruct('FileDescription', 'Lucio IVA Calculator'),
+          StringStruct('FileVersion', '$version'),
+          StringStruct('InternalName', 'LucioIVACalculator'),
+          StringStruct('LegalCopyright', 'Copyright (c) 2026 Washington Indacochea Delgado and Joseph Lucio Guerrero'),
+          StringStruct('OriginalFilename', 'LucioIVACalculator.exe'),
+          StringStruct('ProductName', 'Lucio IVA Calculator'),
+          StringStruct('ProductVersion', '$version')
+        ]
+      )
+    ]),
+    VarFileInfo([VarStruct('Translation', [1033, 1200])])
+  ]
+)
+"@ | Set-Content -Path $versionInfoPath -Encoding UTF8
+
 & pyinstaller -w -D -y `
   --name LucioIVACalculator `
+  --clean `
   --noupx `
   --icon "$workspaceRoot\assets\app-icon.ico" `
+  --version-file "$versionInfoPath" `
+  --manifest "$workspaceRoot\build\windows_app.manifest" `
   --hidden-import=PyQt6.QtCore `
   --hidden-import=PyQt6.QtGui `
   --hidden-import=PyQt6.QtWidgets `
@@ -30,8 +75,6 @@ Copy-Item "$workspaceRoot\LICENSE" "$distDir\" -Force
 Copy-Item "$workspaceRoot\assets\app-icon.ico" "$distDir\" -Force
 Copy-Item "$workspaceRoot\assets\nsis-welcome.bmp" "$distDir\" -Force
 Copy-Item "$workspaceRoot\assets\nsis-header.bmp" "$distDir\" -Force
-$version = Get-Content "$workspaceRoot\VERSION" -Raw
-$version = $version.Trim()
 
 $portableZipPath = Join-Path $outputDir "LucioIVACalculator-$version-Windows-x64-portable.zip"
 if (Test-Path $portableZipPath) {

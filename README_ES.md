@@ -344,7 +344,7 @@ Para compilar los `.ts` a `.qm` en Windows:
 powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\compile_translations.ps1
 ```
 
-El script busca `lrelease.exe` en `PATH`, PyQt6, `qt5_applications`, `QTDIR`, `C:\Qt` y `%USERPROFILE%\Qt`.
+El script busca `lrelease.exe` en `PATH`, PyQt6, `QTDIR`, `C:\Qt` y `%USERPROFILE%\Qt`.
 
 ### Qt Creator y lrelease en Windows
 
@@ -379,6 +379,8 @@ Get-ChildItem C:\Qt -Recurse -Filter lrelease.exe
 
 Si `lrelease.exe` existe pero no esta en `PATH`, no pasa nada: `scripts\compile_translations.ps1` tambien busca en `QTDIR`, `C:\Qt` y `%USERPROFILE%\Qt`.
 
+El build de Windows en GitHub Actions instala Qt explicitamente para compilar traducciones, por eso las dependencias de Windows solo incluyen los paquetes Python necesarios para la aplicacion y PyInstaller.
+
 ## Builds multiplataforma
 
 El proyecto incluye GitHub Actions para compilar artefactos en Windows, Linux y macOS:
@@ -394,6 +396,25 @@ build/build_windows.ps1
 build/build_linux.sh
 build/build_macos.sh
 ```
+
+### Instalador y paquete portable para Windows
+
+La compilacion de Windows genera dos archivos:
+
+```text
+build/output/LucioIVACalculator-<version>-setup.exe
+build/output/LucioIVACalculator-<version>-Windows-x64-portable.zip
+```
+
+El instalador `setup.exe` instala la aplicacion dentro del perfil del usuario actual y puede crear accesos directos en el menu Inicio y en el Escritorio. El ZIP portable no instala nada: se extrae y se ejecuta:
+
+```text
+LucioIVACalculator/LucioIVACalculator.exe
+```
+
+GitHub Actions sube ambos archivos dentro del artefacto `lucio-iva-windows` y tambien adjunta ambos cuando se crea un release con tag. La prueba de Windows verifica tanto la aplicacion instalada como el ejecutable portable usando `--pyinstaller-test`.
+
+El ZIP portable es util para usuarios que no quieren usar instalador y tambien para comparar resultados de antivirus en servicios como VirusTotal. Las compilaciones PyInstaller/NSIS sin firma digital pueden recibir falsos positivos heurísticos de forma ocasional, por eso conviene generar los releases desde GitHub Actions y publicar sumas de verificacion cuando sea posible.
 
 Guia tecnica reutilizable para desarrolladores sobre iconos Linux con PyInstaller:
 
@@ -414,4 +435,4 @@ git tag v0.1.2
 git push origin v0.1.2
 ```
 
-El workflow crea una release con los artefactos de Windows, Linux y macOS.
+El workflow crea una release con los artefactos de Windows, Linux y macOS. Los releases creados desde tags tambien incluyen `SHA256SUMS.txt` para que los usuarios puedan verificar los archivos descargados.
