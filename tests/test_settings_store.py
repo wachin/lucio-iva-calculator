@@ -1,7 +1,14 @@
 import unittest
 from pathlib import Path
 
-from main import AppSettings, default_country_for_language, rate_by_country_name, settings_bool
+from main import (
+    AppSettings,
+    app_icon_path,
+    default_country_for_language,
+    rate_by_country_name,
+    resource_path,
+    settings_bool,
+)
 
 
 class AppSettingsTest(unittest.TestCase):
@@ -45,6 +52,11 @@ class AppSettingsTest(unittest.TestCase):
         self.assertEqual(int(loaded.value("window_y")), 80)
         self.assertEqual(int(loaded.value("window_width")), 360)
         self.assertEqual(int(loaded.value("window_height")), 640)
+
+    def test_resource_path_resolves_project_resources(self):
+        icon_path = resource_path("assets", "app-icon.svg")
+        self.assertTrue(icon_path.exists())
+        self.assertEqual(icon_path, app_icon_path())
 
 
 if __name__ == "__main__":

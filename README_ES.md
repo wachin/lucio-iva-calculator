@@ -246,6 +246,37 @@ El binario generado no debería requerir una versión de GLIBC más nueva que la
 
 Si desea distribuir versiones Linux ampliamente compatibles, evite compilar las versiones oficiales en distribuciones demasiado recientes.
 
+### Integracion con el escritorio Linux
+
+`build/build_linux.sh` ahora copia estos archivos adicionales a `build/dist/`:
+
+* `LucioIVACalculator.desktop`
+* `app-icon.svg`
+
+El ejecutable ya establece el icono en tiempo de ejecución con `QApplication.setWindowIcon()` y `setWindowIcon()` en la ventana principal, pero muchos entornos de escritorio Linux siguen prefiriendo una entrada `.desktop` coincidente para el Dock, el menú de aplicaciones, los lanzadores y en algunos casos Alt+Tab. Esto es especialmente común con PyInstaller `--onefile`, porque la ruta extraída en tiempo de ejecución es temporal y el escritorio suele depender de una identidad estable de la aplicación en lugar de heurísticas de ruta.
+
+La entrada `.desktop` usa:
+
+* `Exec=LucioIVACalculator`
+* `Icon=LucioIVACalculator`
+* `StartupWMClass=LucioIVACalculator`
+
+Eso coincide con el nombre de archivo `.desktop` configurado en Qt durante la ejecución y ayuda a que GNOME, KDE, XFCE, Debian 12, MX Linux 23, Ubuntu 24.04+ y Ubuntu 26.04 asocien la ventana con el icono correcto del lanzador.
+
+Para una instalación por usuario, copie los archivos a las rutas estándar:
+
+```bash
+mkdir -p ~/.local/bin ~/.local/share/applications ~/.local/share/icons/hicolor/scalable/apps
+cp build/dist/LucioIVACalculator ~/.local/bin/
+cp build/dist/LucioIVACalculator.desktop ~/.local/share/applications/
+cp build/dist/app-icon.svg ~/.local/share/icons/hicolor/scalable/apps/LucioIVACalculator.svg
+chmod +x ~/.local/bin/LucioIVACalculator
+```
+
+Si `~/.local/bin` todavía no está en `PATH`, agréguelo o edite `Exec=` dentro del archivo `.desktop` con la ruta absoluta del ejecutable.
+
+Después de copiar estos archivos, la aplicación debería aparecer en el menú de programas y usar el icono instalado en lugar de comportarse solamente como un binario portable lanzado desde una carpeta cualquiera.
+
 ---
 
 ## Configuracion

@@ -248,6 +248,37 @@ The generated binary should not require a newer GLIBC version than the one avail
 
 Avoid building release binaries on very recent distributions if you want compatibility with older Linux systems.
 
+### Linux desktop integration
+
+`build/build_linux.sh` now copies these extra files to `build/dist/`:
+
+* `LucioIVACalculator.desktop`
+* `app-icon.svg`
+
+The executable already sets the Qt runtime icon with `QApplication.setWindowIcon()` and `setWindowIcon()` on the main window, but many Linux desktop environments still prefer a matching `.desktop` entry for the Dock, application menu, launchers, and sometimes Alt+Tab. This is especially common with PyInstaller `--onefile`, because the extracted runtime path is temporary and desktop shells rely on a stable application identity instead of filesystem heuristics.
+
+The desktop entry uses:
+
+* `Exec=LucioIVACalculator`
+* `Icon=LucioIVACalculator`
+* `StartupWMClass=LucioIVACalculator`
+
+That matches the Qt desktop file name configured at runtime and helps GNOME, KDE, XFCE, Debian 12, MX Linux 23, Ubuntu 24.04+, and Ubuntu 26.04 associate the window with the correct launcher icon.
+
+For a per-user installation, copy the files to standard locations:
+
+```bash
+mkdir -p ~/.local/bin ~/.local/share/applications ~/.local/share/icons/hicolor/scalable/apps
+cp build/dist/LucioIVACalculator ~/.local/bin/
+cp build/dist/LucioIVACalculator.desktop ~/.local/share/applications/
+cp build/dist/app-icon.svg ~/.local/share/icons/hicolor/scalable/apps/LucioIVACalculator.svg
+chmod +x ~/.local/bin/LucioIVACalculator
+```
+
+If `~/.local/bin` is not already in `PATH`, either add it or edit `Exec=` inside the desktop file to the absolute executable path.
+
+After copying, the application should appear in the applications menu and use the installed icon instead of behaving like a purely portable binary launched from an arbitrary folder.
+
 ---
 
 ## Configuration

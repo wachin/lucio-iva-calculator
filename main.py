@@ -6,6 +6,7 @@ import ctypes
 from configparser import ConfigParser
 from dataclasses import dataclass
 from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
+from functools import lru_cache
 from pathlib import Path
 from ctypes import wintypes
 
@@ -45,8 +46,10 @@ from PyQt6.QtWidgets import (
 
 APP_ORG = "Lucio"
 APP_NAME = "IVA Calculator"
+APP_DISPLAY_NAME = "Lucio IVA Calculator"
 CONFIG_FILE_NAME = "IVA Calculator.ini"
 APP_EXECUTABLE_NAME = "LucioIVACalculator"
+LINUX_DESKTOP_FILE_BASENAME = "LucioIVACalculator"
 DEFAULT_LANGUAGE = "es"
 DEFAULT_LANGUAGE_SETTING = "system"
 SYSTEM_FONT_SETTING = "system"
@@ -295,19 +298,39 @@ def set_windows_title_bar_dark(window, enabled: bool):
 
 
 def translations_dir() -> Path:
-    return application_root() / "translations"
+    return resource_path("translations")
 
 
+@lru_cache(maxsize=1)
 def app_icon_path() -> Path:
-    return application_root() / "assets" / "app-icon.svg"
+    for candidate in app_icon_candidates():
+        if candidate.exists():
+            return candidate
+    return app_icon_candidates()[0]
+
+
+def app_icon_candidates() -> tuple[Path, ...]:
+    return (
+        resource_path("assets", "app-icon.svg"),
+        resource_path("assets", "app-icon.ico"),
+    )
+
+
+@lru_cache(maxsize=1)
+def load_app_icon() -> QIcon:
+    icon = QIcon()
+    for candidate in app_icon_candidates():
+        if candidate.exists():
+            icon.addFile(str(candidate))
+    return icon
 
 
 def photos_dir() -> Path:
-    return application_root() / "assets" / "Photos"
+    return resource_path("assets", "Photos")
 
 
 def docs_dir() -> Path:
-    return application_root() / "docs"
+    return resource_path("docs")
 
 
 def help_file_path(language_code: str) -> Path:
@@ -321,9 +344,16 @@ def help_file_path(language_code: str) -> Path:
 
 
 def application_root() -> Path:
+    return resource_path()
+
+
+def resource_path(*relative_parts: str | os.PathLike[str]) -> Path:
+    """Resolve bundled resources for source runs and PyInstaller one-file builds."""
     if getattr(sys, "frozen", False) and hasattr(sys, "_MEIPASS"):
-        return Path(sys._MEIPASS)
-    return Path(__file__).resolve().parent
+        base_path = Path(sys._MEIPASS)
+    else:
+        base_path = Path(__file__).resolve().parent
+    return base_path.joinpath(*map(os.fspath, relative_parts))
 
 
 def load_translation(app: QApplication, language_code: str) -> QTranslator | None:
@@ -653,7 +683,7 @@ class AboutDialog(QDialog):
         self.dark_theme = dark_theme
         self.settings = settings
         self.setWindowTitle(self.tr("Acerca de..."))
-        self.setWindowIcon(QIcon(str(app_icon_path())))
+        self.setWindowIcon(load_app_icon())
         self.setMinimumSize(780, 520)
 
         layout = QHBoxLayout(self)
@@ -667,12 +697,8 @@ class AboutDialog(QDialog):
         icon_label.setObjectName("aboutIcon")
         icon_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         icon_label.setMinimumWidth(190)
-        icon_label.setPixmap(QPixmap(str(app_icon_path())).scaled(
-            180,
-            180,
-            Qt.AspectRatioMode.KeepAspectRatio,
-            Qt.TransformationMode.SmoothTransformation,
-        ))
+        icon_pixmap = load_app_icon().pixmap(QSize(180, 180))
+        icon_label.setPixmap(icon_pixmap)
         title = QLabel(self.tr("Calculadora de IVA"))
         title.setObjectName("aboutAppTitle")
         title.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -857,7 +883,7 @@ class HelpDialog(QDialog):
     def __init__(self, language_code: str, dark_theme: bool = False, parent=None):
         super().__init__(parent)
         self.setWindowTitle(self.tr("Ayuda"))
-        self.setWindowIcon(QIcon(str(app_icon_path())))
+        self.setWindowIcon(load_app_icon())
         self.setMinimumSize(680, 560)
 
         layout = QVBoxLayout(self)
@@ -1101,7 +1127,8 @@ class CalculatorWindow(QMainWindow):
         self.last_system_dark_theme = windows_apps_dark_theme()
         self.system_theme_timer: QTimer | None = None
         self.setWindowTitle(self.tr("Calculadora de IVA"))
-        self.setWindowIcon(QIcon(str(app_icon_path())))
+        self.setWindowIcon(load_app_icon())
+        self.setObjectName(LINUX_DESKTOP_FILE_BASENAME)
         self.build_ui()
         QApplication.instance().installEventFilter(self)
         self.apply_app_font()
@@ -1922,7 +1949,13 @@ def main() -> int:
     QApplication.setOrganizationName(APP_ORG)
     QApplication.setApplicationName(APP_NAME)
     app = QApplication(sys.argv)
-    app.setWindowIcon(QIcon(str(app_icon_path())))
+    if sys.platform.startswith("linux"):
+        app.setApplicationName(LINUX_DESKTOP_FILE_BASENAME)
+    app.setApplicationDisplayName(APP_DISPLAY_NAME)
+    # On Linux, docks and app switchers often rely on the desktop entry identity
+    # in addition to the runtime window icon, especially for PyInstaller one-file apps.
+    app.setDesktopFileName(LINUX_DESKTOP_FILE_BASENAME)
+    app.setWindowIcon(load_app_icon())
     settings = app_settings()
     translator = load_translation(app, settings.value("language", DEFAULT_LANGUAGE_SETTING))
     window = CalculatorWindow()
