@@ -5,13 +5,16 @@ this_script="$(cd "$(dirname "$0")" && pwd)/$(basename "$0")"
 workspace_root="$(dirname "$(dirname "$this_script")")"
 dist_dir="$workspace_root/build/dist"
 tmp_dir="$workspace_root/build/tmp"
+output_dir="$workspace_root/build/output"
 app_name="LucioIVACalculator"
 icon_path="$workspace_root/assets/app-icon.ico"
 desktop_file="$workspace_root/build/LucioIVACalculator.desktop"
 dist_binary="$dist_dir/$app_name"
+version="$(tr -d '\r\n' < "$workspace_root/VERSION")"
+linux_archive="$output_dir/${app_name}-${version}-linux.tar.gz"
 
 echo "Workspace root is ${workspace_root}"
-mkdir -p "$dist_dir" "$tmp_dir"
+mkdir -p "$dist_dir" "$tmp_dir" "$output_dir"
 
 if command -v lrelease >/dev/null 2>&1; then
     echo "Compiling translations..."
@@ -83,3 +86,11 @@ fi
 if [[ -f "$workspace_root/assets/app-icon.svg" ]]; then
     cp "$workspace_root/assets/app-icon.svg" "$dist_dir/"
 fi
+
+rm -f "$linux_archive"
+tar -C "$dist_dir" -czf "$linux_archive" \
+    "$app_name" \
+    "$(basename "$desktop_file")" \
+    "app-icon.svg"
+
+echo "Created Linux archive: $linux_archive"

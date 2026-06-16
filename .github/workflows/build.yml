@@ -68,7 +68,9 @@ jobs:
         uses: actions/upload-artifact@v6
         with:
           name: lucio-iva-linux
-          path: build/dist/
+          path: |
+            build/dist/LucioIVACalculator
+            build/output/LucioIVACalculator-${{ env.APP_VERSION }}-linux.tar.gz
           retention-days: 7
 
   test_linux:
@@ -81,7 +83,7 @@ jobs:
           sudo apt-get update -q
           sudo apt-get install -y libegl1 libxcb-cursor0
 
-      - name: Get Linux binary
+      - name: Get Linux artifacts
         uses: actions/download-artifact@v7
         with:
           name: lucio-iva-linux
@@ -238,7 +240,7 @@ jobs:
           name: lucio-iva-windows
           path: lucio-iva-windows
 
-      - name: Get Linux binary
+      - name: Get Linux artifacts
         uses: actions/download-artifact@v7
         with:
           name: lucio-iva-linux
@@ -258,9 +260,7 @@ jobs:
           prerelease: false
           files: |
             lucio-iva-windows/LucioIVACalculator-${{ env.APP_VERSION }}-setup.exe
-            lucio-iva-linux/LucioIVACalculator
-            lucio-iva-linux/LucioIVACalculator.desktop
-            lucio-iva-linux/app-icon.svg
+            lucio-iva-linux/LucioIVACalculator-${{ env.APP_VERSION }}-linux.tar.gz
             lucio-iva-macos/LucioIVACalculator-${{ env.APP_VERSION }}-macOS-x64.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
