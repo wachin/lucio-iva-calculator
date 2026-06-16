@@ -83,6 +83,10 @@
       <source>Ayuda</source>
       <translation>Help</translation>
     </message>
+    <message>
+      <source>Siempre encima</source>
+      <translation>Altijd bovenaan</translation>
+    </message>
   </context>
   <context>
     <name>CountryDialog</name>

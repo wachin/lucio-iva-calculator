@@ -83,6 +83,10 @@
       <source>Ayuda</source>
       <translation>Nápověda</translation>
     </message>
+    <message>
+      <source>Siempre encima</source>
+      <translation>Vždy navrchu</translation>
+    </message>
   </context>
   <context>
     <name>CountryDialog</name>

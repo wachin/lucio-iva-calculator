@@ -83,6 +83,10 @@
       <source>Ayuda</source>
       <translation>도움말</translation>
     </message>
+    <message>
+      <source>Siempre encima</source>
+      <translation>항상 위에</translation>
+    </message>
   </context>
   <context>
     <name>CountryDialog</name>

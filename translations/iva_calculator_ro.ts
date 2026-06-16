@@ -83,6 +83,10 @@
       <source>Ayuda</source>
       <translation>Ajutor</translation>
     </message>
+    <message>
+      <source>Siempre encima</source>
+      <translation>Mereu deasupra</translation>
+    </message>
   </context>
   <context>
     <name>CountryDialog</name>

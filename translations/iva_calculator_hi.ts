@@ -83,6 +83,10 @@
       <source>Ayuda</source>
       <translation>सहायता</translation>
     </message>
+    <message>
+      <source>Siempre encima</source>
+      <translation>हमेशा ऊपर</translation>
+    </message>
   </context>
   <context>
     <name>CountryDialog</name>

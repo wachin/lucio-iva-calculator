@@ -83,6 +83,10 @@
       <source>Ayuda</source>
       <translation>ヘルプ</translation>
     </message>
+    <message>
+      <source>Siempre encima</source>
+      <translation>常に手前に表示</translation>
+    </message>
   </context>
   <context>
     <name>CountryDialog</name>

@@ -83,6 +83,10 @@
       <source>Ayuda</source>
       <translation>帮助</translation>
     </message>
+    <message>
+      <source>Siempre encima</source>
+      <translation>始终置顶</translation>
+    </message>
   </context>
   <context>
     <name>CountryDialog</name>

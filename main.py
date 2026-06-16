@@ -1083,6 +1083,7 @@ class CalculatorWindow(QMainWindow):
         stored_ui_size = self.settings.value("ui_size", DEFAULT_UI_SIZE)
         self.ui_size_name = stored_ui_size if stored_ui_size in UI_SIZE_PRESETS else DEFAULT_UI_SIZE
         self.font_family = self.settings.value("font_family", SYSTEM_FONT_SETTING)
+        self.always_on_top = settings_bool(self.settings.value("always_on_top", "false"))
         self.key_buttons: list[QPushButton] = []
         self.custom_rates = self.load_custom_rates()
         self.current_rate = TaxRate(
@@ -1106,6 +1107,7 @@ class CalculatorWindow(QMainWindow):
         self.apply_app_font()
         self.apply_ui_size(resize_window=False)
         self.apply_theme()
+        self.apply_always_on_top(show_window=False)
         self.restore_or_place_window()
         if should_apply_language_rate:
             self.apply_default_rate_for_language()
@@ -1262,6 +1264,23 @@ class CalculatorWindow(QMainWindow):
             self.save_settings()
             self.apply_theme()
 
+    def toggle_always_on_top(self, checked: bool):
+        self.always_on_top = checked
+        self.save_settings()
+        self.apply_always_on_top()
+
+    def apply_always_on_top(self, show_window: bool = True):
+        flags = self.windowFlags()
+        if self.always_on_top:
+            flags |= Qt.WindowType.WindowStaysOnTopHint
+        else:
+            flags &= ~Qt.WindowType.WindowStaysOnTopHint
+        self.setWindowFlags(flags)
+        if hasattr(self, "always_on_top_action"):
+            self.always_on_top_action.setChecked(self.always_on_top)
+        if show_window:
+            self.show()
+
     def build_ui(self):
         central = QWidget()
         root = QVBoxLayout(central)
@@ -1286,15 +1305,27 @@ class CalculatorWindow(QMainWindow):
         settings_action.setShortcut(QKeySequence("Ctrl+,"))
         help_action = QAction(self.tr("Ayuda"), self, triggered=self.open_help)
         help_action.setShortcut(QKeySequence("F1"))
+        self.always_on_top_action = QAction(self.tr("Siempre encima"), self, triggered=self.toggle_always_on_top)
+        self.always_on_top_action.setCheckable(True)
+        self.always_on_top_action.setChecked(self.always_on_top)
         menu.addAction(select_country_action)
         menu.addAction(custom_rates_action)
         menu.addAction(settings_action)
+        menu.addSeparator()
+        menu.addAction(self.always_on_top_action)
         menu.addSeparator()
         menu.addSection(self.tr("Ayuda"))
         menu.addAction(help_action)
         about_action = QAction(self.tr("Acerca de..."), self, triggered=self.open_about)
         menu.addAction(about_action)
-        self.addActions([select_country_action, custom_rates_action, settings_action, help_action, about_action])
+        self.addActions([
+            select_country_action,
+            custom_rates_action,
+            settings_action,
+            self.always_on_top_action,
+            help_action,
+            about_action,
+        ])
         menu_button.setMenu(menu)
         self.country_button = QPushButton()
         self.country_button.setObjectName("countryButton")
@@ -1617,6 +1648,7 @@ class CalculatorWindow(QMainWindow):
         self.settings.setValue("theme", self.theme_name)
         self.settings.setValue("ui_size", self.ui_size_name)
         self.settings.setValue("font_family", self.font_family)
+        self.settings.setValue("always_on_top", "true" if self.always_on_top else "false")
         self.settings.setValue("language", self.language_code)
         self.settings.sync()
 

@@ -83,6 +83,10 @@
       <source>Ayuda</source>
       <translation>Ohje</translation>
     </message>
+    <message>
+      <source>Siempre encima</source>
+      <translation>Aina paallimmaisena</translation>
+    </message>
   </context>
   <context>
     <name>CountryDialog</name>

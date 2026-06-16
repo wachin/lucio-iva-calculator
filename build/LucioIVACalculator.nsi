@@ -34,8 +34,11 @@ UninstallIcon "app-icon.ico"
 !define MUI_HEADERIMAGE_RIGHT
 !define MUI_HEADERIMAGE_BITMAP "nsis-header.bmp"
 !define MUI_WELCOMEFINISHPAGE_BITMAP "nsis-welcome.bmp"
+!define MUI_WELCOMEPAGE_TITLE "$(WelcomeTitle)"
+!define MUI_WELCOMEPAGE_TEXT "$(WelcomeText)"
 !insertmacro MUI_PAGE_WELCOME
 !insertmacro MUI_PAGE_LICENSE "${LICENSE_TXT}"
+!insertmacro MUI_PAGE_COMPONENTS
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_INSTFILES
 !define MUI_FINISHPAGE_RUN "$INSTDIR\${MAIN_APP_EXE}"
@@ -45,6 +48,19 @@ UninstallIcon "app-icon.ico"
 !insertmacro MUI_UNPAGE_FINISH
 !insertmacro MUI_LANGUAGE "Spanish"
 !insertmacro MUI_LANGUAGE "English"
+
+LangString WelcomeTitle ${LANG_SPANISH} "Bienvenido a Lucio IVA Calculator"
+LangString WelcomeTitle ${LANG_ENGLISH} "Welcome to Lucio IVA Calculator"
+LangString WelcomeText ${LANG_SPANISH} "Este asistente instalara Lucio IVA Calculator, una calculadora de IVA sencilla, moderna y multiplataforma.$\r$\n$\r$\nPuedes elegir los accesos directos que deseas crear antes de instalar.$\r$\n$\r$\nPresiona Siguiente para continuar."
+LangString WelcomeText ${LANG_ENGLISH} "This wizard will install Lucio IVA Calculator, a simple, modern, cross-platform VAT calculator.$\r$\n$\r$\nYou can choose which shortcuts to create before installing.$\r$\n$\r$\nClick Next to continue."
+LangString SectionMain ${LANG_SPANISH} "Programa principal"
+LangString SectionMain ${LANG_ENGLISH} "Main program"
+LangString SectionStartMenu ${LANG_SPANISH} "Accesos en el menu Inicio"
+LangString SectionStartMenu ${LANG_ENGLISH} "Start Menu shortcuts"
+LangString SectionDesktop ${LANG_SPANISH} "Acceso directo en el Escritorio"
+LangString SectionDesktop ${LANG_ENGLISH} "Desktop shortcut"
+LangString SectionWebsite ${LANG_SPANISH} "Enlace al sitio web"
+LangString SectionWebsite ${LANG_ENGLISH} "Website link"
 
 Function .onInit
   System::Call "kernel32::GetUserDefaultUILanguage() i .r0"
@@ -64,28 +80,38 @@ Function un.onInit
     StrCpy $LANGUAGE ${LANG_SPANISH}
 FunctionEnd
 
-Section -MainProgram
+Section "$(SectionMain)" SecMain
+SectionIn RO
 SetOverwrite ifnewer
 SetOutPath "$INSTDIR"
 File /r "LucioIVACalculator"
 File "LICENSE"
-SectionEnd
-
-Section -IconsReg
-SetOutPath "$INSTDIR"
 WriteUninstaller "$INSTDIR\uninstall.exe"
-CreateDirectory "$SMPROGRAMS\${APP_NAME}"
-CreateShortCut "$SMPROGRAMS\${APP_NAME}\${APP_NAME}.lnk" "$INSTDIR\${MAIN_APP_EXE}" "" "$INSTDIR\${MAIN_APP_EXE}"
-CreateShortCut "$DESKTOP\${APP_NAME}.lnk" "$INSTDIR\${MAIN_APP_EXE}" "" "$INSTDIR\${MAIN_APP_EXE}"
-CreateShortCut "$SMPROGRAMS\${APP_NAME}\Uninstall ${APP_NAME}.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe"
-WriteIniStr "$INSTDIR\${APP_NAME} website.url" "InternetShortcut" "URL" "${WEB_SITE}"
-CreateShortCut "$SMPROGRAMS\${APP_NAME}\${APP_NAME} Website.lnk" "$INSTDIR\${APP_NAME} website.url"
 WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APP_NAME}" "DisplayName" "${APP_NAME}"
 WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APP_NAME}" "UninstallString" "$INSTDIR\uninstall.exe"
 WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APP_NAME}" "DisplayIcon" "$INSTDIR\${MAIN_APP_EXE}"
 WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APP_NAME}" "DisplayVersion" "0.1.0"
 WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APP_NAME}" "Publisher" "Lucio"
 WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APP_NAME}" "URLInfoAbout" "${WEB_SITE}"
+SectionEnd
+
+Section "$(SectionStartMenu)" SecStartMenu
+SetOutPath "$INSTDIR"
+CreateDirectory "$SMPROGRAMS\${APP_NAME}"
+CreateShortCut "$SMPROGRAMS\${APP_NAME}\${APP_NAME}.lnk" "$INSTDIR\${MAIN_APP_EXE}" "" "$INSTDIR\${MAIN_APP_EXE}"
+CreateShortCut "$SMPROGRAMS\${APP_NAME}\Uninstall ${APP_NAME}.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe"
+SectionEnd
+
+Section "$(SectionDesktop)" SecDesktop
+SetOutPath "$INSTDIR"
+CreateShortCut "$DESKTOP\${APP_NAME}.lnk" "$INSTDIR\${MAIN_APP_EXE}" "" "$INSTDIR\${MAIN_APP_EXE}"
+SectionEnd
+
+Section "$(SectionWebsite)" SecWebsite
+SetOutPath "$INSTDIR"
+CreateDirectory "$SMPROGRAMS\${APP_NAME}"
+WriteIniStr "$INSTDIR\${APP_NAME} website.url" "InternetShortcut" "URL" "${WEB_SITE}"
+CreateShortCut "$SMPROGRAMS\${APP_NAME}\${APP_NAME} Website.lnk" "$INSTDIR\${APP_NAME} website.url"
 SectionEnd
 
 Section Uninstall

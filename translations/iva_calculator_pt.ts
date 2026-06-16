@@ -83,6 +83,10 @@
       <source>Ayuda</source>
       <translation>Ajuda</translation>
     </message>
+    <message>
+      <source>Siempre encima</source>
+      <translation>Sempre no topo</translation>
+    </message>
   </context>
   <context>
     <name>CountryDialog</name>
