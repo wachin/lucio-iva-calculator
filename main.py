@@ -829,13 +829,9 @@ class AboutDialog(QDialog):
     def center_on_parent_or_screen(self):
         self.adjustSize()
         parent = self.parentWidget()
-        if parent is not None:
-            center = parent.frameGeometry().center()
-            frame = self.frameGeometry()
-            frame.moveCenter(center)
-            self.move(frame.topLeft())
-            return
-        screen = QApplication.primaryScreen()
+        screen = parent.screen() if parent is not None else QApplication.primaryScreen()
+        if screen is None:
+            screen = QApplication.primaryScreen()
         if screen is None:
             return
         frame = self.frameGeometry()
