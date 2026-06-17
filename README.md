@@ -420,12 +420,6 @@ GitHub Actions uploads both files in the `lucio-iva-windows` artifact and also a
 
 The portable ZIP is useful for users who do not want an installer and for comparing antivirus results in services such as VirusTotal. Windows release artifacts are built with Nuitka and NSIS, generated from GitHub Actions, and published with checksums when possible.
 
-Reusable developer guide for Linux icons with PyInstaller:
-
-```text
-docs/tutorial_pyinstaller_linux_icons.md
-```
-
 Mini checklist for creating a GitHub release:
 
 ```text

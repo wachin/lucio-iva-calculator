@@ -418,12 +418,6 @@ GitHub Actions sube ambos archivos dentro del artefacto `lucio-iva-windows` y ta
 
 El ZIP portable es util para usuarios que no quieren usar instalador y tambien para comparar resultados de antivirus en servicios como VirusTotal. Los artefactos de release para Windows se compilan con Nuitka y NSIS, se generan desde GitHub Actions y se publican con sumas de verificacion cuando sea posible.
 
-Guia tecnica reutilizable para desarrolladores sobre iconos Linux con PyInstaller:
-
-```text
-docs/tutorial_pyinstaller_linux_iconos.md
-```
-
 Mini checklist para crear un release en GitHub:
 
 ```text
