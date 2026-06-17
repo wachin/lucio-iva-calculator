@@ -381,7 +381,7 @@ Get-ChildItem C:\Qt -Recurse -Filter lrelease.exe
 
 If `lrelease.exe` exists but is not in `PATH`, that is okay: `scripts\compile_translations.ps1` also searches in `QTDIR`, `C:\Qt`, and `%USERPROFILE%\Qt`.
 
-The GitHub Actions Windows build installs Qt explicitly for translation compilation, so the Windows build dependencies only include the runtime/build Python packages required by the application and PyInstaller.
+The GitHub Actions Windows build installs Qt explicitly for translation compilation, so the Windows build dependencies only include the runtime/build Python packages required by the application and Nuitka.
 
 ## Cross-platform Builds
 
@@ -399,6 +399,8 @@ build/build_linux.sh
 build/build_macos.sh
 ```
 
+Windows artifacts are built with Nuitka. Linux and macOS artifacts continue to use their platform build scripts shown above.
+
 ### Windows installer and portable package
 
 The Windows build generates two files:
@@ -414,9 +416,9 @@ The `setup.exe` installer installs the application under the current user's prof
 LucioIVACalculator/LucioIVACalculator.exe
 ```
 
-GitHub Actions uploads both files in the `lucio-iva-windows` artifact and also attaches both to tagged releases. The Windows smoke test verifies both the installed application and the portable executable with `--pyinstaller-test`.
+GitHub Actions uploads both files in the `lucio-iva-windows` artifact and also attaches both to tagged releases. The Windows smoke test verifies both the installed application and the portable executable with `--smoke-test`.
 
-The portable ZIP is useful for users who do not want an installer and for comparing antivirus results in services such as VirusTotal. Unsigned PyInstaller/NSIS builds may occasionally receive heuristic false positives, so release builds should be generated from GitHub Actions and published with checksums when possible.
+The portable ZIP is useful for users who do not want an installer and for comparing antivirus results in services such as VirusTotal. Windows release artifacts are built with Nuitka and NSIS, generated from GitHub Actions, and published with checksums when possible.
 
 Reusable developer guide for Linux icons with PyInstaller:
 

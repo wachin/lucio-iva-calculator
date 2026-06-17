@@ -2068,7 +2068,7 @@ class CalculatorWindow(QMainWindow):
 
 
 def main() -> int:
-    if "--pyinstaller-test" in sys.argv:
+    if "--smoke-test" in sys.argv:
         return 0
     QApplication.setOrganizationName(APP_ORG)
     QApplication.setApplicationName(APP_NAME)

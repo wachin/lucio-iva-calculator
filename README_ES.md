@@ -379,7 +379,7 @@ Get-ChildItem C:\Qt -Recurse -Filter lrelease.exe
 
 Si `lrelease.exe` existe pero no esta en `PATH`, no pasa nada: `scripts\compile_translations.ps1` tambien busca en `QTDIR`, `C:\Qt` y `%USERPROFILE%\Qt`.
 
-El build de Windows en GitHub Actions instala Qt explicitamente para compilar traducciones, por eso las dependencias de Windows solo incluyen los paquetes Python necesarios para la aplicacion y PyInstaller.
+El build de Windows en GitHub Actions instala Qt explicitamente para compilar traducciones, por eso las dependencias de Windows solo incluyen los paquetes Python necesarios para la aplicacion y Nuitka.
 
 ## Builds multiplataforma
 
@@ -397,6 +397,8 @@ build/build_linux.sh
 build/build_macos.sh
 ```
 
+Los artefactos de Windows se compilan con Nuitka. Los artefactos de Linux y macOS siguen usando sus scripts de plataforma mostrados arriba.
+
 ### Instalador y paquete portable para Windows
 
 La compilacion de Windows genera dos archivos:
@@ -412,9 +414,9 @@ El instalador `setup.exe` instala la aplicacion dentro del perfil del usuario ac
 LucioIVACalculator/LucioIVACalculator.exe
 ```
 
-GitHub Actions sube ambos archivos dentro del artefacto `lucio-iva-windows` y tambien adjunta ambos cuando se crea un release con tag. La prueba de Windows verifica tanto la aplicacion instalada como el ejecutable portable usando `--pyinstaller-test`.
+GitHub Actions sube ambos archivos dentro del artefacto `lucio-iva-windows` y tambien adjunta ambos cuando se crea un release con tag. La prueba de Windows verifica tanto la aplicacion instalada como el ejecutable portable usando `--smoke-test`.
 
-El ZIP portable es util para usuarios que no quieren usar instalador y tambien para comparar resultados de antivirus en servicios como VirusTotal. Las compilaciones PyInstaller/NSIS sin firma digital pueden recibir falsos positivos heurísticos de forma ocasional, por eso conviene generar los releases desde GitHub Actions y publicar sumas de verificacion cuando sea posible.
+El ZIP portable es util para usuarios que no quieren usar instalador y tambien para comparar resultados de antivirus en servicios como VirusTotal. Los artefactos de release para Windows se compilan con Nuitka y NSIS, se generan desde GitHub Actions y se publican con sumas de verificacion cuando sea posible.
 
 Guia tecnica reutilizable para desarrolladores sobre iconos Linux con PyInstaller:
 
