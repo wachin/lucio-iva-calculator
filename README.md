@@ -119,6 +119,11 @@ On Debian, Ubuntu, MX Linux, and derivatives you can use the system packages:
 ```bash
 sudo apt update
 sudo apt install python3-pyqt6
+```
+
+### Run on Linux
+
+```bash
 python3 main.py
 ```
 
