@@ -14,11 +14,6 @@ function Get-LRelease {
         return "$pyqtLrelease"
     }
 
-    $qtToolsLrelease = & python -c "import importlib.util, pathlib; spec = importlib.util.find_spec('qt5_applications'); print(pathlib.Path(next(iter(spec.submodule_search_locations))) / 'Qt' / 'bin' / 'lrelease.exe' if spec and spec.submodule_search_locations else '')" 2>$null
-    if ($LASTEXITCODE -eq 0 -and (Test-Path "$qtToolsLrelease")) {
-        return "$qtToolsLrelease"
-    }
-
     $searchRoots = @()
     if ($env:QTDIR) {
         $searchRoots += $env:QTDIR
@@ -39,7 +34,7 @@ function Get-LRelease {
         }
     }
 
-    throw "No se encontro lrelease.exe. Instala un kit de escritorio de Qt, agrega lrelease al PATH o instala qt5_applications."
+    throw "No se encontro lrelease.exe. Instala un kit de escritorio de Qt o agrega lrelease al PATH."
 }
 
 if (!(Test-Path $translationsDir)) {

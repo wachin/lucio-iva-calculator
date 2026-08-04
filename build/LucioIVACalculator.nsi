@@ -8,12 +8,16 @@
 !define MAIN_APP_EXE "LucioIVACalculator\LucioIVACalculator.exe"
 !define WEB_SITE "https://wachin.github.io/lucio-iva-calculator/"
 
+VIFileVersion "${VERSION}"
 VIProductVersion "${VERSION}"
 VIAddVersionKey "ProductName" "${APP_NAME}"
 VIAddVersionKey "CompanyName" "Lucio"
 VIAddVersionKey "LegalCopyright" "${COPYRIGHT}"
 VIAddVersionKey "FileDescription" "${DESCRIPTION}"
 VIAddVersionKey "FileVersion" "${VERSION}"
+VIAddVersionKey "ProductVersion" "${VERSION}"
+VIAddVersionKey "InternalName" "${APP_NAME} Installer"
+VIAddVersionKey "OriginalFilename" "${INSTALLER_NAME}"
 
 SetCompressor ZLIB
 Name "${APP_NAME}"
@@ -21,6 +25,7 @@ Caption "${APP_NAME}"
 OutFile "${INSTALLER_NAME}"
 BrandingText "${APP_NAME}"
 XPStyle on
+RequestExecutionLevel user
 InstallDir "$LOCALAPPDATA\Programs\${APP_DIR}"
 Icon "app-icon.ico"
 UninstallIcon "app-icon.ico"

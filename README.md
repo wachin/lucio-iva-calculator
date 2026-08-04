@@ -351,7 +351,7 @@ To compile `.ts` files to `.qm` on Windows:
 powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\compile_translations.ps1
 ```
 
-The script searches for `lrelease.exe` in `PATH`, PyQt6, `qt5_applications`, `QTDIR`, `C:\Qt`, and `%USERPROFILE%\Qt`.
+The script searches for `lrelease.exe` in `PATH`, PyQt6, `QTDIR`, `C:\Qt`, and `%USERPROFILE%\Qt`.
 
 ### Qt Creator and lrelease on Windows
 
@@ -386,6 +386,8 @@ Get-ChildItem C:\Qt -Recurse -Filter lrelease.exe
 
 If `lrelease.exe` exists but is not in `PATH`, that is okay: `scripts\compile_translations.ps1` also searches in `QTDIR`, `C:\Qt`, and `%USERPROFILE%\Qt`.
 
+The GitHub Actions Windows build installs Qt explicitly for translation compilation, so the Windows build dependencies only include the runtime/build Python packages required by the application and Nuitka.
+
 ## Cross-platform Builds
 
 The project includes GitHub Actions to build artifacts on Windows, Linux, and macOS:
@@ -402,11 +404,26 @@ build/build_linux.sh
 build/build_macos.sh
 ```
 
-Reusable developer guide for Linux icons with PyInstaller:
+Windows artifacts are built with Nuitka. Linux and macOS artifacts continue to use their platform build scripts shown above.
+
+### Windows installer and portable package
+
+The Windows build generates two files:
 
 ```text
-docs/tutorial_pyinstaller_linux_icons.md
+build/output/LucioIVACalculator-<version>-setup.exe
+build/output/LucioIVACalculator-<version>-Windows-x64-portable.zip
 ```
+
+The `setup.exe` installer installs the application under the current user's profile and can create Start Menu/Desktop shortcuts. The portable ZIP does not install anything: extract it and run:
+
+```text
+LucioIVACalculator/LucioIVACalculator.exe
+```
+
+GitHub Actions uploads both files in the `lucio-iva-windows` artifact and also attaches both to tagged releases. The Windows smoke test verifies both the installed application and the portable executable with `--smoke-test`.
+
+The portable ZIP is useful for users who do not want an installer and for comparing antivirus results in services such as VirusTotal. Windows release artifacts are built with Nuitka and NSIS, generated from GitHub Actions, and published with checksums when possible.
 
 Mini checklist for creating a GitHub release:
 
@@ -421,4 +438,4 @@ git tag v0.1.2
 git push origin v0.1.2
 ```
 
-The workflow creates a release with the Windows, Linux, and macOS artifacts.
+The workflow creates a release with the Windows, Linux, and macOS artifacts. Tagged releases also include `SHA256SUMS.txt` so users can verify downloaded files.

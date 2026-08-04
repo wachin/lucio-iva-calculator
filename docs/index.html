@@ -3,38 +3,68 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Calculadora de IVA de escritorio hecha con Python y PyQt6.">
+  <meta name="description" content="Calculadora de IVA de escritorio hecha con Python y PyQt6 para Windows, Linux y macOS.">
+  <meta name="theme-color" content="#e53935">
+  <link rel="canonical" href="https://wachin.github.io/lucio-iva-calculator/">
   <link rel="icon" type="image/svg+xml" href="assets/app-icon.svg">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Lucio IVA Calculator">
+  <meta property="og:title" content="Lucio IVA Calculator">
+  <meta property="og:description" content="Calculadora de IVA de escritorio para Windows, Linux y macOS, con tasas por país, temas, traducciones y modo portable.">
+  <meta property="og:url" content="https://wachin.github.io/lucio-iva-calculator/">
+  <meta property="og:image" content="https://wachin.github.io/lucio-iva-calculator/assets/social-preview.png">
+  <meta property="og:image:secure_url" content="https://wachin.github.io/lucio-iva-calculator/assets/social-preview.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Lucio IVA Calculator, calculadora de IVA de escritorio para Windows, Linux y macOS">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Lucio IVA Calculator">
+  <meta name="twitter:description" content="Calculadora de IVA de escritorio para Windows, Linux y macOS, con tasas por país, temas, traducciones y modo portable.">
+  <meta name="twitter:image" content="https://wachin.github.io/lucio-iva-calculator/assets/social-preview.png">
   <title>Lucio IVA Calculator</title>
   <style>
     :root {
       color-scheme: light;
-      --bg: #f6f7f9;
-      --ink: #1a1f26;
-      --muted: #5d6978;
-      --line: #dde2e8;
+      --bg: #f7f9f8;
+      --paper: #ffffff;
+      --ink: #17202a;
+      --muted: #566274;
+      --soft: #fff1ef;
+      --soft-2: #eef8f5;
       --red: #e53935;
-      --red-dark: #b51f1f;
-      --panel: #ffffff;
-      --soft: #fff0f0;
+      --red-deep: #b71f24;
+      --teal: #087f7a;
+      --teal-deep: #075e59;
+      --gold: #f6b73c;
+      --line: #dce5e3;
+      --shadow: 0 24px 70px rgba(20, 40, 48, 0.13);
+      --radius: 8px;
+      --max: 1180px;
     }
 
     * {
       box-sizing: border-box;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
-      background: var(--bg);
+      background:
+        linear-gradient(180deg, #fff7f5 0, #f7f9f8 440px),
+        var(--bg);
       color: var(--ink);
       font-family: "Segoe UI", Roboto, Arial, sans-serif;
-      line-height: 1.5;
+      line-height: 1.55;
     }
 
     a {
-      color: var(--red-dark);
+      color: var(--red-deep);
+      font-weight: 800;
       text-decoration: none;
-      font-weight: 700;
     }
 
     a:hover {
@@ -48,26 +78,31 @@
     }
 
     header {
-      border-bottom: 1px solid var(--line);
-      background: rgba(255, 255, 255, 0.86);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid rgba(220, 229, 227, 0.78);
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(16px);
     }
 
     nav {
-      width: min(1120px, calc(100% - 32px));
-      margin: 0 auto;
+      width: min(var(--max), calc(100% - 32px));
       min-height: 72px;
+      margin: 0 auto;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 20px;
+      gap: 21px;
     }
 
     .brand {
       display: flex;
       align-items: center;
-      gap: 12px;
-      font-weight: 800;
+      gap: 13px;
+      font-weight: 900;
       letter-spacing: 0;
+      color: var(--ink);
     }
 
     .brand img {
@@ -77,8 +112,8 @@
 
     .nav-links {
       display: flex;
-      gap: 18px;
       align-items: center;
+      gap: 21px;
       font-size: 14px;
     }
 
@@ -86,86 +121,116 @@
       flex: 1;
     }
 
-    .hero {
-      width: min(1120px, calc(100% - 32px));
+    .section {
+      width: min(var(--max), calc(100% - 32px));
       margin: 0 auto;
+      padding: 89px 0;
+    }
+
+    .hero {
+      width: min(var(--max), calc(100% - 32px));
+      min-height: calc(100vh - 72px);
+      margin: 0 auto;
+      padding: 55px 0 89px;
       display: grid;
-      grid-template-columns: minmax(0, 1.08fr) minmax(300px, 0.92fr);
-      gap: 44px;
+      grid-template-columns: minmax(0, 1.618fr) minmax(300px, 1fr);
+      gap: 55px;
       align-items: center;
-      padding: 72px 0 56px;
     }
 
     .eyebrow {
-      color: var(--red-dark);
-      font-weight: 800;
-      text-transform: uppercase;
+      color: var(--teal-deep);
       font-size: 13px;
+      font-weight: 900;
       letter-spacing: 0.08em;
-      margin: 0 0 14px;
+      margin: 0 0 13px;
+      text-transform: uppercase;
     }
 
     h1 {
-      font-size: clamp(40px, 6vw, 72px);
-      line-height: 0.95;
-      margin: 0 0 22px;
+      max-width: 820px;
+      margin: 0 0 21px;
+      font-size: clamp(43px, 6.8vw, 89px);
+      line-height: 0.94;
       letter-spacing: 0;
     }
 
+    h1 span {
+      color: var(--red-deep);
+    }
+
     .lead {
-      font-size: 19px;
+      max-width: 720px;
+      margin: 0 0 34px;
       color: var(--muted);
-      max-width: 650px;
-      margin: 0 0 30px;
+      font-size: clamp(18px, 2.2vw, 21px);
     }
 
     .actions {
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 13px;
       align-items: center;
     }
 
     .button {
+      min-height: 47px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-height: 46px;
-      padding: 0 18px;
+      border: 1px solid var(--red-deep);
       border-radius: 6px;
-      border: 1px solid var(--red-dark);
+      padding: 0 21px;
       background: var(--red);
       color: #ffffff;
-      font-weight: 800;
+      font-weight: 900;
+      box-shadow: 0 12px 24px rgba(229, 57, 53, 0.19);
     }
 
     .button.secondary {
-      background: transparent;
-      color: var(--red-dark);
+      background: #ffffff;
+      color: var(--red-deep);
+      box-shadow: none;
+    }
+
+    .hero-note {
+      margin-top: 21px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .device-wrap {
+      position: relative;
+      padding: 21px;
+      border: 1px solid rgba(8, 127, 122, 0.16);
+      border-radius: 8px;
+      background:
+        linear-gradient(135deg, rgba(8, 127, 122, 0.1), rgba(246, 183, 60, 0.13)),
+        #ffffff;
+      box-shadow: var(--shadow);
     }
 
     .device {
       background: linear-gradient(160deg, #20252d, #0d1117);
-      border-radius: 36px;
+      border-radius: 34px;
       padding: 18px;
-      box-shadow: 0 22px 60px rgba(31, 36, 44, 0.22);
     }
 
     .app-face {
-      border-radius: 24px;
       overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 24px;
       background: #f7f7f7;
-      border: 1px solid rgba(255, 255, 255, 0.16);
     }
 
     .app-top {
-      background: var(--red);
-      color: #111111;
       min-height: 62px;
       display: grid;
       grid-template-columns: 54px 1fr 70px;
       align-items: center;
       padding: 0 14px;
+      background: var(--red);
+      color: #111111;
       font-weight: 900;
     }
 
@@ -182,28 +247,28 @@
     }
 
     .display-band {
-      background: var(--red);
-      padding: 12px;
       display: grid;
       gap: 10px;
+      padding: 12px;
+      background: var(--red);
     }
 
     .display {
       min-height: 96px;
-      background: rgba(255, 255, 255, 0.24);
-      border: 1px solid rgba(255, 255, 255, 0.55);
-      border-radius: 6px;
-      padding: 12px 16px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      border: 1px solid rgba(255, 255, 255, 0.55);
+      border-radius: 6px;
+      padding: 12px 16px;
+      background: rgba(255, 255, 255, 0.24);
     }
 
     .display span {
-      font-family: Consolas, monospace;
-      font-size: 12px;
-      font-weight: 800;
       color: #222222;
+      font-family: Consolas, monospace;
+      font-size: 13px;
+      font-weight: 900;
     }
 
     .display strong {
@@ -213,18 +278,18 @@
     }
 
     .keys {
-      padding: 12px;
       display: grid;
       grid-template-columns: repeat(5, 1fr);
       gap: 7px;
+      padding: 12px;
     }
 
     .key {
       height: 54px;
-      border-radius: 4px;
-      background: #ffffff;
       display: grid;
       place-items: center;
+      border-radius: 4px;
+      background: #ffffff;
       font-size: 24px;
     }
 
@@ -238,64 +303,277 @@
       font-weight: 900;
     }
 
-    .features {
-      background: #ffffff;
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 13px;
+      margin-top: 13px;
+    }
+
+    .stat {
+      min-height: 89px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 13px;
+      background: rgba(255, 255, 255, 0.86);
+    }
+
+    .stat strong {
+      display: block;
+      color: var(--teal-deep);
+      font-size: 25px;
+      line-height: 1.1;
+    }
+
+    .stat span {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 6px;
+    }
+
+    .band {
       border-top: 1px solid var(--line);
       border-bottom: 1px solid var(--line);
+      background: #ffffff;
     }
 
-    .feature-grid {
-      width: min(1120px, calc(100% - 32px));
-      margin: 0 auto;
-      padding: 46px 0;
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 18px;
+    .section-head {
+      max-width: 760px;
+      margin-bottom: 34px;
     }
 
-    .feature {
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      padding: 20px;
-      background: var(--panel);
+    .section-head h2 {
+      margin: 0 0 13px;
+      font-size: clamp(31px, 4vw, 55px);
+      line-height: 1.02;
+      letter-spacing: 0;
     }
 
-    .feature h2 {
-      margin: 0 0 8px;
+    .section-head p {
+      margin: 0;
+      color: var(--muted);
       font-size: 18px;
     }
 
-    .feature p {
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 21px;
+    }
+
+    .feature,
+    .use-card,
+    .tax-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper);
+      padding: 21px;
+    }
+
+    .feature {
+      min-height: 178px;
+    }
+
+    .feature .number {
+      display: inline-grid;
+      width: 34px;
+      height: 34px;
+      place-items: center;
+      border-radius: 50%;
+      margin-bottom: 13px;
+      background: var(--soft-2);
+      color: var(--teal-deep);
+      font-weight: 900;
+    }
+
+    .feature h3,
+    .use-card h3,
+    .tax-card h3 {
+      margin: 0 0 8px;
+      font-size: 19px;
+    }
+
+    .feature p,
+    .use-card p,
+    .tax-card p {
       margin: 0;
       color: var(--muted);
-      font-size: 14px;
+      font-size: 15px;
     }
 
-    .details {
-      width: min(1120px, calc(100% - 32px));
-      margin: 0 auto;
-      padding: 46px 0 58px;
+    .tax-layout {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 28px;
+      grid-template-columns: minmax(0, 1fr) minmax(280px, 0.618fr);
+      gap: 34px;
+      align-items: start;
     }
 
-    .panel {
-      background: var(--panel);
+    .explainer {
+      border-left: 6px solid var(--teal);
+      border-radius: var(--radius);
+      padding: 34px;
+      background: #ffffff;
+      box-shadow: var(--shadow);
+    }
+
+    .explainer h2 {
+      margin: 0 0 13px;
+      font-size: clamp(32px, 4vw, 55px);
+      line-height: 1.04;
+    }
+
+    .explainer p {
+      color: var(--muted);
+      font-size: 18px;
+      margin: 0 0 16px;
+    }
+
+    .formula {
+      display: grid;
+      gap: 10px;
+      margin-top: 21px;
+    }
+
+    .formula div {
+      border: 1px solid #cfe0dc;
+      border-radius: 6px;
+      padding: 13px 16px;
+      background: var(--soft-2);
+      color: var(--teal-deep);
+      font-weight: 900;
+    }
+
+    .tax-stack {
+      display: grid;
+      gap: 13px;
+    }
+
+    .tax-card.highlight {
+      border-color: rgba(229, 57, 53, 0.32);
+      background: var(--soft);
+    }
+
+    .tax-card strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--red-deep);
+      font-size: 30px;
+      line-height: 1;
+    }
+
+    .use-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 21px;
+    }
+
+    .use-card {
+      min-height: 205px;
+      background:
+        linear-gradient(180deg, rgba(255, 241, 239, 0.78), rgba(255, 255, 255, 0) 88px),
+        #ffffff;
+    }
+
+    .use-card .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 29px;
+      border-radius: 999px;
+      padding: 0 10px;
+      margin-bottom: 13px;
+      background: #fff4df;
+      color: #7f5600;
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .comparison {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 21px;
+      align-items: stretch;
+    }
+
+    .country-list {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .country-list li {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 13px;
+      align-items: center;
       border: 1px solid var(--line);
       border-radius: 8px;
-      padding: 24px;
-    }
-
-    .panel h2 {
-      margin: 0 0 12px;
-      font-size: 24px;
-    }
-
-    .panel ul {
-      margin: 0;
-      padding-left: 20px;
+      padding: 13px 16px;
+      background: #ffffff;
       color: var(--muted);
+    }
+
+    .country-list strong {
+      color: var(--ink);
+    }
+
+    .country-list span {
+      color: var(--teal-deep);
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .note {
+      margin-top: 13px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .download {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(280px, 0.618fr);
+      gap: 34px;
+      align-items: center;
+      border: 1px solid rgba(8, 127, 122, 0.22);
+      border-radius: 8px;
+      padding: 55px;
+      background:
+        linear-gradient(135deg, rgba(8, 127, 122, 0.11), rgba(246, 183, 60, 0.16)),
+        #ffffff;
+      box-shadow: var(--shadow);
+    }
+
+    .download h2 {
+      margin: 0 0 13px;
+      font-size: clamp(32px, 4vw, 55px);
+      line-height: 1.04;
+    }
+
+    .download p {
+      margin: 0 0 21px;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .download-list {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .download-list li {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 13px 16px;
+      background: rgba(255, 255, 255, 0.82);
+      color: var(--muted);
+      font-weight: 700;
     }
 
     footer {
@@ -305,17 +583,17 @@
     }
 
     footer div {
-      width: min(1120px, calc(100% - 32px));
-      margin: 0 auto;
-      padding: 22px 0;
+      width: min(var(--max), calc(100% - 32px));
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
       gap: 14px;
-      flex-wrap: wrap;
+      margin: 0 auto;
+      padding: 22px 0;
       font-size: 14px;
     }
 
-    @media (max-width: 860px) {
+    @media (max-width: 920px) {
       nav {
         align-items: flex-start;
         flex-direction: column;
@@ -323,26 +601,60 @@
       }
 
       .hero,
-      .details {
+      .tax-layout,
+      .comparison,
+      .download {
         grid-template-columns: 1fr;
       }
 
-      .feature-grid {
+      .hero {
+        min-height: auto;
+      }
+
+      .feature-grid,
+      .use-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
 
-    @media (max-width: 560px) {
-      .feature-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .nav-links {
-        flex-wrap: wrap;
+    @media (max-width: 620px) {
+      .section {
+        padding: 55px 0;
       }
 
       .hero {
-        padding-top: 42px;
+        padding: 42px 0 55px;
+        gap: 34px;
+      }
+
+      .nav-links,
+      .actions {
+        flex-wrap: wrap;
+      }
+
+      .feature-grid,
+      .use-grid,
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .device-wrap,
+      .explainer,
+      .download {
+        padding: 21px;
+      }
+
+      .keys {
+        gap: 5px;
+      }
+
+      .key {
+        height: 48px;
+        font-size: 21px;
+      }
+
+      .country-list li {
+        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -351,92 +663,239 @@
   <div class="shell">
     <header>
       <nav>
-        <div class="brand">
+        <a class="brand" href="#top" aria-label="Lucio IVA Calculator">
           <img src="assets/app-icon.svg" alt="">
           <span>Lucio IVA Calculator</span>
-        </div>
+        </a>
         <div class="nav-links">
           <a href="#features">Funciones</a>
-          <a href="#tech">Tecnología</a>
+          <a href="#iva">Qué es el IVA</a>
+          <a href="#uses">Casos de uso</a>
+          <a href="#download">Descargar</a>
           <a href="https://github.com/wachin/lucio-iva-calculator">GitHub</a>
         </div>
       </nav>
     </header>
 
-    <main>
+    <main id="top">
       <section class="hero">
         <div>
           <p class="eyebrow">Calculadora de IVA para escritorio</p>
-          <h1>IVA claro, rápido y configurable.</h1>
+          <h1>Calcula el <span>IVA</span> sin pelearte con los números.</h1>
           <p class="lead">
-            Una aplicación moderna para calcular IVA excluido, IVA e IVA incluido con tasas por país,
-            tasas personalizadas, formatos numéricos, temas, tamaños de interfaz e internacionalización.
+            Lucio IVA Calculator une una calculadora práctica con tasas por país, modo oscuro,
+            formatos numéricos, traducciones y una experiencia pensada para trabajar rápido en Windows,
+            Linux y macOS.
           </p>
           <div class="actions">
-            <a class="button" href="https://github.com/wachin/lucio-iva-calculator/releases">Descargar</a>
-            <a class="button secondary" href="#features">Explorar funciones</a>
+            <a class="button" href="https://github.com/wachin/lucio-iva-calculator/releases">Descargar ahora</a>
+            <a class="button secondary" href="#iva">Aprender sobre IVA</a>
+          </div>
+          <p class="hero-note">
+            Proyecto de software libre desarrollado en Jipijapa, Manabí, Ecuador.
+          </p>
+          <div class="stats" aria-label="Resumen de funciones">
+            <div class="stat"><strong>3</strong><span>pantallas sincronizadas</span></div>
+            <div class="stat"><strong>15 %</strong><span>tasa incluida para Ecuador</span></div>
+            <div class="stat"><strong>3</strong><span>sistemas: Windows, Linux y macOS</span></div>
           </div>
         </div>
 
-        <div class="device" aria-label="Vista previa de la aplicación">
-          <div class="app-face">
-            <div class="app-top">
-              <div class="hamburger"><span></span><span></span><span></span></div>
-              <div>Ecuador</div>
-              <div>15 %</div>
-            </div>
-            <div class="display-band">
-              <div class="display"><span>IVA EXCLUIDO</span><strong>100,00</strong></div>
-              <div class="display"><span>IVA</span><strong>15,00</strong></div>
-              <div class="display"><span>IVA INCLUIDO</span><strong>115,00</strong></div>
-            </div>
-            <div class="keys">
-              <div class="key">7</div><div class="key">8</div><div class="key">9</div><div class="key hot">DEL</div><div class="key hot">CA</div>
-              <div class="key">4</div><div class="key">5</div><div class="key">6</div><div class="key op">×</div><div class="key op">÷</div>
-              <div class="key">1</div><div class="key">2</div><div class="key">3</div><div class="key op">+</div><div class="key op">−</div>
-              <div class="key">0</div><div class="key">.</div><div class="key">±</div><div class="key op">=</div><div class="key op">*</div>
+        <div class="device-wrap" aria-label="Vista previa de la aplicación">
+          <div class="device">
+            <div class="app-face">
+              <div class="app-top">
+                <div class="hamburger"><span></span><span></span><span></span></div>
+                <div>Ecuador</div>
+                <div>15 %</div>
+              </div>
+              <div class="display-band">
+                <div class="display"><span>IVA EXCLUIDO</span><strong>100,00</strong></div>
+                <div class="display"><span>IVA</span><strong>15,00</strong></div>
+                <div class="display"><span>IVA INCLUIDO</span><strong>115,00</strong></div>
+              </div>
+              <div class="keys">
+                <div class="key">7</div><div class="key">8</div><div class="key">9</div><div class="key hot">DEL</div><div class="key hot">CA</div>
+                <div class="key">4</div><div class="key">5</div><div class="key">6</div><div class="key op">x</div><div class="key op">/</div>
+                <div class="key">1</div><div class="key">2</div><div class="key">3</div><div class="key op">+</div><div class="key op">-</div>
+                <div class="key">0</div><div class="key">.</div><div class="key">+/-</div><div class="key op">=</div><div class="key op">EC</div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section class="features" id="features">
-        <div class="feature-grid">
-          <article class="feature">
-            <h2>Tres pantallas</h2>
-            <p>Los valores de IVA excluido, IVA e IVA incluido se sincronizan automáticamente.</p>
-          </article>
-          <article class="feature">
-            <h2>Tasas por país</h2>
-            <p>Incluye tasas de Ecuador, Unión Europea, América y otros países.</p>
-          </article>
-          <article class="feature">
-            <h2>Personalizable</h2>
-            <p>Permite crear tasas propias para descuentos, recargos o impuestos especiales.</p>
-          </article>
-          <article class="feature">
-            <h2>Multiplataforma</h2>
-            <p>Funciona en Windows, Linux y macOS gracias a Python y PyQt6.</p>
-          </article>
+      <section class="band" id="features">
+        <div class="section">
+          <div class="section-head">
+            <p class="eyebrow">Funciones principales</p>
+            <h2>Una herramienta pequeña para decisiones de todos los días.</h2>
+            <p>
+              La app ayuda cuando necesitas pasar de precio neto a precio final, separar impuestos de
+              una factura o comparar tasas sin abrir una hoja de cálculo.
+            </p>
+          </div>
+          <div class="feature-grid">
+            <article class="feature">
+              <span class="number">1</span>
+              <h3>Tres valores conectados</h3>
+              <p>IVA excluido, IVA e IVA incluido se actualizan entre sí para evitar operaciones repetidas.</p>
+            </article>
+            <article class="feature">
+              <span class="number">2</span>
+              <h3>Tasas por país</h3>
+              <p>Incluye países de América, Europa y otras regiones, con selección manual y detección por idioma.</p>
+            </article>
+            <article class="feature">
+              <span class="number">3</span>
+              <h3>Tasas personalizadas</h3>
+              <p>Sirve tambien para descuentos, recargos, servicios, comisiones o impuestos no incluidos.</p>
+            </article>
+            <article class="feature">
+              <span class="number">4</span>
+              <h3>Cómoda para trabajar</h3>
+              <p>Tiene modo oscuro, atajos de teclado, teclado numérico, ayuda local y tamaño de interfaz ajustable.</p>
+            </article>
+          </div>
         </div>
       </section>
 
-      <section class="details" id="tech">
-        <div class="panel">
-          <h2>Tecnologías</h2>
-          <ul>
-            <li>Python 3</li>
-            <li>PyQt6 y QtSvg</li>
-            <li>Qt Linguist para traducciones</li>
-            <li>Configuración INI en la carpeta del usuario</li>
+      <section class="section" id="iva">
+        <div class="tax-layout">
+          <div class="explainer">
+            <p class="eyebrow">Qué es el IVA</p>
+            <h2>El IVA es un impuesto al consumo que aparece en el precio final.</h2>
+            <p>
+              IVA significa Impuesto al Valor Agregado. En muchos países se cobra cuando una persona compra
+              bienes o servicios. Por eso una misma compra puede tener tres miradas: el precio sin impuesto,
+              el valor del impuesto y el total que paga el cliente.
+            </p>
+            <p>
+              La confusión aparece porque no todos los países lo aplican igual. Ecuador usa IVA, muchos países
+              europeos tienen tasas superiores al 20 %, y Estados Unidos no tiene un IVA federal: allá se usa
+              normalmente un impuesto de venta estatal o local, conocido como sales tax.
+            </p>
+            <div class="formula" aria-label="Fórmulas básicas de IVA">
+              <div>IVA = precio sin IVA x tasa</div>
+              <div>Total = precio sin IVA + IVA</div>
+              <div>Precio sin IVA = total / (1 + tasa)</div>
+            </div>
+          </div>
+          <div class="tax-stack">
+            <article class="tax-card highlight">
+              <strong>15 %</strong>
+              <h3>Ecuador</h3>
+              <p>La app incluye la tasa ecuatoriana para calcular rápido precios locales.</p>
+            </article>
+            <article class="tax-card">
+              <strong>27 %</strong>
+              <h3>Hungría</h3>
+              <p>Un ejemplo conocido de tasa general de IVA mayor que la de Ecuador.</p>
+            </article>
+            <article class="tax-card">
+              <strong>0 % IVA federal</strong>
+              <h3>Estados Unidos</h3>
+              <p>No usa IVA federal. Muchas compras se gravan con sales tax estatal o local.</p>
+            </article>
+          </div>
+        </div>
+        <p class="note">
+          Las tasas tributarias pueden cambiar. Para decisiones legales o contables, confirma siempre con la autoridad tributaria correspondiente.
+        </p>
+      </section>
+
+      <section class="band" id="uses">
+        <div class="section">
+          <div class="section-head">
+            <p class="eyebrow">Casos de uso</p>
+            <h2>Para ventas, compras, soporte y aprendizaje.</h2>
+            <p>
+              Lucio IVA Calculator es útil cuando necesitas una respuesta limpia, sin depender de internet
+              y sin construir una fórmula desde cero cada vez.
+            </p>
+          </div>
+          <div class="use-grid">
+            <article class="use-card">
+              <span class="tag">Comercio</span>
+              <h3>Calcular el precio final</h3>
+              <p>Escribe el precio antes de impuesto y obtienes inmediatamente el IVA y el total para el cliente.</p>
+            </article>
+            <article class="use-card">
+              <span class="tag">Facturas</span>
+              <h3>Separar el impuesto incluido</h3>
+              <p>Si solo tienes el total de una factura, puedes saber cuánto corresponde al precio base y cuánto al IVA.</p>
+            </article>
+            <article class="use-card">
+              <span class="tag">Viajes</span>
+              <h3>Comparar países</h3>
+              <p>Selecciona otra tasa para entender por qué un producto puede cambiar de precio entre países.</p>
+            </article>
+            <article class="use-card">
+              <span class="tag">Servicios</span>
+              <h3>Crear recargos propios</h3>
+              <p>Las tasas personalizadas tambien sirven para comisiones, cargos administrativos o descuentos.</p>
+            </article>
+            <article class="use-card">
+              <span class="tag">Educación</span>
+              <h3>Aprender con ejemplos</h3>
+              <p>Las tres pantallas ayudan a visualizar la relación entre base, impuesto y total.</p>
+            </article>
+            <article class="use-card">
+              <span class="tag">Escritorio</span>
+              <h3>Trabajar sin distracciones</h3>
+              <p>Modo siempre encima, teclado numérico y atajos reducen pasos cuando estás atendiendo otra tarea.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="countries">
+        <div class="section-head">
+          <p class="eyebrow">Un impuesto, muchos nombres</p>
+          <h2>IVA, VAT, GST, HST, PST y sales tax no son siempre lo mismo.</h2>
+          <p>
+            El programa está pensado para convivir con distintos nombres y formatos. La idea es que el usuario
+            pueda elegir el país o crear su propia tasa cuando el caso no exista todavía.
+          </p>
+        </div>
+        <div class="comparison">
+          <ul class="country-list">
+            <li><strong>Ecuador</strong><span>IVA 15 %</span></li>
+            <li><strong>España</strong><span>IVA 21 %</span></li>
+            <li><strong>Francia</strong><span>VAT 20 %</span></li>
+            <li><strong>Hungría</strong><span>VAT 27 %</span></li>
+          </ul>
+          <ul class="country-list">
+            <li><strong>Canadá</strong><span>GST/HST/PST</span></li>
+            <li><strong>Reino Unido</strong><span>VAT</span></li>
+            <li><strong>México</strong><span>IVA</span></li>
+            <li><strong>Estados Unidos</strong><span>sales tax local</span></li>
           </ul>
         </div>
-        <div class="panel">
-          <h2>Proyecto</h2>
-          <ul>
-            <li>Licencia GNU GPL v3</li>
-            <li>Desarrollado en Jipijapa, Manabí, Ecuador</li>
-            <li>Autores: Washington Indacochea Delgado y Joseph Lucio Guerrero</li>
+        <p class="note">
+          Estos ejemplos son una guía educativa y pueden variar por producto, provincia, estado, ciudad o régimen fiscal.
+        </p>
+      </section>
+
+      <section class="section" id="download">
+        <div class="download">
+          <div>
+            <p class="eyebrow">Software libre</p>
+            <h2>Descárgalo, revísalo y compártelo.</h2>
+            <p>
+              El proyecto está publicado en GitHub bajo licencia GNU GPL v3. Hay paquetes para Windows,
+              Linux y macOS, junto con el código fuente y la documentación.
+            </p>
+            <div class="actions">
+              <a class="button" href="https://github.com/wachin/lucio-iva-calculator/releases">Ver versiones</a>
+              <a class="button secondary" href="https://github.com/wachin/lucio-iva-calculator">Código fuente</a>
+            </div>
+          </div>
+          <ul class="download-list">
+            <li>Windows: instalador y version portable</li>
+            <li>Linux: ejecutable con archivos de integración</li>
+            <li>macOS: paquete de aplicación</li>
+            <li>Traducciones con Qt Linguist</li>
           </ul>
         </div>
       </section>

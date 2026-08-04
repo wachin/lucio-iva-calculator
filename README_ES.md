@@ -344,7 +344,7 @@ Para compilar los `.ts` a `.qm` en Windows:
 powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\compile_translations.ps1
 ```
 
-El script busca `lrelease.exe` en `PATH`, PyQt6, `qt5_applications`, `QTDIR`, `C:\Qt` y `%USERPROFILE%\Qt`.
+El script busca `lrelease.exe` en `PATH`, PyQt6, `QTDIR`, `C:\Qt` y `%USERPROFILE%\Qt`.
 
 ### Qt Creator y lrelease en Windows
 
@@ -379,6 +379,8 @@ Get-ChildItem C:\Qt -Recurse -Filter lrelease.exe
 
 Si `lrelease.exe` existe pero no esta en `PATH`, no pasa nada: `scripts\compile_translations.ps1` tambien busca en `QTDIR`, `C:\Qt` y `%USERPROFILE%\Qt`.
 
+El build de Windows en GitHub Actions instala Qt explicitamente para compilar traducciones, por eso las dependencias de Windows solo incluyen los paquetes Python necesarios para la aplicacion y Nuitka.
+
 ## Builds multiplataforma
 
 El proyecto incluye GitHub Actions para compilar artefactos en Windows, Linux y macOS:
@@ -395,11 +397,26 @@ build/build_linux.sh
 build/build_macos.sh
 ```
 
-Guia tecnica reutilizable para desarrolladores sobre iconos Linux con PyInstaller:
+Los artefactos de Windows se compilan con Nuitka. Los artefactos de Linux y macOS siguen usando sus scripts de plataforma mostrados arriba.
+
+### Instalador y paquete portable para Windows
+
+La compilacion de Windows genera dos archivos:
 
 ```text
-docs/tutorial_pyinstaller_linux_iconos.md
+build/output/LucioIVACalculator-<version>-setup.exe
+build/output/LucioIVACalculator-<version>-Windows-x64-portable.zip
 ```
+
+El instalador `setup.exe` instala la aplicacion dentro del perfil del usuario actual y puede crear accesos directos en el menu Inicio y en el Escritorio. El ZIP portable no instala nada: se extrae y se ejecuta:
+
+```text
+LucioIVACalculator/LucioIVACalculator.exe
+```
+
+GitHub Actions sube ambos archivos dentro del artefacto `lucio-iva-windows` y tambien adjunta ambos cuando se crea un release con tag. La prueba de Windows verifica tanto la aplicacion instalada como el ejecutable portable usando `--smoke-test`.
+
+El ZIP portable es util para usuarios que no quieren usar instalador y tambien para comparar resultados de antivirus en servicios como VirusTotal. Los artefactos de release para Windows se compilan con Nuitka y NSIS, se generan desde GitHub Actions y se publican con sumas de verificacion cuando sea posible.
 
 Mini checklist para crear un release en GitHub:
 
@@ -414,4 +431,4 @@ git tag v0.1.2
 git push origin v0.1.2
 ```
 
-El workflow crea una release con los artefactos de Windows, Linux y macOS.
+El workflow crea una release con los artefactos de Windows, Linux y macOS. Los releases creados desde tags tambien incluyen `SHA256SUMS.txt` para que los usuarios puedan verificar los archivos descargados.
